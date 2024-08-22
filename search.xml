@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>cloudflare tunnel优选IP</title>
+    <url>/posts/204d8c5f/</url>
+    <content><![CDATA[<p><strong>总所周知，cloudflare默认分配的IP都在美国，轻则速度慢运气不好分配的还是被GFW拦截的</strong></p>
+<p>本教程需要：</p>
+<p>一张万事达&#x2F;visa过cloudflare for saas验证</p>
+<p>两条域名，一条用于优选，一条托管到cloudfalre</p>
+<h4 id="一、配置cloudflared"><a href="#一、配置cloudflared" class="headerlink" title="一、配置cloudflared"></a>一、配置cloudflared</h4><ul>
+<li>cloudflared可在<a href="https://github.com/cloudflare/cloudflared/">cloudflare&#x2F;cloudflared: Cloudflare Tunnel client (formerly Argo Tunnel) (github.com)</a>上获取</li>
+</ul>
+<h5 id="部署方式（可选）"><a href="#部署方式（可选）" class="headerlink" title="部署方式（可选）"></a>部署方式（可选）</h5><ul>
+<li>本教程以docker为例</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -d --name cloudflared_status --network=host alpine sleep infinity</span><br></pre></td></tr></table></figure>
+
+<h5 id="下载cloudflared"><a href="#下载cloudflared" class="headerlink" title="下载cloudflared"></a>下载cloudflared</h5><p>这里以arm64为例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget -O /usr/bin/cloudflared https://github.hqycloud.top/https://github.com/cloudflare/cloudflared/releases/download/2024.4.1/cloudflared-linux-arm64</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置权限"><a href="#设置权限" class="headerlink" title="设置权限"></a>设置权限</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chmod 777 /usr/bin/cloudflared</span><br></pre></td></tr></table></figure>
+
+<h5 id="查看版本号"><a href="#查看版本号" class="headerlink" title="查看版本号"></a>查看版本号</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared version</span><br></pre></td></tr></table></figure>
+
+<h5 id="登录cloudflared"><a href="#登录cloudflared" class="headerlink" title="登录cloudflared"></a>登录cloudflared</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel login</span><br></pre></td></tr></table></figure>
+
+<h5 id="创建隧道并命名"><a href="#创建隧道并命名" class="headerlink" title="创建隧道并命名"></a>创建隧道并命名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel create 隧道名</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>隧道名可以自定义，但不能重复！</li>
+</ul>
+<h5 id="查看隧道列表"><a href="#查看隧道列表" class="headerlink" title="查看隧道列表"></a>查看隧道列表</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel list</span><br></pre></td></tr></table></figure>
+
+<h5 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;url: http://localhost:8000</span><br><span class="line">tunnel: &lt;Tunnel-UUID&gt;</span><br><span class="line">credentials-file: /root/.cloudflared/&lt;Tunnel-UUID&gt;.json&#x27; &gt; .cloudflared/config.yml</span><br></pre></td></tr></table></figure>
+
+<p>这里的Tunnel-UUID在隧道列表可以看到</p>
+<p><em>查看创建好的config.yml</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat config.yml</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置域名"><a href="#设置域名" class="headerlink" title="设置域名"></a>设置域名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel route dns &lt;UUID or NAME&gt; &lt;hostname&gt;</span><br></pre></td></tr></table></figure>
+
+<p>UUID和NAME二选一，uuid查看隧道列表就能看到，name是你创建时输入的名字</p>
+<p>hostname填的是托管在cloudflare的子域，不需要完整的域名</p>
+<p>例如：tunnel-cdn.test.com（托管在cloudflare</p>
+<p>则只需要填tunnel-cdn</p>
+<h5 id="测试隧道是否正常"><a href="#测试隧道是否正常" class="headerlink" title="测试隧道是否正常"></a>测试隧道是否正常</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel run &lt;UUID or NAME&gt;</span><br></pre></td></tr></table></figure>
+
+<p>访问托管在cloudflare的隧道子域查看是否正常</p>
+<p>如果正常可继续看下一步，如果打不开并报错，请移步至cloudflare文档</p>
+<h5 id="在后台运行隧道"><a href="#在后台运行隧道" class="headerlink" title="在后台运行隧道"></a>在后台运行隧道</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nohup cloudflared tunnel run &lt;UUID or NAME&gt; &amp;</span><br></pre></td></tr></table></figure>
+
+<h4 id="二、配置优选IP"><a href="#二、配置优选IP" class="headerlink" title="二、配置优选IP"></a>二、配置优选IP</h4><h5 id="开通cloudflare-for-saas服务"><a href="#开通cloudflare-for-saas服务" class="headerlink" title="开通cloudflare for saas服务"></a>开通cloudflare for saas服务</h5><p>需要绑卡，这里不过多赘述</p>
+<h5 id="设置回退域"><a href="#设置回退域" class="headerlink" title="设置回退域"></a>设置回退域</h5><p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png"></p>
+<p>回退域必须设置为与隧道绑定的域名</p>
+<h5 id="设置访问域名"><a href="#设置访问域名" class="headerlink" title="设置访问域名"></a>设置访问域名</h5><p>添加一个自定义主机名</p>
+<p>域名填公开访问的域名（必须托管在其他dns服务商，否则cloudflare会检测</p>
+<p>验证方式选TXT</p>
+<h4 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h4><p>在验证过程中，需要把解析设为回退域，否则验证不通过</p>
+<p>等待证书状态和主机名状态都显示有效后访问一下试试</p>
+<p>访问成功后就可以把解析设置为cf的任意IP</p>
+<ul>
+<li>找cloudflare速度快的IP→<a href="https://github.com/XIU2/CloudflareSpeedTest">XIU2&#x2F;CloudflareSpeedTest: 🌩「自选优选 IP」测试 Cloudflare CDN 延迟和速度，获取最快 IP ！当然也支持其他 CDN &#x2F; 网站 IP ~ (github.com)</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>cloudflare</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Google Gemini Ai for yhchat</title>
     <url>/posts/bebafed8/</url>
     <content><![CDATA[<h2 id="点击使用云湖机器人【Gemini-Bot】"><a href="#点击使用云湖机器人【Gemini-Bot】" class="headerlink" title="点击使用云湖机器人【Gemini Bot】"></a><a href="https://yhfx.jwznb.com/share?key=O1pAnYgHTycu&ts=1709444123">点击使用云湖机器人【Gemini Bot】</a></h2><p>机器人ID: 9804152</p>
@@ -68,72 +134,6 @@
 ]]></content>
       <categories>
         <category>yhchat</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>cloudflare tunnel优选IP</title>
-    <url>/posts/204d8c5f/</url>
-    <content><![CDATA[<p><strong>总所周知，cloudflare默认分配的IP都在美国，轻则速度慢运气不好分配的还是被GFW拦截的</strong></p>
-<p>本教程需要：</p>
-<p>一张万事达&#x2F;visa过cloudflare for saas验证</p>
-<p>两条域名，一条用于优选，一条托管到cloudfalre</p>
-<h4 id="一、配置cloudflared"><a href="#一、配置cloudflared" class="headerlink" title="一、配置cloudflared"></a>一、配置cloudflared</h4><ul>
-<li>cloudflared可在<a href="https://github.com/cloudflare/cloudflared/">cloudflare&#x2F;cloudflared: Cloudflare Tunnel client (formerly Argo Tunnel) (github.com)</a>上获取</li>
-</ul>
-<h5 id="部署方式（可选）"><a href="#部署方式（可选）" class="headerlink" title="部署方式（可选）"></a>部署方式（可选）</h5><ul>
-<li>本教程以docker为例</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -d --name cloudflared_status --network=host alpine sleep infinity</span><br></pre></td></tr></table></figure>
-
-<h5 id="下载cloudflared"><a href="#下载cloudflared" class="headerlink" title="下载cloudflared"></a>下载cloudflared</h5><p>这里以arm64为例</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget -O /usr/bin/cloudflared https://github.hqycloud.top/https://github.com/cloudflare/cloudflared/releases/download/2024.4.1/cloudflared-linux-arm64</span><br></pre></td></tr></table></figure>
-
-<h5 id="设置权限"><a href="#设置权限" class="headerlink" title="设置权限"></a>设置权限</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chmod 777 /usr/bin/cloudflared</span><br></pre></td></tr></table></figure>
-
-<h5 id="查看版本号"><a href="#查看版本号" class="headerlink" title="查看版本号"></a>查看版本号</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared version</span><br></pre></td></tr></table></figure>
-
-<h5 id="登录cloudflared"><a href="#登录cloudflared" class="headerlink" title="登录cloudflared"></a>登录cloudflared</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel login</span><br></pre></td></tr></table></figure>
-
-<h5 id="创建隧道并命名"><a href="#创建隧道并命名" class="headerlink" title="创建隧道并命名"></a>创建隧道并命名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel create 隧道名</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>隧道名可以自定义，但不能重复！</li>
-</ul>
-<h5 id="查看隧道列表"><a href="#查看隧道列表" class="headerlink" title="查看隧道列表"></a>查看隧道列表</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel list</span><br></pre></td></tr></table></figure>
-
-<h5 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;url: http://localhost:8000</span><br><span class="line">tunnel: &lt;Tunnel-UUID&gt;</span><br><span class="line">credentials-file: /root/.cloudflared/&lt;Tunnel-UUID&gt;.json&#x27; &gt; .cloudflared/config.yml</span><br></pre></td></tr></table></figure>
-
-<p>这里的Tunnel-UUID在隧道列表可以看到</p>
-<p><em>查看创建好的config.yml</em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat config.yml</span><br></pre></td></tr></table></figure>
-
-<h5 id="设置域名"><a href="#设置域名" class="headerlink" title="设置域名"></a>设置域名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel route dns &lt;UUID or NAME&gt; &lt;hostname&gt;</span><br></pre></td></tr></table></figure>
-
-<p>UUID和NAME二选一，uuid查看隧道列表就能看到，name是你创建时输入的名字</p>
-<p>hostname填的是托管在cloudflare的子域，不需要完整的域名</p>
-<p>例如：tunnel-cdn.test.com（托管在cloudflare</p>
-<p>则只需要填tunnel-cdn</p>
-<h5 id="测试隧道是否正常"><a href="#测试隧道是否正常" class="headerlink" title="测试隧道是否正常"></a>测试隧道是否正常</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel run &lt;UUID or NAME&gt;</span><br></pre></td></tr></table></figure>
-
-<p>访问托管在cloudflare的隧道子域查看是否正常</p>
-<p>如果正常可继续看下一步，如果打不开并报错，请移步至cloudflare文档</p>
-<h5 id="在后台运行隧道"><a href="#在后台运行隧道" class="headerlink" title="在后台运行隧道"></a>在后台运行隧道</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nohup cloudflared tunnel run &lt;UUID or NAME&gt; &amp;</span><br></pre></td></tr></table></figure>
-
-<h4 id="二、配置优选IP"><a href="#二、配置优选IP" class="headerlink" title="二、配置优选IP"></a>二、配置优选IP</h4><h5 id="开通cloudflare-for-saas服务"><a href="#开通cloudflare-for-saas服务" class="headerlink" title="开通cloudflare for saas服务"></a>开通cloudflare for saas服务</h5><p>需要绑卡，这里不过多赘述</p>
-<h5 id="设置回退域"><a href="#设置回退域" class="headerlink" title="设置回退域"></a>设置回退域</h5><p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png"></p>
-<p>回退域必须设置为与隧道绑定的域名</p>
-<h5 id="设置访问域名"><a href="#设置访问域名" class="headerlink" title="设置访问域名"></a>设置访问域名</h5><p>添加一个自定义主机名</p>
-<p>域名填公开访问的域名（必须托管在其他dns服务商，否则cloudflare会检测</p>
-<p>验证方式选TXT</p>
-<h4 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h4><p>在验证过程中，需要把解析设为回退域，否则验证不通过</p>
-<p>等待证书状态和主机名状态都显示有效后访问一下试试</p>
-<p>访问成功后就可以把解析设置为cf的任意IP</p>
-<ul>
-<li>找cloudflare速度快的IP→<a href="https://github.com/XIU2/CloudflareSpeedTest">XIU2&#x2F;CloudflareSpeedTest: 🌩「自选优选 IP」测试 Cloudflare CDN 延迟和速度，获取最快 IP ！当然也支持其他 CDN &#x2F; 网站 IP ~ (github.com)</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>cloudflare</category>
       </categories>
   </entry>
   <entry>

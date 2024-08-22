@@ -24,8 +24,8 @@ https://blog.hqycloud.top/tags/%E7%BD%91%E7%BB%9C/
 https://blog.hqycloud.top/tags/linux/
 https://blog.hqycloud.top/tags/Windows/
 https://blog.hqycloud.top/tags/wireguard/
-https://blog.hqycloud.top/categories/yhchat/
 https://blog.hqycloud.top/categories/cloudflare/
+https://blog.hqycloud.top/categories/yhchat/
 https://blog.hqycloud.top/categories/docker/
 https://blog.hqycloud.top/categories/Termux/
 https://blog.hqycloud.top/categories/chatgpt/
