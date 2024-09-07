@@ -5,6 +5,7 @@
   background: rgba(255, 255, 255, 0);
 }
 
+.search-dialog ,
 #aside-content > .card-widget:first-child,
 #aside-content .card-widget,
 .layout > div:first-child:not(.recent-posts),
@@ -13,13 +14,6 @@
 #sidebar #sidebar-menus.open {
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
-}
-
-/*搜索框美化*/
-.search-dialog {
-    background: rgba(255,255,255,0.5);
-    backdrop-filter: blur(10px);
-    border-radius: 0px;
 }
 
 /* 夜间模式 */
@@ -32,6 +26,7 @@
 }
 
 [data-theme="dark"] {
+  .search-dialog,
   #aside-content > .card-widget:first-child,
   #aside-content .card-widget,
   .layout > div:first-child:not(.recent-posts),
