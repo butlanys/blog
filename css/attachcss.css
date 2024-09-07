@@ -24,7 +24,9 @@
 
 /* 夜间模式 */
 [data-theme="dark"] { 
-  #aside-content {
+  #aside-content,
+  #search-mask,
+  #sidebar #menu-mask {
     background: rgba(20, 20, 20, 0.8);
   }
 }
@@ -33,7 +35,9 @@
   #aside-content > .card-widget:first-child,
   #aside-content .card-widget,
   .layout > div:first-child:not(.recent-posts),
-  #recent-posts > .recent-post-item {
+  #recent-posts > .recent-post-item,
+  #page-header.nav-visible #nav,
+  #sidebar #sidebar-menus.open {
     background: rgba(30, 30, 30, 0.7);
     backdrop-filter: blur(5px);
   }
