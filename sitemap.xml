@@ -253,13 +253,6 @@
   </url>
   
   <url>
-    <loc>https://blog.hqycloud.top/categories/domain/</loc>
-    <lastmod>2024-09-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.hqycloud.top/categories/viqoo/</loc>
     <lastmod>2024-09-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -275,6 +268,13 @@
   
   <url>
     <loc>https://blog.hqycloud.top/categories/linux/</loc>
+    <lastmod>2024-09-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.hqycloud.top/categories/domain/</loc>
     <lastmod>2024-09-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

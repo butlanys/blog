@@ -272,16 +272,6 @@
       </categories>
   </entry>
   <entry>
-    <title>免费的二级域名(可绑cloudflare)</title>
-    <url>/posts/e491bdf7/</url>
-    <content><![CDATA[<p>先点击<a href="https://l53.net/">这里</a>注册账号，选filegear-sg.me后缀 使用优惠吗码提交 一次性可以注册2个 因为有2个优惠码</p>
-<p>优惠码 newuser 、workersday (5月31号过期)</p>
-]]></content>
-      <categories>
-        <category>domain</category>
-      </categories>
-  </entry>
-  <entry>
     <title>关于viqoo工具箱</title>
     <url>/posts/527a18f8/</url>
     <content><![CDATA[<h3 id="本文将解决群友的“十万个为什么”"><a href="#本文将解决群友的“十万个为什么”" class="headerlink" title="本文将解决群友的“十万个为什么”"></a>本文将解决群友的“十万个为什么”</h3><h4 id="Q：找不到bin"><a href="#Q：找不到bin" class="headerlink" title="Q：找不到bin"></a>Q：找不到bin</h4><p>A：检查是否完全解压或者有没有放在有中文或特殊字符的路径</p>
@@ -463,6 +453,16 @@
         <tag>linux</tag>
         <tag>wireguard</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>免费的二级域名(可绑cloudflare)</title>
+    <url>/posts/e491bdf7/</url>
+    <content><![CDATA[<p>先点击<a href="https://l53.net/">这里</a>注册账号，选filegear-sg.me后缀 使用优惠吗码提交 一次性可以注册2个 因为有2个优惠码</p>
+<p>优惠码 newuser 、workersday (5月31号过期)</p>
+]]></content>
+      <categories>
+        <category>domain</category>
+      </categories>
   </entry>
   <entry>
     <title>快速搭建debian运行环境</title>
