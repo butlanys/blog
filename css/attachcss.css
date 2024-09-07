@@ -1,14 +1,25 @@
 /* 默认主题 */
-#aside-content {
+#aside-content,
+#search-mask,
+#sidebar #menu-mask {
   background: rgba(255, 255, 255, 0);
 }
 
 #aside-content > .card-widget:first-child,
 #aside-content .card-widget,
 .layout > div:first-child:not(.recent-posts),
-#recent-posts > .recent-post-item {
+#recent-posts > .recent-post-item,
+#page-header.nav-visible #nav,
+#sidebar #sidebar-menus.open {
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
+}
+
+/*搜索框美化*/
+.search-dialog {
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 0px;
 }
 
 /* 夜间模式 */
