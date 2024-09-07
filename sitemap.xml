@@ -167,13 +167,6 @@
   </url>
   
   <url>
-    <loc>https://blog.hqycloud.top/tags/Internet/</loc>
-    <lastmod>2024-09-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.hqycloud.top/tags/%E9%99%90%E9%80%9F/</loc>
     <lastmod>2024-09-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -195,7 +188,7 @@
   </url>
   
   <url>
-    <loc>https://blog.hqycloud.top/tags/linux/</loc>
+    <loc>https://blog.hqycloud.top/tags/Internet/</loc>
     <lastmod>2024-09-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -203,6 +196,13 @@
   
   <url>
     <loc>https://blog.hqycloud.top/tags/Windows/</loc>
+    <lastmod>2024-09-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.hqycloud.top/tags/linux/</loc>
     <lastmod>2024-09-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
