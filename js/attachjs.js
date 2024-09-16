@@ -1,0 +1,1 @@
+const ap=new APlayer({container:document.getElementById("player"),fixed:true,audio:[{name:"wolfs",artist:"artist",url:"/music/menu3.ogg",cover:"cover.jpg"}]});
