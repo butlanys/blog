@@ -192,6 +192,34 @@
       </tags>
   </entry>
   <entry>
+    <title>免费使用chatGPT</title>
+    <url>/posts/a1df2910/</url>
+    <content><![CDATA[<p><strong>ChatGPT是一个基于大型语言模型的聊天机器人，由OpenAI开发并于2022年11月30日发布1。ChatGPT可以与用户进行对话，根据用户的指示提供详细的回答，或者生成有创意的内容，例如诗歌、故事、代码、歌曲等2。ChatGPT还可以看、听和说，可以处理图像、音频和视频的输入和输出1。ChatGPT是一个免费的服务，用户可以在网页上试用1，或者下载桌面应用程序3。ChatGPT是一个强大而有趣的工具，可以帮助用户获取即时的答案，找到创造性的灵感，或者学习新的知识。</strong></p>
+<h3 id="首先，申请一个免费的key"><a href="#首先，申请一个免费的key" class="headerlink" title="首先，申请一个免费的key"></a>首先，申请一个免费的key</h3><h4 id="打开GitHub-com，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）"><a href="#打开GitHub-com，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）" class="headerlink" title="打开GitHub.com，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）"></a>打开<a href="https://github.com/">GitHub.com</a>，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）</h4><h5 id="注册好后，打开https-github-com-chatanywhere-GPT-API-free-在下面找到"><a href="#注册好后，打开https-github-com-chatanywhere-GPT-API-free-在下面找到" class="headerlink" title="注册好后，打开https://github.com/chatanywhere/GPT_API_free 在下面找到"></a>注册好后，打开<a href="https://github.com/chatanywhere/GPT_API_free">https://github.com/chatanywhere/GPT_API_free</a> 在下面找到</h5><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/0.png" alt="1-img"></p>
+<h5 id="点进去后会显示以下页面，红线标注的就是你的key"><a href="#点进去后会显示以下页面，红线标注的就是你的key" class="headerlink" title="点进去后会显示以下页面，红线标注的就是你的key"></a>点进去后会显示以下页面，红线标注的就是你的key</h5><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/1.png" alt="2-img"></p>
+<ul>
+<li>以上key已打码</li>
+</ul>
+<h5 id="复制sk-xxxxxxxxx"><a href="#复制sk-xxxxxxxxx" class="headerlink" title="复制sk-xxxxxxxxx"></a>复制sk-xxxxxxxxx</h5><h4 id="打开镜像站"><a href="#打开镜像站" class="headerlink" title="打开镜像站"></a>打开镜像站</h4><h5 id="作者已搭建好可以直接使用（支持官方、各种中转key）"><a href="#作者已搭建好可以直接使用（支持官方、各种中转key）" class="headerlink" title="作者已搭建好可以直接使用（支持官方、各种中转key）"></a>作者已搭建好可以直接使用（支持官方、各种中转key）</h5><p>地址：<a href="https://chat.hqycloud.top/">chat.hqycloud.top</a><br>进入镜像站后打开设置，如下图<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/2.png" alt="img-3"></p>
+<h4 id="打开设置后，填入服务器地址和你的key"><a href="#打开设置后，填入服务器地址和你的key" class="headerlink" title="打开设置后，填入服务器地址和你的key"></a>打开设置后，填入服务器地址和你的key</h4><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/3.png" alt="img-4"></p>
+<h4 id="接口地址填："><a href="#接口地址填：" class="headerlink" title="接口地址填："></a>接口地址填：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://api.chatanywhere.com.cn</span><br></pre></td></tr></table></figure>
+
+<h4 id="API-Key填刚才获取到的key，例如"><a href="#API-Key填刚才获取到的key，例如" class="headerlink" title="API Key填刚才获取到的key，例如"></a>API Key填刚才获取到的key，例如</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sk-xxxxxxxxxxxx （示例key，请勿使用）</span><br></pre></td></tr></table></figure>
+
+<h4 id="填好以后如下图"><a href="#填好以后如下图" class="headerlink" title="填好以后如下图"></a>填好以后如下图</h4><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/4.png" alt="img-5"></p>
+<h2 id="完成以上步骤后，恭喜你，你可以使用免费的chatGPT了"><a href="#完成以上步骤后，恭喜你，你可以使用免费的chatGPT了" class="headerlink" title="完成以上步骤后，恭喜你，你可以使用免费的chatGPT了"></a>完成以上步骤后，恭喜你，你可以使用免费的chatGPT了</h2><h3 id="最后附上手机版chatGPT"><a href="#最后附上手机版chatGPT" class="headerlink" title="最后附上手机版chatGPT"></a>最后附上手机版chatGPT</h3><ul>
+<li><a href="https://ddns.hqycloud.top:8000/s/6ZFQ">Android客户端</a></li>
+</ul>
+<h3 id="使用事项"><a href="#使用事项" class="headerlink" title="使用事项"></a>使用事项</h3><ul>
+<li>免费key每小时60次调用</li>
+<li>请勿分享自己的key</li>
+</ul>
+]]></content>
+      <categories>
+        <category>chatgpt</category>
+      </categories>
+  </entry>
+  <entry>
     <title>云崽bot恢复包 --Termux</title>
     <url>/posts/a1bc7431/</url>
     <content><![CDATA[<ul>
@@ -241,34 +269,6 @@
 ]]></content>
       <categories>
         <category>Termux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>免费使用chatGPT</title>
-    <url>/posts/a1df2910/</url>
-    <content><![CDATA[<p><strong>ChatGPT是一个基于大型语言模型的聊天机器人，由OpenAI开发并于2022年11月30日发布1。ChatGPT可以与用户进行对话，根据用户的指示提供详细的回答，或者生成有创意的内容，例如诗歌、故事、代码、歌曲等2。ChatGPT还可以看、听和说，可以处理图像、音频和视频的输入和输出1。ChatGPT是一个免费的服务，用户可以在网页上试用1，或者下载桌面应用程序3。ChatGPT是一个强大而有趣的工具，可以帮助用户获取即时的答案，找到创造性的灵感，或者学习新的知识。</strong></p>
-<h3 id="首先，申请一个免费的key"><a href="#首先，申请一个免费的key" class="headerlink" title="首先，申请一个免费的key"></a>首先，申请一个免费的key</h3><h4 id="打开GitHub-com，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）"><a href="#打开GitHub-com，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）" class="headerlink" title="打开GitHub.com，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）"></a>打开<a href="https://github.com/">GitHub.com</a>，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）</h4><h5 id="注册好后，打开https-github-com-chatanywhere-GPT-API-free-在下面找到"><a href="#注册好后，打开https-github-com-chatanywhere-GPT-API-free-在下面找到" class="headerlink" title="注册好后，打开https://github.com/chatanywhere/GPT_API_free 在下面找到"></a>注册好后，打开<a href="https://github.com/chatanywhere/GPT_API_free">https://github.com/chatanywhere/GPT_API_free</a> 在下面找到</h5><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/0.png" alt="1-img"></p>
-<h5 id="点进去后会显示以下页面，红线标注的就是你的key"><a href="#点进去后会显示以下页面，红线标注的就是你的key" class="headerlink" title="点进去后会显示以下页面，红线标注的就是你的key"></a>点进去后会显示以下页面，红线标注的就是你的key</h5><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/1.png" alt="2-img"></p>
-<ul>
-<li>以上key已打码</li>
-</ul>
-<h5 id="复制sk-xxxxxxxxx"><a href="#复制sk-xxxxxxxxx" class="headerlink" title="复制sk-xxxxxxxxx"></a>复制sk-xxxxxxxxx</h5><h4 id="打开镜像站"><a href="#打开镜像站" class="headerlink" title="打开镜像站"></a>打开镜像站</h4><h5 id="作者已搭建好可以直接使用（支持官方、各种中转key）"><a href="#作者已搭建好可以直接使用（支持官方、各种中转key）" class="headerlink" title="作者已搭建好可以直接使用（支持官方、各种中转key）"></a>作者已搭建好可以直接使用（支持官方、各种中转key）</h5><p>地址：<a href="https://chat.hqycloud.top/">chat.hqycloud.top</a><br>进入镜像站后打开设置，如下图<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/2.png" alt="img-3"></p>
-<h4 id="打开设置后，填入服务器地址和你的key"><a href="#打开设置后，填入服务器地址和你的key" class="headerlink" title="打开设置后，填入服务器地址和你的key"></a>打开设置后，填入服务器地址和你的key</h4><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/3.png" alt="img-4"></p>
-<h4 id="接口地址填："><a href="#接口地址填：" class="headerlink" title="接口地址填："></a>接口地址填：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://api.chatanywhere.com.cn</span><br></pre></td></tr></table></figure>
-
-<h4 id="API-Key填刚才获取到的key，例如"><a href="#API-Key填刚才获取到的key，例如" class="headerlink" title="API Key填刚才获取到的key，例如"></a>API Key填刚才获取到的key，例如</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sk-xxxxxxxxxxxx （示例key，请勿使用）</span><br></pre></td></tr></table></figure>
-
-<h4 id="填好以后如下图"><a href="#填好以后如下图" class="headerlink" title="填好以后如下图"></a>填好以后如下图</h4><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/4.png" alt="img-5"></p>
-<h2 id="完成以上步骤后，恭喜你，你可以使用免费的chatGPT了"><a href="#完成以上步骤后，恭喜你，你可以使用免费的chatGPT了" class="headerlink" title="完成以上步骤后，恭喜你，你可以使用免费的chatGPT了"></a>完成以上步骤后，恭喜你，你可以使用免费的chatGPT了</h2><h3 id="最后附上手机版chatGPT"><a href="#最后附上手机版chatGPT" class="headerlink" title="最后附上手机版chatGPT"></a>最后附上手机版chatGPT</h3><ul>
-<li><a href="https://ddns.hqycloud.top:8000/s/6ZFQ">Android客户端</a></li>
-</ul>
-<h3 id="使用事项"><a href="#使用事项" class="headerlink" title="使用事项"></a>使用事项</h3><ul>
-<li>免费key每小时60次调用</li>
-<li>请勿分享自己的key</li>
-</ul>
-]]></content>
-      <categories>
-        <category>chatgpt</category>
       </categories>
   </entry>
   <entry>

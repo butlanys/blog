@@ -27,8 +27,8 @@ https://blog.hqycloud.top/tags/wireguard/
 https://blog.hqycloud.top/categories/yhchat/
 https://blog.hqycloud.top/categories/cloudflare/
 https://blog.hqycloud.top/categories/docker/
-https://blog.hqycloud.top/categories/Termux/
 https://blog.hqycloud.top/categories/chatgpt/
+https://blog.hqycloud.top/categories/Termux/
 https://blog.hqycloud.top/categories/domain/
 https://blog.hqycloud.top/categories/viqoo/
 https://blog.hqycloud.top/categories/Internet/
