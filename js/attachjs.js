@@ -1,1 +1,1 @@
-const ap=new APlayer({container:document.getElementById("aplayer"),fixed:true,autoplay:true,audio:[{name:"Wolfs",url:"music/menu3.ogg",cover:""}]});
+const ap=new APlayer({container:document.getElementById("aplayer"),fixed:true,autoplay:true,audio:[{name:"Wolfs",url:"music/menu3.ogg",cover:"music/Wolfs.jpg"}]});
