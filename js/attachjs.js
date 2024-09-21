@@ -1,1 +1,1 @@
-const ap=new APlayer({container:document.getElementById("aplayer"),fixed:true,autoplay:true,audio:[{name:"Wolfs",url:"music/menu3.ogg",cover:"music/Wolfs.jpg"}]});
+const ap=new APlayer({container:document.getElementById("aplayer"),fixed:true,autoplay:true,audio:[{name:"Wolfs",url:"https://blog.hqycloud.top/music/menu3.ogg",cover:"https://blog.hqycloud.top/music/Wolfs.jpg"}]});
