@@ -636,6 +636,8 @@
 <p>可帮助小白快速解决问题</p>
 <img src="https://chat-img.jwznb.com/sticker/765a931fabb105ee7280500e7a2b47dc00037f33.png" height="200">
 
+<p><strong>并且此项目支持无服务器部署！！！</strong></p>
+<p><strong>简单快速易上手</strong></p>
 <h1 id="申请api"><a href="#申请api" class="headerlink" title="申请api"></a>申请api</h1><p>在这里申请一个api key：<a href="https://developers.google.com/custom-search/v1/overview?hl=zh-cn">Custom Search JSON API  |  Programmable Search Engine  |  Google for Developers</a></p>
 <p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_d497113754baca605f005e2b5cd5d051.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_d497113754baca605f005e2b5cd5d051.png"></p>
 <p>如果没有项目则需要先创建</p>
@@ -661,15 +663,15 @@
 </ul>
 <h1 id="一些表情包"><a href="#一些表情包" class="headerlink" title="一些表情包"></a>一些表情包</h1><img src="https://chat-img.jwznb.com/sticker/765a931fabb105ee7280500e7a2b47dc00037f33.png" height="200">
 
-
 <img src="https://chat-img.jwznb.com/sticker/ef976e6c4a82d7be939488b13ee1f3d69801c74a.png" height="200">
-
 
 <img src="https://chat-img.jwznb.com/sticker/9d3c528d8188990f84bc91cb602c7ed63b7e0102.png" height="200">
 ]]></content>
       <categories>
         <category>yhchat</category>
+        <category>cloudflare</category>
         <category>Google</category>
+        <category>cloudflare worker</category>
       </categories>
   </entry>
 </search>
