@@ -9,8 +9,39 @@
     <atom:link href="https://blog.hqycloud.top/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Sat, 05 Oct 2024 08:25:18 GMT</pubDate>
+    <pubDate>Fri, 11 Oct 2024 13:18:36 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>晚高峰的华为云io</title>
+      <link>https://blog.hqycloud.top/posts/12995/</link>
+      <guid>https://blog.hqycloud.top/posts/12995/</guid>
+      <pubDate>Fri, 11 Oct 2024 13:18:31 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;华为云新加坡Flexus L：&lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;li</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p>华为云新加坡Flexus L：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@host-192-168-7-62:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 8.37634 s, 32.0 MB/s</span><br></pre></td></tr></table></figure><p>作为对比，下面是阿里云香港和rn美西的测试结果：<br>阿里云：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 6.12062 s, 43.9 MB/s</span><br></pre></td></tr></table></figure><p>rn：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@racknerd-server:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 1.92984 s, 139 MB/s</span><br></pre></td></tr></table></figure>]]></content:encoded>
+      
+      
+      <category domain="https://blog.hqycloud.top/categories/cloud/">cloud</category>
+      
+      
+      <category domain="https://blog.hqycloud.top/tags/%E5%8D%8E%E4%B8%BA%E4%BA%91/">华为云</category>
+      
+      <category domain="https://blog.hqycloud.top/tags/huaweicloud/">huaweicloud</category>
+      
+      <category domain="https://blog.hqycloud.top/tags/server/">server</category>
+      
+      
+      <comments>https://blog.hqycloud.top/posts/12995/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>自己部署一个google search for yhchat</title>
