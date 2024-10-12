@@ -9,8 +9,38 @@
     <atom:link href="https://blog.hqycloud.top/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Fri, 11 Oct 2024 13:21:11 GMT</pubDate>
+    <pubDate>Sat, 12 Oct 2024 15:57:53 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>记一次解决网站接入cloudflare后使用http申请Google ssl失败的方法</title>
+      <link>https://blog.hqycloud.top/posts/24457/</link>
+      <guid>https://blog.hqycloud.top/posts/24457/</guid>
+      <pubDate>Sat, 12 Oct 2024 15:57:52 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;在一次偶然的聊天过程中，无意间聊到了谷歌证书，然后就想着全站使用谷歌证书（谷歌其实跟其他证书机构相比真的没啥区别，唯一的用处就是装逼？&lt;/p&gt;
+&lt;p&gt;在使用1panel申请后，出现验证失败的log，往后一翻发现验证链接403&lt;/p&gt;
+&lt;p&gt;然后我也尝试过同样的验证方法，就谷</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p>在一次偶然的聊天过程中，无意间聊到了谷歌证书，然后就想着全站使用谷歌证书（谷歌其实跟其他证书机构相比真的没啥区别，唯一的用处就是装逼？</p><p>在使用1panel申请后，出现验证失败的log，往后一翻发现验证链接403</p><p>然后我也尝试过同样的验证方法，就谷歌403，不管是问ai还是搜索，都没找到解决方法（</p><p>后面上cloudflare一看，waf的日志里有几条拦截的请求，点开一看发现是Google的IP</p><p>原图如下：</p><p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_43c8169599e24e2f267159a9fc5427d1.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_43c8169599e24e2f267159a9fc5427d1.png"></p><p>然后可从匹配服务中发现是浏览器完整性检查在搞鬼，在左边的面板中的安全性——设置中关掉浏览器完整性检查</p><p>关掉之后就能正常申请了</p><p>最后：不是我说cloudflare无端端的拦Google的IP干什么…………</p><p>商业互撕？😴</p>]]></content:encoded>
+      
+      
+      <category domain="https://blog.hqycloud.top/categories/ssl/">ssl</category>
+      
+      
+      <category domain="https://blog.hqycloud.top/tags/ssl/">ssl</category>
+      
+      <category domain="https://blog.hqycloud.top/tags/google-cloud/">google cloud</category>
+      
+      
+      <comments>https://blog.hqycloud.top/posts/24457/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>华为云新加坡测试</title>
