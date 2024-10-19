@@ -27,8 +27,8 @@ https://blog.hqycloud.top/tags/%E9%99%90%E9%80%9F/
 https://blog.hqycloud.top/tags/%E6%A0%A1%E5%9B%AD%E7%BD%91/
 https://blog.hqycloud.top/tags/%E7%BD%91%E7%BB%9C/
 https://blog.hqycloud.top/tags/linux/
-https://blog.hqycloud.top/tags/wireguard/
 https://blog.hqycloud.top/tags/Windows/
+https://blog.hqycloud.top/tags/wireguard/
 https://blog.hqycloud.top/tags/%E5%8D%8E%E4%B8%BA%E4%BA%91/
 https://blog.hqycloud.top/tags/huaweicloud/
 https://blog.hqycloud.top/tags/server/

@@ -436,53 +436,6 @@
       </tags>
   </entry>
   <entry>
-    <title>利用wireguard给多台服务器组网</title>
-    <url>/posts/11111/</url>
-    <content><![CDATA[<p>前言：上个月在alice白嫖了一台4c8g的vps，性能虽好，但中国大陆方向优化几乎没有，广东电信ping不低于300ms，而手上又有一台阿里云香港轻量，所以就拿来给alice的vps作跳板机。本来部署项目一切顺利，但是到反代时1panel罢工，反代http正常，https报错。所以为了不让流量裸奔，所以就给他俩组了个网😓</p>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
-<li>俩台可安装wireguard的vps</li>
-</ul>
-<h2 id="安装wireguard"><a href="#安装wireguard" class="headerlink" title="安装wireguard"></a>安装wireguard</h2><p><strong>Debian&#x2F;Ubuntu&#x2F;Linux Mint:</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install wireguard</span><br></pre></td></tr></table></figure>
-
-<p><strong>Fedora&#x2F;CentOS&#x2F;RHEL:</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> yum install wireguard-tools</span><br></pre></td></tr></table></figure>
-
-<p><strong>Arch Linux&#x2F;Manjaro:</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> pacman -S wire</span><br></pre></td></tr></table></figure>
-
-<h2 id="生成密钥"><a href="#生成密钥" class="headerlink" title="生成密钥"></a>生成密钥</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wg genkey | <span class="built_in">tee</span> privatekey | wg pubkey &gt; publickey</span><br></pre></td></tr></table></figure>
-
-<p>私钥：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> privatekey</span><br></pre></td></tr></table></figure>
-
-<p>公钥：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> publickey</span><br></pre></td></tr></table></figure>
-
-<h2 id="填入配置文件"><a href="#填入配置文件" class="headerlink" title="填入配置文件"></a>填入配置文件</h2><p>照着模板填写</p>
-<p>第一台vps</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[Interface]</span><br><span class="line">PrivateKey = &lt;替换为VPS1的私钥&gt;</span><br><span class="line">Address = 10.0.0.1/32</span><br><span class="line">ListenPort = 51820 </span><br><span class="line"></span><br><span class="line">[Peer]</span><br><span class="line">PublicKey = &lt;替换为VPS 2的公钥&gt;</span><br><span class="line">AllowedIPs = 10.0.0.2/32</span><br><span class="line">Endpoint = &lt;替换为VPS2的IP&gt;:51820</span><br><span class="line">PersistentKeepalive = 25</span><br></pre></td></tr></table></figure>
-
-<p>第二台vps</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[Interface]</span><br><span class="line">PrivateKey = &lt;替换为VPS 2的私钥&gt;</span><br><span class="line">Address = 10.0.0.2/32</span><br><span class="line">ListenPort = 51820 </span><br><span class="line"></span><br><span class="line">[Peer]</span><br><span class="line">PublicKey = &lt;替换为VPS 1的公钥&gt;</span><br><span class="line">AllowedIPs = 10.0.0.1/32</span><br><span class="line">Endpoint = &lt;替换为VPS1的IP&gt;:51820</span><br></pre></td></tr></table></figure>
-
-<h2 id="防火墙放行端口"><a href="#防火墙放行端口" class="headerlink" title="防火墙放行端口"></a>防火墙放行端口</h2><p>ufw：</p>
-<p><code>ufw allow 51820</code></p>
-<h2 id="启动隧道"><a href="#启动隧道" class="headerlink" title="启动隧道"></a>启动隧道</h2><p>·<code>wg-quick up wg0</code>·</p>
-<h2 id="配置开机自启"><a href="#配置开机自启" class="headerlink" title="配置开机自启"></a>配置开机自启</h2><p><code>systemctl enable wg-quick@wg0.service</code></p>
-<p><strong>警告</strong></p>
-<p>此协议无任何伪装，GFW可精准探测，不要拿此协议过GFW</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-        <category>wireguard</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>wireguard</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>利用dispatch突破网络限速（Windows）</title>
     <url>/posts/7480/</url>
     <content><![CDATA[<p><strong><a href="https://github.com/alexkirsz/dispatch">dispatch</a>是一种Rust语言的客户端负载均衡器，可实现带宽叠加、带宽聚合</strong></p>
@@ -535,6 +488,53 @@
         <tag>校园网</tag>
         <tag>网络</tag>
         <tag>Windows</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用wireguard给多台服务器组网</title>
+    <url>/posts/11111/</url>
+    <content><![CDATA[<p>前言：上个月在alice白嫖了一台4c8g的vps，性能虽好，但中国大陆方向优化几乎没有，广东电信ping不低于300ms，而手上又有一台阿里云香港轻量，所以就拿来给alice的vps作跳板机。本来部署项目一切顺利，但是到反代时1panel罢工，反代http正常，https报错。所以为了不让流量裸奔，所以就给他俩组了个网😓</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
+<li>俩台可安装wireguard的vps</li>
+</ul>
+<h2 id="安装wireguard"><a href="#安装wireguard" class="headerlink" title="安装wireguard"></a>安装wireguard</h2><p><strong>Debian&#x2F;Ubuntu&#x2F;Linux Mint:</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install wireguard</span><br></pre></td></tr></table></figure>
+
+<p><strong>Fedora&#x2F;CentOS&#x2F;RHEL:</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> yum install wireguard-tools</span><br></pre></td></tr></table></figure>
+
+<p><strong>Arch Linux&#x2F;Manjaro:</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> pacman -S wire</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成密钥"><a href="#生成密钥" class="headerlink" title="生成密钥"></a>生成密钥</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wg genkey | <span class="built_in">tee</span> privatekey | wg pubkey &gt; publickey</span><br></pre></td></tr></table></figure>
+
+<p>私钥：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> privatekey</span><br></pre></td></tr></table></figure>
+
+<p>公钥：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> publickey</span><br></pre></td></tr></table></figure>
+
+<h2 id="填入配置文件"><a href="#填入配置文件" class="headerlink" title="填入配置文件"></a>填入配置文件</h2><p>照着模板填写</p>
+<p>第一台vps</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[Interface]</span><br><span class="line">PrivateKey = &lt;替换为VPS1的私钥&gt;</span><br><span class="line">Address = 10.0.0.1/32</span><br><span class="line">ListenPort = 51820 </span><br><span class="line"></span><br><span class="line">[Peer]</span><br><span class="line">PublicKey = &lt;替换为VPS 2的公钥&gt;</span><br><span class="line">AllowedIPs = 10.0.0.2/32</span><br><span class="line">Endpoint = &lt;替换为VPS2的IP&gt;:51820</span><br><span class="line">PersistentKeepalive = 25</span><br></pre></td></tr></table></figure>
+
+<p>第二台vps</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[Interface]</span><br><span class="line">PrivateKey = &lt;替换为VPS 2的私钥&gt;</span><br><span class="line">Address = 10.0.0.2/32</span><br><span class="line">ListenPort = 51820 </span><br><span class="line"></span><br><span class="line">[Peer]</span><br><span class="line">PublicKey = &lt;替换为VPS 1的公钥&gt;</span><br><span class="line">AllowedIPs = 10.0.0.1/32</span><br><span class="line">Endpoint = &lt;替换为VPS1的IP&gt;:51820</span><br></pre></td></tr></table></figure>
+
+<h2 id="防火墙放行端口"><a href="#防火墙放行端口" class="headerlink" title="防火墙放行端口"></a>防火墙放行端口</h2><p>ufw：</p>
+<p><code>ufw allow 51820</code></p>
+<h2 id="启动隧道"><a href="#启动隧道" class="headerlink" title="启动隧道"></a>启动隧道</h2><p>·<code>wg-quick up wg0</code>·</p>
+<h2 id="配置开机自启"><a href="#配置开机自启" class="headerlink" title="配置开机自启"></a>配置开机自启</h2><p><code>systemctl enable wg-quick@wg0.service</code></p>
+<p><strong>警告</strong></p>
+<p>此协议无任何伪装，GFW可精准探测，不要拿此协议过GFW</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>wireguard</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>wireguard</tag>
       </tags>
   </entry>
   <entry>
