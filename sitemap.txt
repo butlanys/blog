@@ -1,3 +1,4 @@
+https://blog.hqycloud.top/posts/16450/
 https://blog.hqycloud.top/posts/527a18f8/
 https://blog.hqycloud.top/posts/24457/
 https://blog.hqycloud.top/posts/4804/
@@ -32,6 +33,9 @@ https://blog.hqycloud.top/tags/wireguard/
 https://blog.hqycloud.top/tags/%E5%8D%8E%E4%B8%BA%E4%BA%91/
 https://blog.hqycloud.top/tags/huaweicloud/
 https://blog.hqycloud.top/tags/server/
+https://blog.hqycloud.top/tags/aplayer/
+https://blog.hqycloud.top/tags/music/
+https://blog.hqycloud.top/tags/web/
 https://blog.hqycloud.top/tags/ssl/
 https://blog.hqycloud.top/tags/google-cloud/
 https://blog.hqycloud.top/categories/yhchat/
@@ -44,7 +48,8 @@ https://blog.hqycloud.top/categories/viqoo/
 https://blog.hqycloud.top/categories/Internet/
 https://blog.hqycloud.top/categories/linux/
 https://blog.hqycloud.top/categories/cloud/
-https://blog.hqycloud.top/categories/Google/
+https://blog.hqycloud.top/categories/aplayer/
 https://blog.hqycloud.top/categories/ssl/
+https://blog.hqycloud.top/categories/Google/
 https://blog.hqycloud.top/categories/wireguard/
 https://blog.hqycloud.top/categories/cloudflare-worker/
