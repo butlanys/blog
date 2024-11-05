@@ -9,8 +9,39 @@
     <atom:link href="https://blog.hqycloud.top/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Tue, 05 Nov 2024 05:20:12 GMT</pubDate>
+    <pubDate>Tue, 05 Nov 2024 05:39:20 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>aplayer播放器对接alist</title>
+      <link>https://blog.hqycloud.top/posts/51355/</link>
+      <guid>https://blog.hqycloud.top/posts/51355/</guid>
+      <pubDate>Tue, 05 Nov 2024 05:39:19 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;如果你不是通过官方的方式引入aplayer，那么建议你先看看这篇文章&lt;a href=&quot;https://blog.hqycloud.top/posts/16450/&quot;&gt;网页接入aplayer音乐播放器 | butlanys的博客&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;只需要在aplayer的</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p>如果你不是通过官方的方式引入aplayer，那么建议你先看看这篇文章<a href="https://blog.hqycloud.top/posts/16450/">网页接入aplayer音乐播放器 | butlanys的博客</a></p><p>只需要在aplayer的配置js中改为下面的js</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> urlParams = <span class="keyword">new</span> <span class="title class_">URLSearchParams</span>(<span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">search</span>);</span><br><span class="line"><span class="keyword">const</span> path = urlParams.<span class="title function_">get</span>(<span class="string">&#x27;path&#x27;</span>) || <span class="string">&#x27;/music&#x27;</span>; <span class="comment">// alist中访客可看到音乐的路径</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">`https://alist.hqycloud.top/api/fs/list`</span>, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123;</span><br><span class="line">    <span class="attr">path</span>: path,</span><br><span class="line">    <span class="attr">password</span>: <span class="string">&#x27;&#x27;</span>, <span class="comment">// 如果用的是访客权限，这里可以为空</span></span><br><span class="line">    <span class="attr">page</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">per_page</span>: <span class="number">100</span>, <span class="comment">//获取的最大音乐数量，此值可大不可小，否则获取的音乐不全</span></span><br><span class="line">    <span class="attr">refresh</span>: <span class="literal">false</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> response.<span class="title function_">json</span>())</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (data.<span class="property">code</span> === <span class="number">200</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> audioList = data.<span class="property">data</span>.<span class="property">content</span></span><br><span class="line">        .<span class="title function_">filter</span>(<span class="function"><span class="params">item</span> =&gt;</span> !item.<span class="property">is_dir</span>)</span><br><span class="line">        .<span class="title function_">map</span>(<span class="function"><span class="params">item</span> =&gt;</span> (&#123;</span><br><span class="line">          <span class="attr">name</span>: item.<span class="property">name</span>.<span class="title function_">replace</span>(<span class="regexp">/\.[^/.]+$/</span>, <span class="string">&quot;&quot;</span>),</span><br><span class="line">          <span class="attr">url</span>: <span class="string">`https://alist.hqycloud.top/d/onedrive-data<span class="subst">$&#123;path&#125;</span>/<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(item.name)&#125;</span>`</span>, </span><br><span class="line">          <span class="attr">cover</span>: item.<span class="property">thumb</span> <span class="comment">// 可选：设置封面图片</span></span><br><span class="line">        &#125;));</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> ap = <span class="keyword">new</span> <span class="title class_">APlayer</span>(&#123;</span><br><span class="line">        <span class="attr">container</span>: <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;aplayer&#x27;</span>),</span><br><span class="line">        <span class="attr">fixed</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">autoplay</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">audio</span>: audioList</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;获取音乐列表失败:&#x27;</span>, data.<span class="property">message</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;获取音乐列表出错:&#x27;</span>, error);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>]]></content:encoded>
+      
+      
+      <category domain="https://blog.hqycloud.top/categories/aplayer/">aplayer</category>
+      
+      
+      <category domain="https://blog.hqycloud.top/tags/aplayer/">aplayer</category>
+      
+      <category domain="https://blog.hqycloud.top/tags/alist/">alist</category>
+      
+      <category domain="https://blog.hqycloud.top/tags/music/">music</category>
+      
+      
+      <comments>https://blog.hqycloud.top/posts/51355/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>网页接入aplayer音乐播放器</title>
