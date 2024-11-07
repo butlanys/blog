@@ -227,6 +227,27 @@
 
   
   <url>
+    <loc>https://blog.hqycloud.top/tags/aplayer/</loc>
+    <lastmod>2024-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.hqycloud.top/tags/alist/</loc>
+    <lastmod>2024-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.hqycloud.top/tags/music/</loc>
+    <lastmod>2024-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.hqycloud.top/tags/docker/</loc>
     <lastmod>2024-11-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -304,34 +325,6 @@
   </url>
   
   <url>
-    <loc>https://blog.hqycloud.top/tags/aplayer/</loc>
-    <lastmod>2024-11-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.hqycloud.top/tags/music/</loc>
-    <lastmod>2024-11-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.hqycloud.top/tags/web/</loc>
-    <lastmod>2024-11-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.hqycloud.top/tags/alist/</loc>
-    <lastmod>2024-11-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.hqycloud.top/tags/%E5%8D%8E%E4%B8%BA%E4%BA%91/</loc>
     <lastmod>2024-11-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -347,6 +340,13 @@
   
   <url>
     <loc>https://blog.hqycloud.top/tags/server/</loc>
+    <lastmod>2024-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.hqycloud.top/tags/web/</loc>
     <lastmod>2024-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -370,6 +370,13 @@
   
   <url>
     <loc>https://blog.hqycloud.top/categories/yhchat/</loc>
+    <lastmod>2024-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.hqycloud.top/categories/aplayer/</loc>
     <lastmod>2024-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -439,7 +446,7 @@
   </url>
   
   <url>
-    <loc>https://blog.hqycloud.top/categories/aplayer/</loc>
+    <loc>https://blog.hqycloud.top/categories/cloud/</loc>
     <lastmod>2024-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -447,13 +454,6 @@
   
   <url>
     <loc>https://blog.hqycloud.top/categories/Google/</loc>
-    <lastmod>2024-11-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.hqycloud.top/categories/cloud/</loc>
     <lastmod>2024-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
