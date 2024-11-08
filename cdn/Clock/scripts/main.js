@@ -1,1 +1,1 @@
-import{Clock,Settings,updateClock}from"./scripts.js";let clock=new Clock;let settings=new Settings;let updatedClock=updateClock(clock,settings);setInterval(function(){updatedClock=updateClock(clock,settings)},1e3);
+import{Clock,Settings,updateClock}from"./scripts.js";let clock=new Clock;let settings=new Settings;let updatedClock=updateClock(clock,settings);setInterval(function(){updatedClock=updateClock(clock,settings);clock=updatedClock},1e3);
