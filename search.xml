@@ -87,6 +87,72 @@
       </tags>
   </entry>
   <entry>
+    <title>cloudflare tunnel优选IP</title>
+    <url>/posts/204d8c5f/</url>
+    <content><![CDATA[<p><strong>总所周知，cloudflare默认分配的IP都在美国，轻则速度慢运气不好分配的还是被GFW拦截的</strong></p>
+<p>本教程需要：</p>
+<p>一张万事达&#x2F;visa过cloudflare for saas验证</p>
+<p>两条域名，一条用于优选，一条托管到cloudfalre</p>
+<h4 id="一、配置cloudflared"><a href="#一、配置cloudflared" class="headerlink" title="一、配置cloudflared"></a>一、配置cloudflared</h4><ul>
+<li>cloudflared可在<a href="https://github.com/cloudflare/cloudflared/">cloudflare&#x2F;cloudflared: Cloudflare Tunnel client (formerly Argo Tunnel) (github.com)</a>上获取</li>
+</ul>
+<h5 id="部署方式（可选）"><a href="#部署方式（可选）" class="headerlink" title="部署方式（可选）"></a>部署方式（可选）</h5><ul>
+<li>本教程以docker为例</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -d --name cloudflared_status --network=host alpine sleep infinity</span><br></pre></td></tr></table></figure>
+
+<h5 id="下载cloudflared"><a href="#下载cloudflared" class="headerlink" title="下载cloudflared"></a>下载cloudflared</h5><p>这里以arm64为例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget -O /usr/bin/cloudflared https://github.hqycloud.top/https://github.com/cloudflare/cloudflared/releases/download/2024.4.1/cloudflared-linux-arm64</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置权限"><a href="#设置权限" class="headerlink" title="设置权限"></a>设置权限</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chmod 777 /usr/bin/cloudflared</span><br></pre></td></tr></table></figure>
+
+<h5 id="查看版本号"><a href="#查看版本号" class="headerlink" title="查看版本号"></a>查看版本号</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared version</span><br></pre></td></tr></table></figure>
+
+<h5 id="登录cloudflared"><a href="#登录cloudflared" class="headerlink" title="登录cloudflared"></a>登录cloudflared</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel login</span><br></pre></td></tr></table></figure>
+
+<h5 id="创建隧道并命名"><a href="#创建隧道并命名" class="headerlink" title="创建隧道并命名"></a>创建隧道并命名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel create 隧道名</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>隧道名可以自定义，但不能重复！</li>
+</ul>
+<h5 id="查看隧道列表"><a href="#查看隧道列表" class="headerlink" title="查看隧道列表"></a>查看隧道列表</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel list</span><br></pre></td></tr></table></figure>
+
+<h5 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;url: http://localhost:8000</span><br><span class="line">tunnel: &lt;Tunnel-UUID&gt;</span><br><span class="line">credentials-file: /root/.cloudflared/&lt;Tunnel-UUID&gt;.json&#x27; &gt; .cloudflared/config.yml</span><br></pre></td></tr></table></figure>
+
+<p>这里的Tunnel-UUID在隧道列表可以看到</p>
+<p><em>查看创建好的config.yml</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat config.yml</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置域名"><a href="#设置域名" class="headerlink" title="设置域名"></a>设置域名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel route dns &lt;UUID or NAME&gt; &lt;hostname&gt;</span><br></pre></td></tr></table></figure>
+
+<p>UUID和NAME二选一，uuid查看隧道列表就能看到，name是你创建时输入的名字</p>
+<p>hostname填的是托管在cloudflare的子域，不需要完整的域名</p>
+<p>例如：tunnel-cdn.test.com（托管在cloudflare</p>
+<p>则只需要填tunnel-cdn</p>
+<h5 id="测试隧道是否正常"><a href="#测试隧道是否正常" class="headerlink" title="测试隧道是否正常"></a>测试隧道是否正常</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel run &lt;UUID or NAME&gt;</span><br></pre></td></tr></table></figure>
+
+<p>访问托管在cloudflare的隧道子域查看是否正常</p>
+<p>如果正常可继续看下一步，如果打不开并报错，请移步至cloudflare文档</p>
+<h5 id="在后台运行隧道"><a href="#在后台运行隧道" class="headerlink" title="在后台运行隧道"></a>在后台运行隧道</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nohup cloudflared tunnel run &lt;UUID or NAME&gt; &amp;</span><br></pre></td></tr></table></figure>
+
+<h4 id="二、配置优选IP"><a href="#二、配置优选IP" class="headerlink" title="二、配置优选IP"></a>二、配置优选IP</h4><h5 id="开通cloudflare-for-saas服务"><a href="#开通cloudflare-for-saas服务" class="headerlink" title="开通cloudflare for saas服务"></a>开通cloudflare for saas服务</h5><p>需要绑卡，这里不过多赘述</p>
+<h5 id="设置回退域"><a href="#设置回退域" class="headerlink" title="设置回退域"></a>设置回退域</h5><p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png"></p>
+<p>回退域必须设置为与隧道绑定的域名</p>
+<h5 id="设置访问域名"><a href="#设置访问域名" class="headerlink" title="设置访问域名"></a>设置访问域名</h5><p>添加一个自定义主机名</p>
+<p>域名填公开访问的域名（必须托管在其他dns服务商，否则cloudflare会检测</p>
+<p>验证方式选TXT</p>
+<h4 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h4><p>在验证过程中，需要把解析设为回退域，否则验证不通过</p>
+<p>等待证书状态和主机名状态都显示有效后访问一下试试</p>
+<p>访问成功后就可以把解析设置为cf的任意IP</p>
+<ul>
+<li>找cloudflare速度快的IP→<a href="https://github.com/XIU2/CloudflareSpeedTest">XIU2&#x2F;CloudflareSpeedTest: 🌩「自选优选 IP」测试 Cloudflare CDN 延迟和速度，获取最快 IP ！当然也支持其他 CDN &#x2F; 网站 IP ~ (github.com)</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>cloudflare</category>
+      </categories>
+  </entry>
+  <entry>
     <title>cloudflare优选IP</title>
     <url>/posts/39316/</url>
     <content><![CDATA[<p>这篇文章补全<a href="https://blog.hqycloud.top/posts/204d8c5f/">cloudflare tunnel优选IP | butlanys的博客 (hqycloud.top)</a>教程中未详细讲述cloudflare优选IP的内容</p>
@@ -215,34 +281,6 @@
       </tags>
   </entry>
   <entry>
-    <title>免费使用chatGPT</title>
-    <url>/posts/a1df2910/</url>
-    <content><![CDATA[<p><strong>ChatGPT是一个基于大型语言模型的聊天机器人，由OpenAI开发并于2022年11月30日发布1。ChatGPT可以与用户进行对话，根据用户的指示提供详细的回答，或者生成有创意的内容，例如诗歌、故事、代码、歌曲等2。ChatGPT还可以看、听和说，可以处理图像、音频和视频的输入和输出1。ChatGPT是一个免费的服务，用户可以在网页上试用1，或者下载桌面应用程序3。ChatGPT是一个强大而有趣的工具，可以帮助用户获取即时的答案，找到创造性的灵感，或者学习新的知识。</strong></p>
-<h3 id="首先，申请一个免费的key"><a href="#首先，申请一个免费的key" class="headerlink" title="首先，申请一个免费的key"></a>首先，申请一个免费的key</h3><h4 id="打开GitHub-com，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）"><a href="#打开GitHub-com，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）" class="headerlink" title="打开GitHub.com，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）"></a>打开<a href="https://github.com/">GitHub.com</a>，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）</h4><h5 id="注册好后，打开https-github-com-chatanywhere-GPT-API-free-在下面找到"><a href="#注册好后，打开https-github-com-chatanywhere-GPT-API-free-在下面找到" class="headerlink" title="注册好后，打开https://github.com/chatanywhere/GPT_API_free 在下面找到"></a>注册好后，打开<a href="https://github.com/chatanywhere/GPT_API_free">https://github.com/chatanywhere/GPT_API_free</a> 在下面找到</h5><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/0.png" alt="1-img"></p>
-<h5 id="点进去后会显示以下页面，红线标注的就是你的key"><a href="#点进去后会显示以下页面，红线标注的就是你的key" class="headerlink" title="点进去后会显示以下页面，红线标注的就是你的key"></a>点进去后会显示以下页面，红线标注的就是你的key</h5><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/1.png" alt="2-img"></p>
-<ul>
-<li>以上key已打码</li>
-</ul>
-<h5 id="复制sk-xxxxxxxxx"><a href="#复制sk-xxxxxxxxx" class="headerlink" title="复制sk-xxxxxxxxx"></a>复制sk-xxxxxxxxx</h5><h4 id="打开镜像站"><a href="#打开镜像站" class="headerlink" title="打开镜像站"></a>打开镜像站</h4><h5 id="作者已搭建好可以直接使用（支持官方、各种中转key）"><a href="#作者已搭建好可以直接使用（支持官方、各种中转key）" class="headerlink" title="作者已搭建好可以直接使用（支持官方、各种中转key）"></a>作者已搭建好可以直接使用（支持官方、各种中转key）</h5><p>地址：<a href="https://chat.hqycloud.top/">chat.hqycloud.top</a><br>进入镜像站后打开设置，如下图<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/2.png" alt="img-3"></p>
-<h4 id="打开设置后，填入服务器地址和你的key"><a href="#打开设置后，填入服务器地址和你的key" class="headerlink" title="打开设置后，填入服务器地址和你的key"></a>打开设置后，填入服务器地址和你的key</h4><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/3.png" alt="img-4"></p>
-<h4 id="接口地址填："><a href="#接口地址填：" class="headerlink" title="接口地址填："></a>接口地址填：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://api.chatanywhere.com.cn</span><br></pre></td></tr></table></figure>
-
-<h4 id="API-Key填刚才获取到的key，例如"><a href="#API-Key填刚才获取到的key，例如" class="headerlink" title="API Key填刚才获取到的key，例如"></a>API Key填刚才获取到的key，例如</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sk-xxxxxxxxxxxx （示例key，请勿使用）</span><br></pre></td></tr></table></figure>
-
-<h4 id="填好以后如下图"><a href="#填好以后如下图" class="headerlink" title="填好以后如下图"></a>填好以后如下图</h4><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/4.png" alt="img-5"></p>
-<h2 id="完成以上步骤后，恭喜你，你可以使用免费的chatGPT了"><a href="#完成以上步骤后，恭喜你，你可以使用免费的chatGPT了" class="headerlink" title="完成以上步骤后，恭喜你，你可以使用免费的chatGPT了"></a>完成以上步骤后，恭喜你，你可以使用免费的chatGPT了</h2><h3 id="最后附上手机版chatGPT"><a href="#最后附上手机版chatGPT" class="headerlink" title="最后附上手机版chatGPT"></a>最后附上手机版chatGPT</h3><ul>
-<li><a href="https://ddns.hqycloud.top:8000/s/6ZFQ">Android客户端</a></li>
-</ul>
-<h3 id="使用事项"><a href="#使用事项" class="headerlink" title="使用事项"></a>使用事项</h3><ul>
-<li>免费key每小时60次调用</li>
-<li>请勿分享自己的key</li>
-</ul>
-]]></content>
-      <categories>
-        <category>chatgpt</category>
-      </categories>
-  </entry>
-  <entry>
     <title>云崽bot恢复包 --Termux</title>
     <url>/posts/a1bc7431/</url>
     <content><![CDATA[<ul>
@@ -295,6 +333,48 @@
       </categories>
   </entry>
   <entry>
+    <title>使用bing搜索引擎的用户记得兑换积分</title>
+    <url>/posts/22724/</url>
+    <content><![CDATA[<p>地址：<a href="https://rewards.bing.com/redeem/?form=ML2UXN">Microsoft Rewards 兑换目录</a></p>
+<p>目前中国大陆地区可兑换的礼品：</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/11/image_de5fa5cf6e11c29867d41f8f16ec8e83.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/11/image_de5fa5cf6e11c29867d41f8f16ec8e83.png"></p>
+]]></content>
+      <categories>
+        <category>bing</category>
+      </categories>
+      <tags>
+        <tag>bing</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>免费使用chatGPT</title>
+    <url>/posts/a1df2910/</url>
+    <content><![CDATA[<p><strong>ChatGPT是一个基于大型语言模型的聊天机器人，由OpenAI开发并于2022年11月30日发布1。ChatGPT可以与用户进行对话，根据用户的指示提供详细的回答，或者生成有创意的内容，例如诗歌、故事、代码、歌曲等2。ChatGPT还可以看、听和说，可以处理图像、音频和视频的输入和输出1。ChatGPT是一个免费的服务，用户可以在网页上试用1，或者下载桌面应用程序3。ChatGPT是一个强大而有趣的工具，可以帮助用户获取即时的答案，找到创造性的灵感，或者学习新的知识。</strong></p>
+<h3 id="首先，申请一个免费的key"><a href="#首先，申请一个免费的key" class="headerlink" title="首先，申请一个免费的key"></a>首先，申请一个免费的key</h3><h4 id="打开GitHub-com，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）"><a href="#打开GitHub-com，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）" class="headerlink" title="打开GitHub.com，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）"></a>打开<a href="https://github.com/">GitHub.com</a>，注册一个GitHub账号（准备一个邮箱、稳定的网络环境）</h4><h5 id="注册好后，打开https-github-com-chatanywhere-GPT-API-free-在下面找到"><a href="#注册好后，打开https-github-com-chatanywhere-GPT-API-free-在下面找到" class="headerlink" title="注册好后，打开https://github.com/chatanywhere/GPT_API_free 在下面找到"></a>注册好后，打开<a href="https://github.com/chatanywhere/GPT_API_free">https://github.com/chatanywhere/GPT_API_free</a> 在下面找到</h5><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/0.png" alt="1-img"></p>
+<h5 id="点进去后会显示以下页面，红线标注的就是你的key"><a href="#点进去后会显示以下页面，红线标注的就是你的key" class="headerlink" title="点进去后会显示以下页面，红线标注的就是你的key"></a>点进去后会显示以下页面，红线标注的就是你的key</h5><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/1.png" alt="2-img"></p>
+<ul>
+<li>以上key已打码</li>
+</ul>
+<h5 id="复制sk-xxxxxxxxx"><a href="#复制sk-xxxxxxxxx" class="headerlink" title="复制sk-xxxxxxxxx"></a>复制sk-xxxxxxxxx</h5><h4 id="打开镜像站"><a href="#打开镜像站" class="headerlink" title="打开镜像站"></a>打开镜像站</h4><h5 id="作者已搭建好可以直接使用（支持官方、各种中转key）"><a href="#作者已搭建好可以直接使用（支持官方、各种中转key）" class="headerlink" title="作者已搭建好可以直接使用（支持官方、各种中转key）"></a>作者已搭建好可以直接使用（支持官方、各种中转key）</h5><p>地址：<a href="https://chat.hqycloud.top/">chat.hqycloud.top</a><br>进入镜像站后打开设置，如下图<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/2.png" alt="img-3"></p>
+<h4 id="打开设置后，填入服务器地址和你的key"><a href="#打开设置后，填入服务器地址和你的key" class="headerlink" title="打开设置后，填入服务器地址和你的key"></a>打开设置后，填入服务器地址和你的key</h4><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/3.png" alt="img-4"></p>
+<h4 id="接口地址填："><a href="#接口地址填：" class="headerlink" title="接口地址填："></a>接口地址填：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://api.chatanywhere.com.cn</span><br></pre></td></tr></table></figure>
+
+<h4 id="API-Key填刚才获取到的key，例如"><a href="#API-Key填刚才获取到的key，例如" class="headerlink" title="API Key填刚才获取到的key，例如"></a>API Key填刚才获取到的key，例如</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sk-xxxxxxxxxxxx （示例key，请勿使用）</span><br></pre></td></tr></table></figure>
+
+<h4 id="填好以后如下图"><a href="#填好以后如下图" class="headerlink" title="填好以后如下图"></a>填好以后如下图</h4><p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/chatgpt-0/4.png" alt="img-5"></p>
+<h2 id="完成以上步骤后，恭喜你，你可以使用免费的chatGPT了"><a href="#完成以上步骤后，恭喜你，你可以使用免费的chatGPT了" class="headerlink" title="完成以上步骤后，恭喜你，你可以使用免费的chatGPT了"></a>完成以上步骤后，恭喜你，你可以使用免费的chatGPT了</h2><h3 id="最后附上手机版chatGPT"><a href="#最后附上手机版chatGPT" class="headerlink" title="最后附上手机版chatGPT"></a>最后附上手机版chatGPT</h3><ul>
+<li><a href="https://ddns.hqycloud.top:8000/s/6ZFQ">Android客户端</a></li>
+</ul>
+<h3 id="使用事项"><a href="#使用事项" class="headerlink" title="使用事项"></a>使用事项</h3><ul>
+<li>免费key每小时60次调用</li>
+<li>请勿分享自己的key</li>
+</ul>
+]]></content>
+      <categories>
+        <category>chatgpt</category>
+      </categories>
+  </entry>
+  <entry>
     <title>免费的二级域名(可绑cloudflare)</title>
     <url>/posts/e491bdf7/</url>
     <content><![CDATA[<p>先点击<a href="https://l53.net/">这里</a>注册账号，选filegear-sg.me后缀 使用优惠吗码提交 一次性可以注册2个 因为有2个优惠码</p>
@@ -329,61 +409,6 @@
       <categories>
         <category>viqoo</category>
       </categories>
-  </entry>
-  <entry>
-    <title>利用dispatch突破网络限速（Windows）</title>
-    <url>/posts/7480/</url>
-    <content><![CDATA[<p><strong><a href="https://github.com/alexkirsz/dispatch">dispatch</a>是一种Rust语言的客户端负载均衡器，可实现带宽叠加、带宽聚合</strong></p>
-<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>通过纯软件实现多网卡带宽叠加和负载均衡</p>
-<ul>
-<li>通过绑定多个本地IP接口，起一个本地S5 Proxy，通过该入口实现加权负载均衡控制流量</li>
-<li>实现下行带宽多网卡（网络适配器）聚合带宽叠加</li>
-<li>实现上行带宽多网卡（网络适配器）聚合带宽叠加</li>
-<li>无须不稳定的跃点和其他的VPN&#x2F;代理软件就可以自行实现聚合</li>
-<li>提供标准的S5代理，不提供HTTP代理，本身不具有加密、混淆等功能</li>
-<li>可以套娃其他代理软件 当然，原则上，单线程自然是无效的，同时无法预测流量，简单来说可把Haproxy当作服务端负载均衡，而Diepatch-Proxy是一种客户端负载均衡。</li>
-</ul>
-<h3 id="如何套娃"><a href="#如何套娃" class="headerlink" title="如何套娃"></a>如何套娃</h3><ul>
-<li>V2rayN作为出口，需要做好DNS等设置，如果有异常需要重启服务</li>
-<li>Netch作为进程代理控制程序，配置并使用Dispatch提供的S5代理，对V2rayN的二进制程序启用（包括内核，比如xray.exe、sing-box.exe）</li>
-<li>Dispatch自行选择端口和可用的本地IP，作为上联源，以及配置权重，默认是均等连接，然后默认端口是1080，不可冲突端口</li>
-</ul>
-<h3 id="预测可用场景"><a href="#预测可用场景" class="headerlink" title="预测可用场景"></a>预测可用场景</h3><ul>
-<li>实现高速内网：叠加WiFi+LAN等组合方案达到更大的理论速度，不影响互联网出口IP。</li>
-<li>叠加光猫LAN口：常见的光猫通常为1Gbps LAN接口，可通过叠加多个G口或者光猫自带WiFi实现更大带宽接入，获取被G口限制的冗余带宽，不影响互联网出口IP。</li>
-<li>多宽带&#x2F;外网并联：叠加蜂窝流量卡（蜂窝网络类，包括MIFI&#x2F;手机热点）实现更大带宽的外网上下行水平，但是这会导致出口IP不一致的问题，可能有负面影响。</li>
-</ul>
-<p>本文以Windows11为例</p>
-<h2 id="安装dispatch"><a href="#安装dispatch" class="headerlink" title="安装dispatch"></a>安装dispatch</h2><p>下载<a href="https://github.com/alexkirsz/dispatch/releases/download/v0.1.3/dispatch-proxy-x86_64-pc-windows-msvc.tar.gz">https://github.com/alexkirsz/dispatch/releases/download/v0.1.3/dispatch-proxy-x86_64-pc-windows-msvc.tar.gz</a></p>
-<p>解压后得到</p>
-<p><a href="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_b49e88f4ac9847bb1ebf75d0ab62e491.png"><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_b49e88f4ac9847bb1ebf75d0ab62e491.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_b49e88f4ac9847bb1ebf75d0ab62e491.png"></a></p>
-<h2 id="获取多个IP"><a href="#获取多个IP" class="headerlink" title="获取多个IP"></a>获取多个IP</h2><p><strong>建议在占用该ip时，先ping一下看看有没有人用😭</strong></p>
-<p><strong>打开Windows控制面板—网络和 Internet—网络和共享中心—左侧的更改适配器设置—找到并双击正在使用网络的网卡—属性—Internet 协议版本 4(TCP&#x2F;IPv4)—高级</strong></p>
-<p><a href="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_771cd07fe287c2d1a2a788cbd72a29e6.png"><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_771cd07fe287c2d1a2a788cbd72a29e6.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_771cd07fe287c2d1a2a788cbd72a29e6.png"></a><br>添加IP地址</p>
-<p><a href="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_fc40cc5ceb4d9d8e55aa13809ee65d4d.png"><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_fc40cc5ceb4d9d8e55aa13809ee65d4d.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_fc40cc5ceb4d9d8e55aa13809ee65d4d.png"></a></p>
-<p><a href="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_555d4501a87af758f1e1798c75941453.png"><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_555d4501a87af758f1e1798c75941453.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_555d4501a87af758f1e1798c75941453.png"></a></p>
-<h2 id="启动dispatch"><a href="#启动dispatch" class="headerlink" title="启动dispatch"></a>启动dispatch</h2><p>打开dispatch所在的文件位置<br>空白处右键</p>
-<p><a href="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_48d7e9e2a639cda715996bdc25b2ec70.png"><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_48d7e9e2a639cda715996bdc25b2ec70.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_48d7e9e2a639cda715996bdc25b2ec70.png"></a><br>选择在终端中打开</p>
-<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">.\dispatch <span class="built_in">start</span>  --ip <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span> --port <span class="number">1080</span> &lt;上面获取 的IP&gt;</span><br></pre></td></tr></table></figure>
-
-<p><strong>多个IP用空格隔开</strong></p>
-<h2 id="连接代理"><a href="#连接代理" class="headerlink" title="连接代理"></a>连接代理</h2><p>这里以<a href="https://github.com/MatsuriDayo/nekoray/">nekoray</a>为例</p>
-<p><a href="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_e1a2337d7343c2d48bb0e56213749838.png"><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_e1a2337d7343c2d48bb0e56213749838.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_e1a2337d7343c2d48bb0e56213749838.png"></a></p>
-<p>添加代理后右键这个代理点击启动即可连上</p>
-<h2 id="取消占用IP"><a href="#取消占用IP" class="headerlink" title="取消占用IP"></a>取消占用IP</h2><p>打开添加ip的页面选中删除即可</p>
-<h2 id="资源地址"><a href="#资源地址" class="headerlink" title="资源地址"></a>资源地址</h2><p><strong>原仓库：<a href="https://github.com/alexkirsz/dispatch">https://github.com/alexkirsz/dispatch</a></strong></p>
-<p><strong>本文转载的翻译仓库：<a href="https://github.com/BlueSkyXN/Dispatch-Proxy">https://github.com/BlueSkyXN/Dispatch-Proxy</a></strong></p>
-]]></content>
-      <categories>
-        <category>Internet</category>
-      </categories>
-      <tags>
-        <tag>限速</tag>
-        <tag>校园网</tag>
-        <tag>网络</tag>
-        <tag>Internet</tag>
-        <tag>Windows</tag>
-      </tags>
   </entry>
   <entry>
     <title>利用dispatch突破网络限速（Linux）</title>
@@ -433,11 +458,66 @@
         <category>Internet</category>
       </categories>
       <tags>
+        <tag>Internet</tag>
         <tag>限速</tag>
         <tag>校园网</tag>
         <tag>网络</tag>
-        <tag>Internet</tag>
         <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用dispatch突破网络限速（Windows）</title>
+    <url>/posts/7480/</url>
+    <content><![CDATA[<p><strong><a href="https://github.com/alexkirsz/dispatch">dispatch</a>是一种Rust语言的客户端负载均衡器，可实现带宽叠加、带宽聚合</strong></p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>通过纯软件实现多网卡带宽叠加和负载均衡</p>
+<ul>
+<li>通过绑定多个本地IP接口，起一个本地S5 Proxy，通过该入口实现加权负载均衡控制流量</li>
+<li>实现下行带宽多网卡（网络适配器）聚合带宽叠加</li>
+<li>实现上行带宽多网卡（网络适配器）聚合带宽叠加</li>
+<li>无须不稳定的跃点和其他的VPN&#x2F;代理软件就可以自行实现聚合</li>
+<li>提供标准的S5代理，不提供HTTP代理，本身不具有加密、混淆等功能</li>
+<li>可以套娃其他代理软件 当然，原则上，单线程自然是无效的，同时无法预测流量，简单来说可把Haproxy当作服务端负载均衡，而Diepatch-Proxy是一种客户端负载均衡。</li>
+</ul>
+<h3 id="如何套娃"><a href="#如何套娃" class="headerlink" title="如何套娃"></a>如何套娃</h3><ul>
+<li>V2rayN作为出口，需要做好DNS等设置，如果有异常需要重启服务</li>
+<li>Netch作为进程代理控制程序，配置并使用Dispatch提供的S5代理，对V2rayN的二进制程序启用（包括内核，比如xray.exe、sing-box.exe）</li>
+<li>Dispatch自行选择端口和可用的本地IP，作为上联源，以及配置权重，默认是均等连接，然后默认端口是1080，不可冲突端口</li>
+</ul>
+<h3 id="预测可用场景"><a href="#预测可用场景" class="headerlink" title="预测可用场景"></a>预测可用场景</h3><ul>
+<li>实现高速内网：叠加WiFi+LAN等组合方案达到更大的理论速度，不影响互联网出口IP。</li>
+<li>叠加光猫LAN口：常见的光猫通常为1Gbps LAN接口，可通过叠加多个G口或者光猫自带WiFi实现更大带宽接入，获取被G口限制的冗余带宽，不影响互联网出口IP。</li>
+<li>多宽带&#x2F;外网并联：叠加蜂窝流量卡（蜂窝网络类，包括MIFI&#x2F;手机热点）实现更大带宽的外网上下行水平，但是这会导致出口IP不一致的问题，可能有负面影响。</li>
+</ul>
+<p>本文以Windows11为例</p>
+<h2 id="安装dispatch"><a href="#安装dispatch" class="headerlink" title="安装dispatch"></a>安装dispatch</h2><p>下载<a href="https://github.com/alexkirsz/dispatch/releases/download/v0.1.3/dispatch-proxy-x86_64-pc-windows-msvc.tar.gz">https://github.com/alexkirsz/dispatch/releases/download/v0.1.3/dispatch-proxy-x86_64-pc-windows-msvc.tar.gz</a></p>
+<p>解压后得到</p>
+<p><a href="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_b49e88f4ac9847bb1ebf75d0ab62e491.png"><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_b49e88f4ac9847bb1ebf75d0ab62e491.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_b49e88f4ac9847bb1ebf75d0ab62e491.png"></a></p>
+<h2 id="获取多个IP"><a href="#获取多个IP" class="headerlink" title="获取多个IP"></a>获取多个IP</h2><p><strong>建议在占用该ip时，先ping一下看看有没有人用😭</strong></p>
+<p><strong>打开Windows控制面板—网络和 Internet—网络和共享中心—左侧的更改适配器设置—找到并双击正在使用网络的网卡—属性—Internet 协议版本 4(TCP&#x2F;IPv4)—高级</strong></p>
+<p><a href="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_771cd07fe287c2d1a2a788cbd72a29e6.png"><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_771cd07fe287c2d1a2a788cbd72a29e6.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_771cd07fe287c2d1a2a788cbd72a29e6.png"></a><br>添加IP地址</p>
+<p><a href="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_fc40cc5ceb4d9d8e55aa13809ee65d4d.png"><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_fc40cc5ceb4d9d8e55aa13809ee65d4d.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_fc40cc5ceb4d9d8e55aa13809ee65d4d.png"></a></p>
+<p><a href="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_555d4501a87af758f1e1798c75941453.png"><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_555d4501a87af758f1e1798c75941453.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_555d4501a87af758f1e1798c75941453.png"></a></p>
+<h2 id="启动dispatch"><a href="#启动dispatch" class="headerlink" title="启动dispatch"></a>启动dispatch</h2><p>打开dispatch所在的文件位置<br>空白处右键</p>
+<p><a href="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_48d7e9e2a639cda715996bdc25b2ec70.png"><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_48d7e9e2a639cda715996bdc25b2ec70.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_48d7e9e2a639cda715996bdc25b2ec70.png"></a><br>选择在终端中打开</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">.\dispatch <span class="built_in">start</span>  --ip <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span> --port <span class="number">1080</span> &lt;上面获取 的IP&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>多个IP用空格隔开</strong></p>
+<h2 id="连接代理"><a href="#连接代理" class="headerlink" title="连接代理"></a>连接代理</h2><p>这里以<a href="https://github.com/MatsuriDayo/nekoray/">nekoray</a>为例</p>
+<p><a href="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_e1a2337d7343c2d48bb0e56213749838.png"><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_e1a2337d7343c2d48bb0e56213749838.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/7/image_e1a2337d7343c2d48bb0e56213749838.png"></a></p>
+<p>添加代理后右键这个代理点击启动即可连上</p>
+<h2 id="取消占用IP"><a href="#取消占用IP" class="headerlink" title="取消占用IP"></a>取消占用IP</h2><p>打开添加ip的页面选中删除即可</p>
+<h2 id="资源地址"><a href="#资源地址" class="headerlink" title="资源地址"></a>资源地址</h2><p><strong>原仓库：<a href="https://github.com/alexkirsz/dispatch">https://github.com/alexkirsz/dispatch</a></strong></p>
+<p><strong>本文转载的翻译仓库：<a href="https://github.com/BlueSkyXN/Dispatch-Proxy">https://github.com/BlueSkyXN/Dispatch-Proxy</a></strong></p>
+]]></content>
+      <categories>
+        <category>Internet</category>
+      </categories>
+      <tags>
+        <tag>Internet</tag>
+        <tag>限速</tag>
+        <tag>校园网</tag>
+        <tag>网络</tag>
+        <tag>Windows</tag>
       </tags>
   </entry>
   <entry>
@@ -485,6 +565,75 @@
       <tags>
         <tag>linux</tag>
         <tag>wireguard</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>华为云新加坡测试</title>
+    <url>/posts/4804/</url>
+    <content><![CDATA[<p>机子是华为云新加坡Flexus L，2c1g，30mbps，每月1T流量</p>
+<p>用500券开了500多天</p>
+<h1 id="融合怪"><a href="#融合怪" class="headerlink" title="融合怪"></a>融合怪</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">VPS融合怪版本：2024.09.30</span><br><span class="line">Shell项目地址：https://github.com/spiritLHLS/ecs</span><br><span class="line">Go项目地址：https://github.com/oneclickvirt/ecs</span><br><span class="line">---------------------基础信息查询--感谢所有开源项目---------------------</span><br><span class="line"> CPU 型号          : Intel(R) Xeon(R) Gold 6278C CPU @ 2.60GHz</span><br><span class="line"> CPU 核心数        : 2</span><br><span class="line"> CPU 频率          : 2600.000 MHz</span><br><span class="line"> CPU 缓存          : L1: 32.00 KB / L2: 1.00 MB / L3: 35.75 MB</span><br><span class="line"> AES-NI指令集      : ✔ Enabled</span><br><span class="line"> VM-x/AMD-V支持    : ❌ Disabled</span><br><span class="line"> 内存              : 111.88 MiB / 972.68 MiB</span><br><span class="line"> Swap              : [ no swap partition or swap file detected ]</span><br><span class="line"> 硬盘空间          : 837.30 MiB / 40011.22 MiB</span><br><span class="line"> 启动盘路径        : /dev/vda1</span><br><span class="line"> 系统在线时间      : 0 days, 0 hour 2 min</span><br><span class="line"> 负载              : 0.31, 0.13, 0.05</span><br><span class="line"> 系统              : Debian GNU/Linux 12 (bookworm) (x86_64)</span><br><span class="line"> 架构              : x86_64 (64 Bit)</span><br><span class="line"> 内核              : 6.1.0-25-cloud-amd64</span><br><span class="line"> TCP加速方式       : cubic</span><br><span class="line"> 虚拟化架构        : KVM</span><br><span class="line"> NAT类型           : Full Cone</span><br><span class="line"> IPV4 ASN          : AS136907 HUAWEI CLOUDS</span><br><span class="line"> IPV4 位置         : Singapore / Singapore / SG</span><br><span class="line">----------------------CPU测试--通过sysbench测试-------------------------</span><br><span class="line"> -&gt; CPU 测试中 (Fast Mode, 1-Pass @ 5sec)</span><br><span class="line"> 1 线程测试(单核)得分:          1074 Scores</span><br><span class="line"> 2 线程测试(多核)得分:          2149 Scores</span><br><span class="line">---------------------内存测试--感谢lemonbench开源-----------------------</span><br><span class="line"> -&gt; 内存测试 Test (Fast Mode, 1-Pass @ 5sec)</span><br><span class="line"> 单线程读测试:          21438.88 MB/s</span><br><span class="line"> 单线程写测试:          18039.93 MB/s</span><br><span class="line">------------------磁盘<span class="built_in">dd</span>读写测试--感谢lemonbench开源--------------------</span><br><span class="line"> -&gt; 磁盘IO测试中 (4K Block/1M Block, Direct Mode)</span><br><span class="line"> 测试操作               写速度                                  读速度</span><br><span class="line"> 100MB-4K Block         8.2 MB/s (2012 IOPS, 12.73s)            13.3 MB/s (3250 IOPS, 7.87s)</span><br><span class="line"> 1GB-1M Block           138 MB/s (131 IOPS, 7.61s)              129 MB/s (122 IOPS, 8.15s)</span><br><span class="line">---------------------磁盘fio读写测试--感谢yabs开源----------------------</span><br><span class="line">Block Size | 4k            (IOPS) | 64k           (IOPS)</span><br><span class="line">  ------   | ---            ----  | ----           ---- </span><br><span class="line">Read       | 16.19 MB/s    (4.0k) | 62.52 MB/s     (977)</span><br><span class="line">Write      | 16.20 MB/s    (4.0k) | 62.93 MB/s     (983)</span><br><span class="line">Total      | 32.40 MB/s    (8.0k) | 125.46 MB/s   (1.9k)</span><br><span class="line">           |                      |                   </span><br><span class="line">Block Size | 512k          (IOPS) | 1m            (IOPS)</span><br><span class="line">  ------   | ---            ----  | ----           ---- </span><br><span class="line">Read       | 61.93 MB/s     (120) | 60.05 MB/s      (58)</span><br><span class="line">Write      | 65.06 MB/s     (127) | 64.28 MB/s      (62)</span><br><span class="line">Total      | 127.00 MB/s    (247) | 124.33 MB/s    (120)</span><br><span class="line">------------流媒体解锁--基于oneclickvirt/CommonMediaTests开源-----------</span><br><span class="line">以下测试的解锁地区是准确的，但是不是完整解锁的判断可能有误，这方面仅作参考使用</span><br><span class="line">----------------Netflix-----------------</span><br><span class="line">[IPV4]</span><br><span class="line">您的出口IP可以使用Netflix，但仅可看Netflix自制剧</span><br><span class="line">NF所识别的IP地域信息：新加坡</span><br><span class="line">[IPV6]</span><br><span class="line">您的网络可能没有正常配置IPv6，或者没有IPv6网络接入</span><br><span class="line">----------------Youtube-----------------</span><br><span class="line">[IPV4]</span><br><span class="line">连接方式: Youtube Video Server</span><br><span class="line">视频缓存节点地域: 新加坡 新加坡/樟宜  (SIN10S14)</span><br><span class="line">Youtube识别地域: 新加坡(SG)</span><br><span class="line">[IPV6]</span><br><span class="line">Youtube在您的出口IP所在的国家不提供服务</span><br><span class="line">---------------DisneyPlus---------------</span><br><span class="line">[IPV4]</span><br><span class="line">当前出口所在地区解锁DisneyPlus</span><br><span class="line">区域：SG 区</span><br><span class="line">[IPV6]</span><br><span class="line">DisneyPlus在您的出口IP所在的国家不提供服务</span><br><span class="line">解锁Netflix，Youtube，DisneyPlus上面和下面进行比较，不同之处自行判断</span><br><span class="line">----------------流媒体解锁--感谢RegionRestrictionCheck开源--------------</span><br><span class="line"> 以下为IPV4网络测试，若无IPV4网络则无输出</span><br><span class="line">============[ Multination ]============</span><br><span class="line"> Dazn:                                  Yes (Region: SG)</span><br><span class="line"> Disney+:                               No (IP Banned By Disney+)</span><br><span class="line"> Netflix:                               Originals Only</span><br><span class="line"> YouTube Premium:                       Yes (Region: SG)</span><br><span class="line"> Amazon Prime Video:                    Yes (Region: SG)</span><br><span class="line"> TVBAnywhere+:                          Yes</span><br><span class="line"> Spotify Registration:                  No</span><br><span class="line"> Instagram Licensed Audio:              Failed (Network Connection)</span><br><span class="line"> OneTrust Region:                       SG [Unknown]</span><br><span class="line"> iQyi Oversea Region:                   SG</span><br><span class="line"> Bing Region:                           SG</span><br><span class="line"> YouTube CDN:                           Singapore</span><br><span class="line"> Netflix Preferred CDN:                 Singapore</span><br><span class="line"> ChatGPT:                               No (Only Available with Web Browser)</span><br><span class="line"> Google Gemini:                         Yes (Region: SGP)</span><br><span class="line"> Wikipedia Editability:                 No</span><br><span class="line"> Google Search CAPTCHA Free:            Yes</span><br><span class="line"> Steam Currency:                        SGD</span><br><span class="line"> ---Forum---</span><br><span class="line"> Reddit:                                No</span><br><span class="line">=======================================</span><br><span class="line"> 以下为IPV6网络测试，若无IPV6网络则无输出</span><br><span class="line">---------------TikTok解锁--感谢lmc999的源脚本及fscarmen PR--------------</span><br><span class="line"> Tiktok Region:         Failed</span><br><span class="line">-------------IP质量检测--基于oneclickvirt/securityCheck使用-------------</span><br><span class="line">数据仅作参考，不代表100%准确，如果和实际情况不一致请手动查询多个数据库比对</span><br><span class="line">以下为各数据库编号，输出结果后将自带数据库来源对应的编号</span><br><span class="line">ipinfo数据库  [0] | scamalytics数据库 [1] | virustotal数据库   [2] | abuseipdb数据库   [3] | ip2location数据库    [4]</span><br><span class="line">ip-api数据库  [5] | ipwhois数据库     [6] | ipregistry数据库   [7] | ipdata数据库      [8] | db-ip数据库          [9]</span><br><span class="line">ipapiis数据库 [A] | ipapicom数据库    [B] | bigdatacloud数据库 [C] | cheervision数据库 [D] | ipqualityscore数据库 [E]</span><br><span class="line">IPV4:</span><br><span class="line">安全得分:</span><br><span class="line">声誉(越高越好): 0 [2] </span><br><span class="line">信任得分(越高越好): 0 [8] </span><br><span class="line">VPN得分(越低越好): 100 [8] </span><br><span class="line">代理得分(越低越好): 100 [8] </span><br><span class="line">社区投票-无害: 0 [2] </span><br><span class="line">社区投票-恶意: 0 [2] </span><br><span class="line">威胁得分(越低越好): 100 [8] </span><br><span class="line">欺诈得分(越低越好): 3 [1] 65 [E]</span><br><span class="line">滥用得分(越低越好): 0 [3] </span><br><span class="line">ASN滥用得分(越低越好): 0.0036 (Low) [A]</span><br><span class="line">公司滥用得分(越低越好): 0.0123 (Elevated) [A] </span><br><span class="line">威胁级别: low [9 B] </span><br><span class="line">黑名单记录统计:(有多少黑名单网站有记录):</span><br><span class="line">无害记录数: 0 [2] 恶意记录数: 0 [2]  可疑记录数: 0 [2]  无记录数: 94 [2]  </span><br><span class="line">安全信息:</span><br><span class="line">使用类型: hosting - high probability [C] DataCenter/WebHosting/Transit [3] business [8] hosting [0 7 9 A]</span><br><span class="line">公司类型: business [A] hosting [0 7]</span><br><span class="line">是否云提供商: Yes [7 D] </span><br><span class="line">是否数据中心: Yes [0 1 5 6 A] No [8 C]</span><br><span class="line">是否移动设备: No [5 A C] Yes [E]</span><br><span class="line">是否代理: No [0 1 4 5 6 7 8 9 A B C D] Yes [E]</span><br><span class="line">是否VPN: Yes [E] No [0 1 6 7 A C D]</span><br><span class="line">是否Tor: No [0 1 3 6 7 8 A B C D E] </span><br><span class="line">是否Tor出口: No [1 7 D] </span><br><span class="line">是否网络爬虫: No [9 A B E] </span><br><span class="line">是否匿名: No [1 6 7 8 D] </span><br><span class="line">是否攻击者: No [7 8 D] </span><br><span class="line">是否滥用者: No [7 8 A C D E] </span><br><span class="line">是否威胁: No [7 8 C D] </span><br><span class="line">是否中继: No [0 7 8 C D] </span><br><span class="line">是否Bogon: No [7 8 A C D] </span><br><span class="line">是否机器人: No [E] </span><br><span class="line">DNS-黑名单: 313(Total_Check) 0(Clean) 5(Blacklisted) 9(Other) </span><br><span class="line">Google搜索可行性：YES</span><br><span class="line">-------------邮件端口检测--基于oneclickvirt/portchecker开源-------------</span><br><span class="line">Platform  SMTP  SMTPS POP3  POP3S IMAP  IMAPS</span><br><span class="line">LocalPort ✔     ✔     ✔     ✔     ✔     ✔  </span><br><span class="line">QQ        ✔     ✔     ✔     ✘     ✔     ✘  </span><br><span class="line">163       ✔     ✔     ✔     ✘     ✔     ✘  </span><br><span class="line">Sohu      ✔     ✔     ✔     ✘     ✔     ✘  </span><br><span class="line">Yandex    ✔     ✔     ✔     ✘     ✔     ✘  </span><br><span class="line">Gmail     ✔     ✔     ✘     ✘     ✘     ✘  </span><br><span class="line">Outlook   ✔     ✘     ✔     ✘     ✔     ✘  </span><br><span class="line">Office365 ✔     ✘     ✔     ✘     ✔     ✘  </span><br><span class="line">Yahoo     ✔     ✔     ✘     ✘     ✘     ✘  </span><br><span class="line">MailCOM   ✔     ✔     ✔     ✘     ✔     ✘  </span><br><span class="line">MailRU    ✔     ✔     ✘     ✘     ✔     ✘  </span><br><span class="line">AOL       ✔     ✔     ✘     ✘     ✘     ✘  </span><br><span class="line">GMX       ✔     ✘     ✔     ✘     ✔     ✘  </span><br><span class="line">Sina      ✔     ✘     ✔     ✘     ✔     ✘  </span><br><span class="line">----------------三网回程--基于oneclickvirt/backtrace开源----------------</span><br><span class="line">北京电信 219.141.140.10  电信CN2GIA [精品线路] </span><br><span class="line">北京联通 202.106.195.68  检测不到回程路由节点的IP地址</span><br><span class="line">北京移动 221.179.155.161 移动CMI    [普通线路] </span><br><span class="line">上海电信 202.96.209.133  电信CN2GIA [精品线路] </span><br><span class="line">上海联通 210.22.97.1     检测不到回程路由节点的IP地址</span><br><span class="line">上海移动 211.136.112.200 移动CMI    [普通线路] </span><br><span class="line">广州电信 58.60.188.222   检测不到回程路由节点的IP地址</span><br><span class="line">广州联通 210.21.196.6    检测不到回程路由节点的IP地址</span><br><span class="line">广州移动 120.196.165.24  移动CMI    [普通线路] </span><br><span class="line">成都电信 61.139.2.69     检测不到回程路由节点的IP地址</span><br><span class="line">成都联通 119.6.6.6       检测不到回程路由节点的IP地址</span><br><span class="line">成都移动 211.137.96.205  移动CMI    [普通线路] </span><br><span class="line">准确线路自行查看详细路由，本测试结果仅作参考</span><br><span class="line">同一目标地址多个线路时，可能检测已越过汇聚层，除了第一个线路外，后续信息可能无效</span><br><span class="line">---------------------回程路由--感谢fscarmen开源及PR---------------------</span><br><span class="line">依次测试电信/联通/移动经过的地区及线路，核心程序来自ipip.net或nexttrace，请知悉!</span><br><span class="line">广州电信 58.60.188.222</span><br><span class="line">60.60 ms        * RFC6598</span><br><span class="line">4.95 ms         * DOD</span><br><span class="line">6.29 ms         * DOD</span><br><span class="line">45.05 ms        * RFC1918</span><br><span class="line">46.51 ms        AS23764 [CN2-BB] 中国 香港 chinatelecomglobal.com 电信</span><br><span class="line">39.49 ms        * 中国 香港 电信/CTGNet</span><br><span class="line">96.87 ms        * [CN2-BackBone] 中国 广东 广州 chinatelecom.cn 电信</span><br><span class="line">43.12 ms        * [CN2-BackBone] 中国 广东 广州 chinatelecom.cn 电信</span><br><span class="line">53.23 ms        * [CN2-BackBone] 中国 广东 广州 chinatelecom.cn 电信</span><br><span class="line">49.17 ms        AS4134 中国 广东 佛山市 www.chinatelecom.com.cn 电信</span><br><span class="line">49.63 ms        AS4134 中国 广东 深圳 福田区 www.chinatelecom.com.cn 电信</span><br><span class="line">广州联通 210.21.196.6</span><br><span class="line">49.23 ms        * RFC6598</span><br><span class="line">2.51 ms         * DOD</span><br><span class="line">6.41 ms         * DOD</span><br><span class="line">40.74 ms        * [CUG-ASIA] 中国 香港</span><br><span class="line">43.95 ms        AS10099 中国 香港 chinaunicomglobal.com</span><br><span class="line">37.20 ms        AS10099 [CUG-BACKBONE] 中国 香港 chinaunicomglobal.com 联通</span><br><span class="line">47.76 ms        AS4837 [CU169-BACKBONE] 中国 广东 广州 chinaunicom.cn 联通</span><br><span class="line">52.52 ms        AS4837 [CU169-BACKBONE] 中国 广东 广州 chinaunicom.cn 联通</span><br><span class="line">57.09 ms        AS17816 [APNIC-AP] 中国 广东 深圳 chinaunicom.cn 联通</span><br><span class="line">48.58 ms        AS17623 [APNIC-AP] 中国 广东 深圳 chinaunicom.cn 联通</span><br><span class="line">59.57 ms        AS17623 [APNIC-AP] 中国 广东 深圳 宝安区 chinaunicom.cn 联通</span><br><span class="line">广州移动 120.196.165.24</span><br><span class="line">40.39 ms        * RFC6598</span><br><span class="line">7.26 ms         * DOD</span><br><span class="line">12.68 ms        * DOD</span><br><span class="line">102.40 ms       * DOD</span><br><span class="line">40.02 ms        * RFC1918</span><br><span class="line">46.66 ms        AS58453 [CMI-INT] 中国 香港 cmi.chinamobile.com 移动</span><br><span class="line">40.09 ms        AS58453 [CMI-INT] 中国 香港 cmi.chinamobile.com 移动</span><br><span class="line">57.14 ms        AS58453 [CMI-INT] 中国 广东 广州 cmi.chinamobile.com 移动</span><br><span class="line">56.80 ms        AS9808 [CMNET] 中国 广东 广州 chinamobileltd.com 移动</span><br><span class="line">79.83 ms        AS9808 [CMNET] 中国 广东 广州 chinamobileltd.com 移动</span><br><span class="line">83.60 ms        AS9808 [CMNET] 中国 广东 广州 chinamobileltd.com 移动</span><br><span class="line">79.35 ms        AS9808 [CMNET] 中国 广东 广州 chinamobileltd.com 移动</span><br><span class="line">76.60 ms        AS56040 [APNIC-AP] 中国 广东 深圳 gd.10086.cn 移动</span><br><span class="line">--------------------自动更新测速节点列表--本脚本原创--------------------</span><br><span class="line">位置             上传速度        下载速度        延迟     丢包率</span><br><span class="line">Speedtest.net    46.20 Mbps      44.01 Mbps      1.14     0.0%</span><br><span class="line">新加坡           39.62 Mbps      39.24 Mbps      16.13    0.0%</span><br><span class="line">中国香港         35.60 Mbps      22.75 Mbps      36.93    0.0%</span><br><span class="line">联通WuXi         32.90 Mbps      15.57 Mbps      66.55    0.0%</span><br><span class="line">电信浙江         38.87 Mbps      33.28 Mbps      76.16    NULL</span><br><span class="line">电信浙江         4.32 Mbps       32.34 Mbps      77.43    NULL</span><br><span class="line">移动杭州5G       38.97 Mbps      57.64 Mbps      69.17    0.0%</span><br><span class="line">移动Beijing      43.22 Mbps      52.82 Mbps      156.15   NULL</span><br><span class="line">------------------------------------------------------------------------</span><br><span class="line"> 总共花费      : 10 分 44 秒</span><br><span class="line"> 时间          : Fri Oct 11 20:58:51 CST 2024</span><br><span class="line">------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+
+<h1 id="IP质量"><a href="#IP质量" class="headerlink" title="IP质量"></a>IP质量</h1><pre><code class="bash">
+########################################################################
+IP质量体检报告：159.138.*.*
+bash &lt;(curl -sL IP.Check.Place)
+https://github.com/xykt/IPQuality
+报告时间：2024-10-11 21:16:06 CST  脚本版本：v2024-07-29
+########################################################################
+一、基础信息（Maxmind 数据库）
+自治系统号：            AS136907
+组织：                  HUAWEI CLOUDS
+坐标：                  103°48′5″E, 1°22′2″N
+地图：                  https://check.place/1.3673,103.8014,13,cn
+城市：                  N/A
+使用地：                [SG]新加坡, [AS]亚洲
+注册地：                [SG]新加坡
+时区：                  Asia/Singapore
+IP类型：                 原生IP
+二、IP类型属性
+数据库：      IPinfo    ipregistry    ipapi     AbuseIPDB  IP2LOCATION
+使用类型：     机房        机房        机房        机房        机房
+公司类型：     机房        机房        机房
+三、风险评分
+风险等级：      极低         低       中等       高         极高
+SCAMALYTICS：   3|低风险
+ipapi：                      1.23%|较高风险
+AbuseIPDB：    0|低风险
+IPQS：                        75|可疑IP
+DB-IP：         |低风险
+四、风险因子
+库： IP2LOCATION ipapi ipregistry IPQS SCAMALYTICS ipdata IPinfo IPWHOIS
+地区：    [SG]    [SG]    [SG]    [SG]    [SG]    [SG]    [SG]    [SG]
+代理：     否      否      否      是      否      否      否      否
+Tor：      否      否      否      否      否      否      否      否
+VPN：      否      否      否      是      否      无      否      否
+服务器：   是      是      是      无      否      否      是      是
+滥用：     否      否      否      否      无      否      无      无
+机器人：   否      否      无      否      否      无      无      无
+五、流媒体及AI服务解锁检测
+服务商：  TikTok   Disney+  Netflix Youtube  AmazonPV  Spotify  ChatGPT
+状态：     失败     失败    仅自制    解锁     解锁     屏蔽    仅网页
+地区：                       [SG]     [SG]     [SG]              [SG]
+方式：                       原生     原生     原生              原生
+六、邮局连通性及黑名单检测
+本地25端口：阻断
+IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名单 0
+================================================================
+
+
+
+
+
+</code></pre>
+]]></content>
+      <categories>
+        <category>cloud</category>
+      </categories>
+      <tags>
+        <tag>华为云</tag>
+        <tag>huaweicloud</tag>
+        <tag>server</tag>
       </tags>
   </entry>
   <entry>
@@ -595,70 +744,25 @@
 ]]></content>
   </entry>
   <entry>
-    <title>cloudflare tunnel优选IP</title>
-    <url>/posts/204d8c5f/</url>
-    <content><![CDATA[<p><strong>总所周知，cloudflare默认分配的IP都在美国，轻则速度慢运气不好分配的还是被GFW拦截的</strong></p>
-<p>本教程需要：</p>
-<p>一张万事达&#x2F;visa过cloudflare for saas验证</p>
-<p>两条域名，一条用于优选，一条托管到cloudfalre</p>
-<h4 id="一、配置cloudflared"><a href="#一、配置cloudflared" class="headerlink" title="一、配置cloudflared"></a>一、配置cloudflared</h4><ul>
-<li>cloudflared可在<a href="https://github.com/cloudflare/cloudflared/">cloudflare&#x2F;cloudflared: Cloudflare Tunnel client (formerly Argo Tunnel) (github.com)</a>上获取</li>
-</ul>
-<h5 id="部署方式（可选）"><a href="#部署方式（可选）" class="headerlink" title="部署方式（可选）"></a>部署方式（可选）</h5><ul>
-<li>本教程以docker为例</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -d --name cloudflared_status --network=host alpine sleep infinity</span><br></pre></td></tr></table></figure>
+    <title>晚高峰的华为云io</title>
+    <url>/posts/12995/</url>
+    <content><![CDATA[<p>华为云新加坡Flexus L：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@host-192-168-7-62:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 8.37634 s, 32.0 MB/s</span><br></pre></td></tr></table></figure>
 
-<h5 id="下载cloudflared"><a href="#下载cloudflared" class="headerlink" title="下载cloudflared"></a>下载cloudflared</h5><p>这里以arm64为例</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget -O /usr/bin/cloudflared https://github.hqycloud.top/https://github.com/cloudflare/cloudflared/releases/download/2024.4.1/cloudflared-linux-arm64</span><br></pre></td></tr></table></figure>
+<p>作为对比，下面是阿里云香港和rn美西的测试结果：<br>阿里云：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@ubuntu:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 6.12062 s, 43.9 MB/s</span><br></pre></td></tr></table></figure>
 
-<h5 id="设置权限"><a href="#设置权限" class="headerlink" title="设置权限"></a>设置权限</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chmod 777 /usr/bin/cloudflared</span><br></pre></td></tr></table></figure>
-
-<h5 id="查看版本号"><a href="#查看版本号" class="headerlink" title="查看版本号"></a>查看版本号</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared version</span><br></pre></td></tr></table></figure>
-
-<h5 id="登录cloudflared"><a href="#登录cloudflared" class="headerlink" title="登录cloudflared"></a>登录cloudflared</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel login</span><br></pre></td></tr></table></figure>
-
-<h5 id="创建隧道并命名"><a href="#创建隧道并命名" class="headerlink" title="创建隧道并命名"></a>创建隧道并命名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel create 隧道名</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>隧道名可以自定义，但不能重复！</li>
-</ul>
-<h5 id="查看隧道列表"><a href="#查看隧道列表" class="headerlink" title="查看隧道列表"></a>查看隧道列表</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel list</span><br></pre></td></tr></table></figure>
-
-<h5 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;url: http://localhost:8000</span><br><span class="line">tunnel: &lt;Tunnel-UUID&gt;</span><br><span class="line">credentials-file: /root/.cloudflared/&lt;Tunnel-UUID&gt;.json&#x27; &gt; .cloudflared/config.yml</span><br></pre></td></tr></table></figure>
-
-<p>这里的Tunnel-UUID在隧道列表可以看到</p>
-<p><em>查看创建好的config.yml</em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat config.yml</span><br></pre></td></tr></table></figure>
-
-<h5 id="设置域名"><a href="#设置域名" class="headerlink" title="设置域名"></a>设置域名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel route dns &lt;UUID or NAME&gt; &lt;hostname&gt;</span><br></pre></td></tr></table></figure>
-
-<p>UUID和NAME二选一，uuid查看隧道列表就能看到，name是你创建时输入的名字</p>
-<p>hostname填的是托管在cloudflare的子域，不需要完整的域名</p>
-<p>例如：tunnel-cdn.test.com（托管在cloudflare</p>
-<p>则只需要填tunnel-cdn</p>
-<h5 id="测试隧道是否正常"><a href="#测试隧道是否正常" class="headerlink" title="测试隧道是否正常"></a>测试隧道是否正常</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel run &lt;UUID or NAME&gt;</span><br></pre></td></tr></table></figure>
-
-<p>访问托管在cloudflare的隧道子域查看是否正常</p>
-<p>如果正常可继续看下一步，如果打不开并报错，请移步至cloudflare文档</p>
-<h5 id="在后台运行隧道"><a href="#在后台运行隧道" class="headerlink" title="在后台运行隧道"></a>在后台运行隧道</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nohup cloudflared tunnel run &lt;UUID or NAME&gt; &amp;</span><br></pre></td></tr></table></figure>
-
-<h4 id="二、配置优选IP"><a href="#二、配置优选IP" class="headerlink" title="二、配置优选IP"></a>二、配置优选IP</h4><h5 id="开通cloudflare-for-saas服务"><a href="#开通cloudflare-for-saas服务" class="headerlink" title="开通cloudflare for saas服务"></a>开通cloudflare for saas服务</h5><p>需要绑卡，这里不过多赘述</p>
-<h5 id="设置回退域"><a href="#设置回退域" class="headerlink" title="设置回退域"></a>设置回退域</h5><p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png"></p>
-<p>回退域必须设置为与隧道绑定的域名</p>
-<h5 id="设置访问域名"><a href="#设置访问域名" class="headerlink" title="设置访问域名"></a>设置访问域名</h5><p>添加一个自定义主机名</p>
-<p>域名填公开访问的域名（必须托管在其他dns服务商，否则cloudflare会检测</p>
-<p>验证方式选TXT</p>
-<h4 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h4><p>在验证过程中，需要把解析设为回退域，否则验证不通过</p>
-<p>等待证书状态和主机名状态都显示有效后访问一下试试</p>
-<p>访问成功后就可以把解析设置为cf的任意IP</p>
-<ul>
-<li>找cloudflare速度快的IP→<a href="https://github.com/XIU2/CloudflareSpeedTest">XIU2&#x2F;CloudflareSpeedTest: 🌩「自选优选 IP」测试 Cloudflare CDN 延迟和速度，获取最快 IP ！当然也支持其他 CDN &#x2F; 网站 IP ~ (github.com)</a></li>
-</ul>
+<p>rn：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@racknerd-server:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 1.92984 s, 139 MB/s</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>cloudflare</category>
+        <category>cloud</category>
       </categories>
+      <tags>
+        <tag>华为云</tag>
+        <tag>huaweicloud</tag>
+        <tag>server</tag>
+      </tags>
   </entry>
   <entry>
     <title>网页接入aplayer音乐播放器</title>
@@ -760,110 +864,6 @@
       <tags>
         <tag>ssl</tag>
         <tag>google cloud</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用bing搜索引擎的用户记得兑换积分</title>
-    <url>/posts/22724/</url>
-    <content><![CDATA[<p>地址：<a href="https://rewards.bing.com/redeem/?form=ML2UXN">Microsoft Rewards 兑换目录</a></p>
-<p>目前中国大陆地区可兑换的礼品：</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/11/image_de5fa5cf6e11c29867d41f8f16ec8e83.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/11/image_de5fa5cf6e11c29867d41f8f16ec8e83.png"></p>
-]]></content>
-      <categories>
-        <category>bing</category>
-      </categories>
-      <tags>
-        <tag>bing</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>华为云新加坡测试</title>
-    <url>/posts/4804/</url>
-    <content><![CDATA[<p>机子是华为云新加坡Flexus L，2c1g，30mbps，每月1T流量</p>
-<p>用500券开了500多天</p>
-<h1 id="融合怪"><a href="#融合怪" class="headerlink" title="融合怪"></a>融合怪</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">VPS融合怪版本：2024.09.30</span><br><span class="line">Shell项目地址：https://github.com/spiritLHLS/ecs</span><br><span class="line">Go项目地址：https://github.com/oneclickvirt/ecs</span><br><span class="line">---------------------基础信息查询--感谢所有开源项目---------------------</span><br><span class="line"> CPU 型号          : Intel(R) Xeon(R) Gold 6278C CPU @ 2.60GHz</span><br><span class="line"> CPU 核心数        : 2</span><br><span class="line"> CPU 频率          : 2600.000 MHz</span><br><span class="line"> CPU 缓存          : L1: 32.00 KB / L2: 1.00 MB / L3: 35.75 MB</span><br><span class="line"> AES-NI指令集      : ✔ Enabled</span><br><span class="line"> VM-x/AMD-V支持    : ❌ Disabled</span><br><span class="line"> 内存              : 111.88 MiB / 972.68 MiB</span><br><span class="line"> Swap              : [ no swap partition or swap file detected ]</span><br><span class="line"> 硬盘空间          : 837.30 MiB / 40011.22 MiB</span><br><span class="line"> 启动盘路径        : /dev/vda1</span><br><span class="line"> 系统在线时间      : 0 days, 0 hour 2 min</span><br><span class="line"> 负载              : 0.31, 0.13, 0.05</span><br><span class="line"> 系统              : Debian GNU/Linux 12 (bookworm) (x86_64)</span><br><span class="line"> 架构              : x86_64 (64 Bit)</span><br><span class="line"> 内核              : 6.1.0-25-cloud-amd64</span><br><span class="line"> TCP加速方式       : cubic</span><br><span class="line"> 虚拟化架构        : KVM</span><br><span class="line"> NAT类型           : Full Cone</span><br><span class="line"> IPV4 ASN          : AS136907 HUAWEI CLOUDS</span><br><span class="line"> IPV4 位置         : Singapore / Singapore / SG</span><br><span class="line">----------------------CPU测试--通过sysbench测试-------------------------</span><br><span class="line"> -&gt; CPU 测试中 (Fast Mode, 1-Pass @ 5sec)</span><br><span class="line"> 1 线程测试(单核)得分:          1074 Scores</span><br><span class="line"> 2 线程测试(多核)得分:          2149 Scores</span><br><span class="line">---------------------内存测试--感谢lemonbench开源-----------------------</span><br><span class="line"> -&gt; 内存测试 Test (Fast Mode, 1-Pass @ 5sec)</span><br><span class="line"> 单线程读测试:          21438.88 MB/s</span><br><span class="line"> 单线程写测试:          18039.93 MB/s</span><br><span class="line">------------------磁盘<span class="built_in">dd</span>读写测试--感谢lemonbench开源--------------------</span><br><span class="line"> -&gt; 磁盘IO测试中 (4K Block/1M Block, Direct Mode)</span><br><span class="line"> 测试操作               写速度                                  读速度</span><br><span class="line"> 100MB-4K Block         8.2 MB/s (2012 IOPS, 12.73s)            13.3 MB/s (3250 IOPS, 7.87s)</span><br><span class="line"> 1GB-1M Block           138 MB/s (131 IOPS, 7.61s)              129 MB/s (122 IOPS, 8.15s)</span><br><span class="line">---------------------磁盘fio读写测试--感谢yabs开源----------------------</span><br><span class="line">Block Size | 4k            (IOPS) | 64k           (IOPS)</span><br><span class="line">  ------   | ---            ----  | ----           ---- </span><br><span class="line">Read       | 16.19 MB/s    (4.0k) | 62.52 MB/s     (977)</span><br><span class="line">Write      | 16.20 MB/s    (4.0k) | 62.93 MB/s     (983)</span><br><span class="line">Total      | 32.40 MB/s    (8.0k) | 125.46 MB/s   (1.9k)</span><br><span class="line">           |                      |                   </span><br><span class="line">Block Size | 512k          (IOPS) | 1m            (IOPS)</span><br><span class="line">  ------   | ---            ----  | ----           ---- </span><br><span class="line">Read       | 61.93 MB/s     (120) | 60.05 MB/s      (58)</span><br><span class="line">Write      | 65.06 MB/s     (127) | 64.28 MB/s      (62)</span><br><span class="line">Total      | 127.00 MB/s    (247) | 124.33 MB/s    (120)</span><br><span class="line">------------流媒体解锁--基于oneclickvirt/CommonMediaTests开源-----------</span><br><span class="line">以下测试的解锁地区是准确的，但是不是完整解锁的判断可能有误，这方面仅作参考使用</span><br><span class="line">----------------Netflix-----------------</span><br><span class="line">[IPV4]</span><br><span class="line">您的出口IP可以使用Netflix，但仅可看Netflix自制剧</span><br><span class="line">NF所识别的IP地域信息：新加坡</span><br><span class="line">[IPV6]</span><br><span class="line">您的网络可能没有正常配置IPv6，或者没有IPv6网络接入</span><br><span class="line">----------------Youtube-----------------</span><br><span class="line">[IPV4]</span><br><span class="line">连接方式: Youtube Video Server</span><br><span class="line">视频缓存节点地域: 新加坡 新加坡/樟宜  (SIN10S14)</span><br><span class="line">Youtube识别地域: 新加坡(SG)</span><br><span class="line">[IPV6]</span><br><span class="line">Youtube在您的出口IP所在的国家不提供服务</span><br><span class="line">---------------DisneyPlus---------------</span><br><span class="line">[IPV4]</span><br><span class="line">当前出口所在地区解锁DisneyPlus</span><br><span class="line">区域：SG 区</span><br><span class="line">[IPV6]</span><br><span class="line">DisneyPlus在您的出口IP所在的国家不提供服务</span><br><span class="line">解锁Netflix，Youtube，DisneyPlus上面和下面进行比较，不同之处自行判断</span><br><span class="line">----------------流媒体解锁--感谢RegionRestrictionCheck开源--------------</span><br><span class="line"> 以下为IPV4网络测试，若无IPV4网络则无输出</span><br><span class="line">============[ Multination ]============</span><br><span class="line"> Dazn:                                  Yes (Region: SG)</span><br><span class="line"> Disney+:                               No (IP Banned By Disney+)</span><br><span class="line"> Netflix:                               Originals Only</span><br><span class="line"> YouTube Premium:                       Yes (Region: SG)</span><br><span class="line"> Amazon Prime Video:                    Yes (Region: SG)</span><br><span class="line"> TVBAnywhere+:                          Yes</span><br><span class="line"> Spotify Registration:                  No</span><br><span class="line"> Instagram Licensed Audio:              Failed (Network Connection)</span><br><span class="line"> OneTrust Region:                       SG [Unknown]</span><br><span class="line"> iQyi Oversea Region:                   SG</span><br><span class="line"> Bing Region:                           SG</span><br><span class="line"> YouTube CDN:                           Singapore</span><br><span class="line"> Netflix Preferred CDN:                 Singapore</span><br><span class="line"> ChatGPT:                               No (Only Available with Web Browser)</span><br><span class="line"> Google Gemini:                         Yes (Region: SGP)</span><br><span class="line"> Wikipedia Editability:                 No</span><br><span class="line"> Google Search CAPTCHA Free:            Yes</span><br><span class="line"> Steam Currency:                        SGD</span><br><span class="line"> ---Forum---</span><br><span class="line"> Reddit:                                No</span><br><span class="line">=======================================</span><br><span class="line"> 以下为IPV6网络测试，若无IPV6网络则无输出</span><br><span class="line">---------------TikTok解锁--感谢lmc999的源脚本及fscarmen PR--------------</span><br><span class="line"> Tiktok Region:         Failed</span><br><span class="line">-------------IP质量检测--基于oneclickvirt/securityCheck使用-------------</span><br><span class="line">数据仅作参考，不代表100%准确，如果和实际情况不一致请手动查询多个数据库比对</span><br><span class="line">以下为各数据库编号，输出结果后将自带数据库来源对应的编号</span><br><span class="line">ipinfo数据库  [0] | scamalytics数据库 [1] | virustotal数据库   [2] | abuseipdb数据库   [3] | ip2location数据库    [4]</span><br><span class="line">ip-api数据库  [5] | ipwhois数据库     [6] | ipregistry数据库   [7] | ipdata数据库      [8] | db-ip数据库          [9]</span><br><span class="line">ipapiis数据库 [A] | ipapicom数据库    [B] | bigdatacloud数据库 [C] | cheervision数据库 [D] | ipqualityscore数据库 [E]</span><br><span class="line">IPV4:</span><br><span class="line">安全得分:</span><br><span class="line">声誉(越高越好): 0 [2] </span><br><span class="line">信任得分(越高越好): 0 [8] </span><br><span class="line">VPN得分(越低越好): 100 [8] </span><br><span class="line">代理得分(越低越好): 100 [8] </span><br><span class="line">社区投票-无害: 0 [2] </span><br><span class="line">社区投票-恶意: 0 [2] </span><br><span class="line">威胁得分(越低越好): 100 [8] </span><br><span class="line">欺诈得分(越低越好): 3 [1] 65 [E]</span><br><span class="line">滥用得分(越低越好): 0 [3] </span><br><span class="line">ASN滥用得分(越低越好): 0.0036 (Low) [A]</span><br><span class="line">公司滥用得分(越低越好): 0.0123 (Elevated) [A] </span><br><span class="line">威胁级别: low [9 B] </span><br><span class="line">黑名单记录统计:(有多少黑名单网站有记录):</span><br><span class="line">无害记录数: 0 [2] 恶意记录数: 0 [2]  可疑记录数: 0 [2]  无记录数: 94 [2]  </span><br><span class="line">安全信息:</span><br><span class="line">使用类型: hosting - high probability [C] DataCenter/WebHosting/Transit [3] business [8] hosting [0 7 9 A]</span><br><span class="line">公司类型: business [A] hosting [0 7]</span><br><span class="line">是否云提供商: Yes [7 D] </span><br><span class="line">是否数据中心: Yes [0 1 5 6 A] No [8 C]</span><br><span class="line">是否移动设备: No [5 A C] Yes [E]</span><br><span class="line">是否代理: No [0 1 4 5 6 7 8 9 A B C D] Yes [E]</span><br><span class="line">是否VPN: Yes [E] No [0 1 6 7 A C D]</span><br><span class="line">是否Tor: No [0 1 3 6 7 8 A B C D E] </span><br><span class="line">是否Tor出口: No [1 7 D] </span><br><span class="line">是否网络爬虫: No [9 A B E] </span><br><span class="line">是否匿名: No [1 6 7 8 D] </span><br><span class="line">是否攻击者: No [7 8 D] </span><br><span class="line">是否滥用者: No [7 8 A C D E] </span><br><span class="line">是否威胁: No [7 8 C D] </span><br><span class="line">是否中继: No [0 7 8 C D] </span><br><span class="line">是否Bogon: No [7 8 A C D] </span><br><span class="line">是否机器人: No [E] </span><br><span class="line">DNS-黑名单: 313(Total_Check) 0(Clean) 5(Blacklisted) 9(Other) </span><br><span class="line">Google搜索可行性：YES</span><br><span class="line">-------------邮件端口检测--基于oneclickvirt/portchecker开源-------------</span><br><span class="line">Platform  SMTP  SMTPS POP3  POP3S IMAP  IMAPS</span><br><span class="line">LocalPort ✔     ✔     ✔     ✔     ✔     ✔  </span><br><span class="line">QQ        ✔     ✔     ✔     ✘     ✔     ✘  </span><br><span class="line">163       ✔     ✔     ✔     ✘     ✔     ✘  </span><br><span class="line">Sohu      ✔     ✔     ✔     ✘     ✔     ✘  </span><br><span class="line">Yandex    ✔     ✔     ✔     ✘     ✔     ✘  </span><br><span class="line">Gmail     ✔     ✔     ✘     ✘     ✘     ✘  </span><br><span class="line">Outlook   ✔     ✘     ✔     ✘     ✔     ✘  </span><br><span class="line">Office365 ✔     ✘     ✔     ✘     ✔     ✘  </span><br><span class="line">Yahoo     ✔     ✔     ✘     ✘     ✘     ✘  </span><br><span class="line">MailCOM   ✔     ✔     ✔     ✘     ✔     ✘  </span><br><span class="line">MailRU    ✔     ✔     ✘     ✘     ✔     ✘  </span><br><span class="line">AOL       ✔     ✔     ✘     ✘     ✘     ✘  </span><br><span class="line">GMX       ✔     ✘     ✔     ✘     ✔     ✘  </span><br><span class="line">Sina      ✔     ✘     ✔     ✘     ✔     ✘  </span><br><span class="line">----------------三网回程--基于oneclickvirt/backtrace开源----------------</span><br><span class="line">北京电信 219.141.140.10  电信CN2GIA [精品线路] </span><br><span class="line">北京联通 202.106.195.68  检测不到回程路由节点的IP地址</span><br><span class="line">北京移动 221.179.155.161 移动CMI    [普通线路] </span><br><span class="line">上海电信 202.96.209.133  电信CN2GIA [精品线路] </span><br><span class="line">上海联通 210.22.97.1     检测不到回程路由节点的IP地址</span><br><span class="line">上海移动 211.136.112.200 移动CMI    [普通线路] </span><br><span class="line">广州电信 58.60.188.222   检测不到回程路由节点的IP地址</span><br><span class="line">广州联通 210.21.196.6    检测不到回程路由节点的IP地址</span><br><span class="line">广州移动 120.196.165.24  移动CMI    [普通线路] </span><br><span class="line">成都电信 61.139.2.69     检测不到回程路由节点的IP地址</span><br><span class="line">成都联通 119.6.6.6       检测不到回程路由节点的IP地址</span><br><span class="line">成都移动 211.137.96.205  移动CMI    [普通线路] </span><br><span class="line">准确线路自行查看详细路由，本测试结果仅作参考</span><br><span class="line">同一目标地址多个线路时，可能检测已越过汇聚层，除了第一个线路外，后续信息可能无效</span><br><span class="line">---------------------回程路由--感谢fscarmen开源及PR---------------------</span><br><span class="line">依次测试电信/联通/移动经过的地区及线路，核心程序来自ipip.net或nexttrace，请知悉!</span><br><span class="line">广州电信 58.60.188.222</span><br><span class="line">60.60 ms        * RFC6598</span><br><span class="line">4.95 ms         * DOD</span><br><span class="line">6.29 ms         * DOD</span><br><span class="line">45.05 ms        * RFC1918</span><br><span class="line">46.51 ms        AS23764 [CN2-BB] 中国 香港 chinatelecomglobal.com 电信</span><br><span class="line">39.49 ms        * 中国 香港 电信/CTGNet</span><br><span class="line">96.87 ms        * [CN2-BackBone] 中国 广东 广州 chinatelecom.cn 电信</span><br><span class="line">43.12 ms        * [CN2-BackBone] 中国 广东 广州 chinatelecom.cn 电信</span><br><span class="line">53.23 ms        * [CN2-BackBone] 中国 广东 广州 chinatelecom.cn 电信</span><br><span class="line">49.17 ms        AS4134 中国 广东 佛山市 www.chinatelecom.com.cn 电信</span><br><span class="line">49.63 ms        AS4134 中国 广东 深圳 福田区 www.chinatelecom.com.cn 电信</span><br><span class="line">广州联通 210.21.196.6</span><br><span class="line">49.23 ms        * RFC6598</span><br><span class="line">2.51 ms         * DOD</span><br><span class="line">6.41 ms         * DOD</span><br><span class="line">40.74 ms        * [CUG-ASIA] 中国 香港</span><br><span class="line">43.95 ms        AS10099 中国 香港 chinaunicomglobal.com</span><br><span class="line">37.20 ms        AS10099 [CUG-BACKBONE] 中国 香港 chinaunicomglobal.com 联通</span><br><span class="line">47.76 ms        AS4837 [CU169-BACKBONE] 中国 广东 广州 chinaunicom.cn 联通</span><br><span class="line">52.52 ms        AS4837 [CU169-BACKBONE] 中国 广东 广州 chinaunicom.cn 联通</span><br><span class="line">57.09 ms        AS17816 [APNIC-AP] 中国 广东 深圳 chinaunicom.cn 联通</span><br><span class="line">48.58 ms        AS17623 [APNIC-AP] 中国 广东 深圳 chinaunicom.cn 联通</span><br><span class="line">59.57 ms        AS17623 [APNIC-AP] 中国 广东 深圳 宝安区 chinaunicom.cn 联通</span><br><span class="line">广州移动 120.196.165.24</span><br><span class="line">40.39 ms        * RFC6598</span><br><span class="line">7.26 ms         * DOD</span><br><span class="line">12.68 ms        * DOD</span><br><span class="line">102.40 ms       * DOD</span><br><span class="line">40.02 ms        * RFC1918</span><br><span class="line">46.66 ms        AS58453 [CMI-INT] 中国 香港 cmi.chinamobile.com 移动</span><br><span class="line">40.09 ms        AS58453 [CMI-INT] 中国 香港 cmi.chinamobile.com 移动</span><br><span class="line">57.14 ms        AS58453 [CMI-INT] 中国 广东 广州 cmi.chinamobile.com 移动</span><br><span class="line">56.80 ms        AS9808 [CMNET] 中国 广东 广州 chinamobileltd.com 移动</span><br><span class="line">79.83 ms        AS9808 [CMNET] 中国 广东 广州 chinamobileltd.com 移动</span><br><span class="line">83.60 ms        AS9808 [CMNET] 中国 广东 广州 chinamobileltd.com 移动</span><br><span class="line">79.35 ms        AS9808 [CMNET] 中国 广东 广州 chinamobileltd.com 移动</span><br><span class="line">76.60 ms        AS56040 [APNIC-AP] 中国 广东 深圳 gd.10086.cn 移动</span><br><span class="line">--------------------自动更新测速节点列表--本脚本原创--------------------</span><br><span class="line">位置             上传速度        下载速度        延迟     丢包率</span><br><span class="line">Speedtest.net    46.20 Mbps      44.01 Mbps      1.14     0.0%</span><br><span class="line">新加坡           39.62 Mbps      39.24 Mbps      16.13    0.0%</span><br><span class="line">中国香港         35.60 Mbps      22.75 Mbps      36.93    0.0%</span><br><span class="line">联通WuXi         32.90 Mbps      15.57 Mbps      66.55    0.0%</span><br><span class="line">电信浙江         38.87 Mbps      33.28 Mbps      76.16    NULL</span><br><span class="line">电信浙江         4.32 Mbps       32.34 Mbps      77.43    NULL</span><br><span class="line">移动杭州5G       38.97 Mbps      57.64 Mbps      69.17    0.0%</span><br><span class="line">移动Beijing      43.22 Mbps      52.82 Mbps      156.15   NULL</span><br><span class="line">------------------------------------------------------------------------</span><br><span class="line"> 总共花费      : 10 分 44 秒</span><br><span class="line"> 时间          : Fri Oct 11 20:58:51 CST 2024</span><br><span class="line">------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
-
-<h1 id="IP质量"><a href="#IP质量" class="headerlink" title="IP质量"></a>IP质量</h1><pre><code class="bash">
-########################################################################
-IP质量体检报告：159.138.*.*
-bash &lt;(curl -sL IP.Check.Place)
-https://github.com/xykt/IPQuality
-报告时间：2024-10-11 21:16:06 CST  脚本版本：v2024-07-29
-########################################################################
-一、基础信息（Maxmind 数据库）
-自治系统号：            AS136907
-组织：                  HUAWEI CLOUDS
-坐标：                  103°48′5″E, 1°22′2″N
-地图：                  https://check.place/1.3673,103.8014,13,cn
-城市：                  N/A
-使用地：                [SG]新加坡, [AS]亚洲
-注册地：                [SG]新加坡
-时区：                  Asia/Singapore
-IP类型：                 原生IP
-二、IP类型属性
-数据库：      IPinfo    ipregistry    ipapi     AbuseIPDB  IP2LOCATION
-使用类型：     机房        机房        机房        机房        机房
-公司类型：     机房        机房        机房
-三、风险评分
-风险等级：      极低         低       中等       高         极高
-SCAMALYTICS：   3|低风险
-ipapi：                      1.23%|较高风险
-AbuseIPDB：    0|低风险
-IPQS：                        75|可疑IP
-DB-IP：         |低风险
-四、风险因子
-库： IP2LOCATION ipapi ipregistry IPQS SCAMALYTICS ipdata IPinfo IPWHOIS
-地区：    [SG]    [SG]    [SG]    [SG]    [SG]    [SG]    [SG]    [SG]
-代理：     否      否      否      是      否      否      否      否
-Tor：      否      否      否      否      否      否      否      否
-VPN：      否      否      否      是      否      无      否      否
-服务器：   是      是      是      无      否      否      是      是
-滥用：     否      否      否      否      无      否      无      无
-机器人：   否      否      无      否      否      无      无      无
-五、流媒体及AI服务解锁检测
-服务商：  TikTok   Disney+  Netflix Youtube  AmazonPV  Spotify  ChatGPT
-状态：     失败     失败    仅自制    解锁     解锁     屏蔽    仅网页
-地区：                       [SG]     [SG]     [SG]              [SG]
-方式：                       原生     原生     原生              原生
-六、邮局连通性及黑名单检测
-本地25端口：阻断
-IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名单 0
-================================================================
-
-
-
-
-
-</code></pre>
-]]></content>
-      <categories>
-        <category>cloud</category>
-      </categories>
-      <tags>
-        <tag>华为云</tag>
-        <tag>huaweicloud</tag>
-        <tag>server</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>晚高峰的华为云io</title>
-    <url>/posts/12995/</url>
-    <content><![CDATA[<p>华为云新加坡Flexus L：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@host-192-168-7-62:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 8.37634 s, 32.0 MB/s</span><br></pre></td></tr></table></figure>
-
-<p>作为对比，下面是阿里云香港和rn美西的测试结果：<br>阿里云：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@ubuntu:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 6.12062 s, 43.9 MB/s</span><br></pre></td></tr></table></figure>
-
-<p>rn：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@racknerd-server:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 1.92984 s, 139 MB/s</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>cloud</category>
-      </categories>
-      <tags>
-        <tag>华为云</tag>
-        <tag>huaweicloud</tag>
-        <tag>server</tag>
       </tags>
   </entry>
 </search>
