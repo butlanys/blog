@@ -2,33 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.hqycloud.top/ba-logo/src/locales/en.json</loc>
-    
-    <lastmod>2024-11-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.hqycloud.top/ba-logo/src/locales/zh.json</loc>
-    
-    <lastmod>2024-11-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.hqycloud.top/ba-logo/index.html</loc>
-    
-    <lastmod>2024-11-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.hqycloud.top/about/index.html</loc>
     
     <lastmod>2024-11-10</lastmod>
