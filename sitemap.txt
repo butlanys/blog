@@ -46,8 +46,8 @@ https://blog.hqycloud.top/tags/%E5%BE%AE%E4%BF%A1/
 https://blog.hqycloud.top/tags/web/
 https://blog.hqycloud.top/tags/ssl/
 https://blog.hqycloud.top/tags/google-cloud/
-https://blog.hqycloud.top/categories/yhchat/
 https://blog.hqycloud.top/categories/aplayer/
+https://blog.hqycloud.top/categories/yhchat/
 https://blog.hqycloud.top/categories/cloudflare/
 https://blog.hqycloud.top/categories/docker/
 https://blog.hqycloud.top/categories/Termux/
