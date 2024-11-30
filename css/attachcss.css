@@ -13,7 +13,7 @@
 #page-header.nav-visible #nav,
 #sidebar #sidebar-menus.open {
   background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(10px);
+  /*backdrop-filter: blur(10px);*/
 }
 
 /* 夜间模式 */
@@ -34,7 +34,7 @@
   #page-header.nav-visible #nav,
   #sidebar #sidebar-menus.open {
     background: rgba(30, 30, 30, 0.7);
-    backdrop-filter: blur(5px);
+    /* backdrop-filter: blur(5px);*/
   }
 }
 
