@@ -153,61 +153,6 @@
       </categories>
   </entry>
   <entry>
-    <title>docker安装adguard home (macvlan独享ip)</title>
-    <url>/posts/6628/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>此教程适用于家里有台闲置的、可以长期开机的软路由或支持安装docker的系统使用，目前主流的教程都是bridge端口映射，但这种网络模式局限性非常大（需占用53、67…………等一系列重要的端口），所以才有现在这篇教程</strong></p>
-<h1 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h1><p>如果选择1panel来管理容器则不需要这一步（推荐）</p>
-<p><em>国际</em></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -fsSL https://get.docker.com -o get-docker.sh</span><br><span class="line">sh get-docker.sh</span><br></pre></td></tr></table></figure>
-
-<p><em>国内（这里以清华源为例）</em></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> DOWNLOAD_URL=<span class="string">&quot;https://mirrors.tuna.tsinghua.edu.cn/docker-ce&quot;</span></span><br><span class="line"><span class="comment"># 如您使用 curl</span></span><br><span class="line">curl -fsSL https://get.docker.com/ | sh</span><br><span class="line"><span class="comment"># 如您使用 wget</span></span><br><span class="line">wget -O- https://get.docker.com/ | sh</span><br></pre></td></tr></table></figure>
-
-<p><em>检查是否安装成功</em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker version</span><br></pre></td></tr></table></figure>
-
-<h1 id="安装docker-compose"><a href="#安装docker-compose" class="headerlink" title="安装docker-compose"></a>安装docker-compose</h1><p>如果选择1panel来管理容器则不需要这一步（推荐）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -L <span class="string">&quot;https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-<span class="subst">$(uname -s)</span>-<span class="subst">$(uname -m)</span>&quot;</span> -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ln</span> -s /usr/local/bin/docker-compose /usr/bin/docker-compose</span><br></pre></td></tr></table></figure>
-
-<p><em>检查是否安装成功</em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker-compose version</span><br></pre></td></tr></table></figure>
-
-<h2 id="安装1panel（推荐）"><a href="#安装1panel（推荐）" class="headerlink" title="安装1panel（推荐）"></a>安装1panel（推荐）</h2><p><a href="https://1panel.cn/docs/installation/online_installation/">在线安装 - 1Panel 文档</a></p>
-<h2 id="更换docker镜像源"><a href="#更换docker镜像源" class="headerlink" title="更换docker镜像源"></a>更换docker镜像源</h2><p><a href="https://1panel.cn/docs/user_manual/containers/setting/">配置 - 1Panel 文档</a></p>
-<p>这里推荐<code>https://docker.1panel.live</code></p>
-<h2 id="创建网络配置"><a href="#创建网络配置" class="headerlink" title="创建网络配置"></a>创建网络配置</h2><p>登录1panel——容器——网络——创建网络<br>名称自定，网络模式选<strong>macvlan</strong><br>剩下配置按你家实际网络环境填</p>
-<h2 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h2><p>名称：adguardhome<br>镜像（手动输入）：adguard&#x2F;adguardhome<br>端口：暴露所有<br>网络：选择刚才创建的<strong>macvlan</strong>网络时填的名字<br>ipv4：你家的局域网空闲的IP，这里我填了192.168.3.254<br>挂载：</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/8/image_893d93e970aac846f0f658d603657bbc.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/8/image_893d93e970aac846f0f658d603657bbc.png"><br><code>/opt/adguardhome/conf</code> <code>/opt/adguardhome/work</code></p>
-<p><em>没提到的不要填</em></p>
-<p>填完后点确认，等待1panel响应后访问<code>容器IP:3000</code>即可进入安装页</p>
-<h2 id="排障"><a href="#排障" class="headerlink" title="排障"></a>排障</h2><p>容器启动后仍然无法访问<br>打开网卡混杂模式</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> &lt;主网卡名称&gt; promisc on</span><br></pre></td></tr></table></figure>
-
-<p>如果还是不行</p>
-<p>可以建一个使用相同网络的容器（奇奇怪怪的bug用奇奇怪怪的方法解决😓 ）</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/8/image_9c7bdd7ab8df7f28d650105291a45283.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/8/image_9c7bdd7ab8df7f28d650105291a45283.png"></p>
-<p>这个容器不需要跑任何东西，让它保持开着就行，所以1panel创建该容器时可以选alpine容器Entrypoint项里填</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;sleep&#x27; &#x27;infinity&#x27;</span><br></pre></td></tr></table></figure>
-
-<h2 id="推荐的上游DNS"><a href="#推荐的上游DNS" class="headerlink" title="推荐的上游DNS"></a>推荐的上游DNS</h2><p><a href="https://dns.alidns.com/dns-query">https://dns.alidns.com/dns-query</a><br><a href="https://cloudflare-dns.com/dns-query">https://cloudflare-dns.com/dns-query</a></p>
-<ul>
-<li>不要使用无任何加密的dns，例如直接使用8.8.8.8（中国大陆会搞DNS劫持，例如运营商DNS解析raw.githubusercontent.com就会返回0.0.0.0😓 ）</li>
-</ul>
-]]></content>
-      <categories>
-        <category>docker</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-        <tag>adguard home</tag>
-        <tag>macvlan</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>cloudflare优选IP</title>
     <url>/posts/39316/</url>
     <content><![CDATA[<p>这篇文章补全<a href="https://blog.hqycloud.top/posts/204d8c5f/">cloudflare tunnel优选IP | butlanys的博客 (hqycloud.top)</a>教程中未详细讲述cloudflare优选IP的内容</p>
@@ -279,6 +224,61 @@
       <categories>
         <category>cloudflare</category>
       </categories>
+  </entry>
+  <entry>
+    <title>docker安装adguard home (macvlan独享ip)</title>
+    <url>/posts/6628/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>此教程适用于家里有台闲置的、可以长期开机的软路由或支持安装docker的系统使用，目前主流的教程都是bridge端口映射，但这种网络模式局限性非常大（需占用53、67…………等一系列重要的端口），所以才有现在这篇教程</strong></p>
+<h1 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h1><p>如果选择1panel来管理容器则不需要这一步（推荐）</p>
+<p><em>国际</em></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -fsSL https://get.docker.com -o get-docker.sh</span><br><span class="line">sh get-docker.sh</span><br></pre></td></tr></table></figure>
+
+<p><em>国内（这里以清华源为例）</em></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> DOWNLOAD_URL=<span class="string">&quot;https://mirrors.tuna.tsinghua.edu.cn/docker-ce&quot;</span></span><br><span class="line"><span class="comment"># 如您使用 curl</span></span><br><span class="line">curl -fsSL https://get.docker.com/ | sh</span><br><span class="line"><span class="comment"># 如您使用 wget</span></span><br><span class="line">wget -O- https://get.docker.com/ | sh</span><br></pre></td></tr></table></figure>
+
+<p><em>检查是否安装成功</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker version</span><br></pre></td></tr></table></figure>
+
+<h1 id="安装docker-compose"><a href="#安装docker-compose" class="headerlink" title="安装docker-compose"></a>安装docker-compose</h1><p>如果选择1panel来管理容器则不需要这一步（推荐）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -L <span class="string">&quot;https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-<span class="subst">$(uname -s)</span>-<span class="subst">$(uname -m)</span>&quot;</span> -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ln</span> -s /usr/local/bin/docker-compose /usr/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<p><em>检查是否安装成功</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker-compose version</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装1panel（推荐）"><a href="#安装1panel（推荐）" class="headerlink" title="安装1panel（推荐）"></a>安装1panel（推荐）</h2><p><a href="https://1panel.cn/docs/installation/online_installation/">在线安装 - 1Panel 文档</a></p>
+<h2 id="更换docker镜像源"><a href="#更换docker镜像源" class="headerlink" title="更换docker镜像源"></a>更换docker镜像源</h2><p><a href="https://1panel.cn/docs/user_manual/containers/setting/">配置 - 1Panel 文档</a></p>
+<p>这里推荐<code>https://docker.1panel.live</code></p>
+<h2 id="创建网络配置"><a href="#创建网络配置" class="headerlink" title="创建网络配置"></a>创建网络配置</h2><p>登录1panel——容器——网络——创建网络<br>名称自定，网络模式选<strong>macvlan</strong><br>剩下配置按你家实际网络环境填</p>
+<h2 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h2><p>名称：adguardhome<br>镜像（手动输入）：adguard&#x2F;adguardhome<br>端口：暴露所有<br>网络：选择刚才创建的<strong>macvlan</strong>网络时填的名字<br>ipv4：你家的局域网空闲的IP，这里我填了192.168.3.254<br>挂载：</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/8/image_893d93e970aac846f0f658d603657bbc.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/8/image_893d93e970aac846f0f658d603657bbc.png"><br><code>/opt/adguardhome/conf</code> <code>/opt/adguardhome/work</code></p>
+<p><em>没提到的不要填</em></p>
+<p>填完后点确认，等待1panel响应后访问<code>容器IP:3000</code>即可进入安装页</p>
+<h2 id="排障"><a href="#排障" class="headerlink" title="排障"></a>排障</h2><p>容器启动后仍然无法访问<br>打开网卡混杂模式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> &lt;主网卡名称&gt; promisc on</span><br></pre></td></tr></table></figure>
+
+<p>如果还是不行</p>
+<p>可以建一个使用相同网络的容器（奇奇怪怪的bug用奇奇怪怪的方法解决😓 ）</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/8/image_9c7bdd7ab8df7f28d650105291a45283.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/8/image_9c7bdd7ab8df7f28d650105291a45283.png"></p>
+<p>这个容器不需要跑任何东西，让它保持开着就行，所以1panel创建该容器时可以选alpine容器Entrypoint项里填</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;sleep&#x27; &#x27;infinity&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="推荐的上游DNS"><a href="#推荐的上游DNS" class="headerlink" title="推荐的上游DNS"></a>推荐的上游DNS</h2><p><a href="https://dns.alidns.com/dns-query">https://dns.alidns.com/dns-query</a><br><a href="https://cloudflare-dns.com/dns-query">https://cloudflare-dns.com/dns-query</a></p>
+<ul>
+<li>不要使用无任何加密的dns，例如直接使用8.8.8.8（中国大陆会搞DNS劫持，例如运营商DNS解析raw.githubusercontent.com就会返回0.0.0.0😓 ）</li>
+</ul>
+]]></content>
+      <categories>
+        <category>docker</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>adguard home</tag>
+        <tag>macvlan</tag>
+      </tags>
   </entry>
   <entry>
     <title>云崽bot恢复包 --Termux</title>
