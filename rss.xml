@@ -9,8 +9,37 @@
     <atom:link href="https://blog.butlanys.de/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description>feedId:68844391603512320+userId:69593297238667264</description>
-    <pubDate>Sat, 09 Nov 2024 06:32:55 GMT</pubDate>
+    <pubDate>Mon, 23 Dec 2024 12:18:17 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>bash执行长命令报错临时解决办法</title>
+      <link>https://blog.butlanys.de/posts/35504/</link>
+      <guid>https://blog.butlanys.de/posts/35504/</guid>
+      <pubDate>Mon, 23 Dec 2024 12:18:08 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;终端运行&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pr</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p>终端运行</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c <span class="string">&quot;hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/*</span></span><br></pre></td></tr></table></figure><p>报错：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-bash: bash -c hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/* /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/: No such file or directory</span><br></pre></td></tr></table></figure><p>目录也存在，而且分步执行也正常，但连起来就报错😓</p><p>将命令转为脚本后运行成功</p><p>上面的命令换成脚本</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">BLOG_DIR=&quot;/opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index&quot;</span><br><span class="line"></span><br><span class="line">mkdir -p &quot;$BLOG_DIR&quot;</span><br><span class="line"></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line">rm -rf &quot;$BLOG_DIR/*&quot;</span><br><span class="line">cp -r /opt/blog/hexo/public/* &quot;$BLOG_DIR/&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;success!&quot;</span><br></pre></td></tr></table></figure><p>至此，结束</p>]]></content:encoded>
+      
+      
+      <category domain="https://blog.butlanys.de/categories/linux/">linux</category>
+      
+      
+      <category domain="https://blog.butlanys.de/tags/bash/">bash</category>
+      
+      <category domain="https://blog.butlanys.de/tags/linux/">linux</category>
+      
+      
+      <comments>https://blog.butlanys.de/posts/35504/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>微信4.0测试版上线</title>
@@ -363,6 +392,8 @@
       <category domain="https://blog.butlanys.de/categories/Internet/">Internet</category>
       
       
+      <category domain="https://blog.butlanys.de/tags/linux/">linux</category>
+      
       <category domain="https://blog.butlanys.de/tags/Internet/">Internet</category>
       
       <category domain="https://blog.butlanys.de/tags/%E9%99%90%E9%80%9F/">限速</category>
@@ -370,8 +401,6 @@
       <category domain="https://blog.butlanys.de/tags/%E6%A0%A1%E5%9B%AD%E7%BD%91/">校园网</category>
       
       <category domain="https://blog.butlanys.de/tags/%E7%BD%91%E7%BB%9C/">网络</category>
-      
-      <category domain="https://blog.butlanys.de/tags/linux/">linux</category>
       
       
       <comments>https://blog.butlanys.de/posts/6159/#disqus_thread</comments>

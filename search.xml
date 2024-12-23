@@ -153,6 +153,30 @@
       </categories>
   </entry>
   <entry>
+    <title>bash执行长命令报错临时解决办法</title>
+    <url>/posts/35504/</url>
+    <content><![CDATA[<p>终端运行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c <span class="string">&quot;hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/*</span></span><br></pre></td></tr></table></figure>
+
+<p>报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash: bash -c hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/* /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<p>目录也存在，而且分步执行也正常，但连起来就报错😓</p>
+<p>将命令转为脚本后运行成功</p>
+<p>上面的命令换成脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">BLOG_DIR=&quot;/opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index&quot;</span><br><span class="line"></span><br><span class="line">mkdir -p &quot;$BLOG_DIR&quot;</span><br><span class="line"></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line">rm -rf &quot;$BLOG_DIR/*&quot;</span><br><span class="line">cp -r /opt/blog/hexo/public/* &quot;$BLOG_DIR/&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;success!&quot;</span><br></pre></td></tr></table></figure>
+
+<p>至此，结束</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>bash</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>cloudflare优选IP</title>
     <url>/posts/39316/</url>
     <content><![CDATA[<p>这篇文章补全<a href="https://blog.hqycloud.top/posts/204d8c5f/">cloudflare tunnel优选IP | butlanys的博客 (hqycloud.top)</a>教程中未详细讲述cloudflare优选IP的内容</p>
@@ -458,11 +482,11 @@
         <category>Internet</category>
       </categories>
       <tags>
+        <tag>linux</tag>
         <tag>Internet</tag>
         <tag>限速</tag>
         <tag>校园网</tag>
         <tag>网络</tag>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
