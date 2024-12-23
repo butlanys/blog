@@ -9,4 +9,4 @@ Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
 
-Sitemap: https://blog.hqycloud.top/sitemap.xml
+Sitemap: https://blog.butlanys.de/sitemap.xml
