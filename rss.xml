@@ -9,7 +9,7 @@
     <atom:link href="https://blog.butlanys.de/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description>feedId:68844391603512320+userId:69593297238667264</description>
-    <pubDate>Mon, 23 Dec 2024 12:45:55 GMT</pubDate>
+    <pubDate>Mon, 23 Dec 2024 12:49:43 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -18,7 +18,7 @@
       <guid>https://blog.butlanys.de/posts/35504/</guid>
       <pubDate>Mon, 23 Dec 2024 12:18:08 GMT</pubDate>
       
-      <description>Please provide the blog post you want me to summarize. I need the text of the blog post to create a summary for you.</description>
+      <description>这篇文章描述了作者在使用`bash -c`命令一键部署 Hexo 博客时遇到的问题。尽管命令中的每个步骤（清理、生成、部署、删除旧文件、复制新文件）单独执行都能成功，但合并成一个命令后却报错“No such file or directory”。  作者通过将命令转换为 shell 脚本并使用变量`$BLOG_DIR`存储目标目录路径解决了这个问题。脚本成功执行，最终实现了 Hexo 博客的自动化部署。  这篇文章的经验是，复杂的命令序列有时在`bash -c`中会出现意料之外的错误，而使用脚本可以提高命令执行的可靠性和可读性。</description>
       
       
       
