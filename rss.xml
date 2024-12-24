@@ -9,8 +9,31 @@
     <atom:link href="https://blog.butlanys.de/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description>feedId:68844391603512320+userId:69593297238667264</description>
-    <pubDate>Mon, 23 Dec 2024 12:49:43 GMT</pubDate>
+    <pubDate>Tue, 24 Dec 2024 12:11:40 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>微信一号多登版分享（Android）</title>
+      <link>https://blog.butlanys.de/posts/19950/</link>
+      <guid>https://blog.butlanys.de/posts/19950/</guid>
+      <pubDate>Tue, 24 Dec 2024 12:05:53 GMT</pubDate>
+      
+      <description>这篇博客文章介绍了一种在备用机上使用平板登录微信的替代方法，无需像lspatch那样打入mod，从而实现更快的启动速度。文章提供了一个alist链接 (https://alist.hqycloud.top/res/Wechat/)，可能指向相关的安装文件或教程。该方法的优势在于启动速度更快，这意味着用户可以更快地访问微信。文章暗示了这种方法比传统的mod方法更加轻便和高效，更适合在备用机或性能较低的设备上使用。 虽然文章没有明确说明具体操作步骤，但提供的链接很可能是关键信息来源，用户可以通过访问该链接了解更多细节并尝试这种新的登录方式。</description>
+      
+      
+      
+      <content:encoded><![CDATA[<blockquote><p>这个版本可以在备用机上使用平板登录</p></blockquote><p>跟lspatch打入mod相比，这个启动速度更快</p><p>链接：<a href="https://alist.hqycloud.top/res/Wechat/">https://alist.hqycloud.top/res/Wechat/</a></p>]]></content:encoded>
+      
+      
+      <category domain="https://blog.butlanys.de/categories/wechat/">wechat</category>
+      
+      
+      <category domain="https://blog.butlanys.de/tags/wechat/">wechat</category>
+      
+      
+      <comments>https://blog.butlanys.de/posts/19950/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>bash执行长命令报错临时解决办法</title>
