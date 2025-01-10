@@ -75,7 +75,7 @@ input:hover, textarea:hover {
 }
 /* 悬停按钮时的鼠标指针 */
 button:hover,.scroll-down-effects:hover {
-    cursor: url('../cdn/No_Disponible.cur'), auto;
+    cursor: url('../cdn/no-disponible.cur'), auto;
 }
 /* 悬停页脚链接标签（例如页脚徽标）时的鼠标指针 */
 #footer-wrap a:hover {
