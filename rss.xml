@@ -454,10 +454,7 @@
       <guid>https://blog.butlanys.de/posts/11111/</guid>
       <pubDate>Sun, 21 Jul 2024 15:01:45 GMT</pubDate>
       
-        
-        
-      <description>&lt;p&gt;前言：上个月在alice白嫖了一台4c8g的vps，性能虽好，但中国大陆方向优化几乎没有，广东电信ping不低于300ms，而手上又有一台阿里云香港轻量，所以就拿来给alice的vps作跳板机。本来部署项目一切顺利，但是到反代时1panel罢工，反代http正常，https</description>
-        
+      <description>本文介绍了如何使用 WireGuard 构建 VPS 之间的点对点 VPN 连接，以解决海外 VPS 国内访问延迟高的问题。作者利用一台阿里云香港轻量服务器作为跳板机，为位于大陆以外的 VPS 加速。文章详细讲解了 WireGuard 的安装和配置步骤，包括密钥生成、配置文件编写以及防火墙端口放行。核心是配置两台 VPS 的 WireGuard，使其能够相互通信，并通过香港服务器转发流量，从而降低延迟。文章最后提醒读者，WireGuard 不具备流量伪装功能，不适用于翻墙。</description>
       
       
       
