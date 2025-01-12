@@ -622,12 +622,7 @@
       <guid>https://blog.butlanys.de/posts/a1bc7431/</guid>
       <pubDate>Sat, 11 May 2024 13:18:37 GMT</pubDate>
       
-        
-        
-      <description>&lt;ul&gt;
-&lt;li&gt;自带一键部署脚本&lt;/li&gt;
-&lt;li&gt;自带签名服务器(qsign-1.1.7)&lt;br&gt;&amp;#x3D;&amp;#x3D;&amp;#x3D;&amp;#x3D;&amp;#x3D;&amp;#x3D;&amp;#x3D;&amp;#x3D;&amp;#x3D;&amp;#x3D;&amp;#x3D;&amp;#x3D;使用教程&amp;#x3D;&amp;#x3D;&amp;</description>
-        
+      <description>这篇博客文章介绍了如何在Termux环境下使用ZeroTermux一键部署云崽Bot，并自带签名服务器(qsign-1.1.7)。文章提供了详细的部署步骤，包括下载和安装ZeroTermux、恢复数据包、切换容器以及运行启动脚本。  核心是利用提供的脚本简化部署流程，实现Bot的快速启动和运行。文章还列出了常用的pnpm命令，方便用户管理Bot，例如启动、停止和查看日志等。  此外，文章特别提醒用户首次运行可能出现连接签名服务器失败的情况，并提供了相应的排查建议。最后，作者声明该项目禁止倒卖/商用。</description>
       
       
       
