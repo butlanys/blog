@@ -481,13 +481,7 @@
       <guid>https://blog.butlanys.de/posts/9992/</guid>
       <pubDate>Sun, 21 Jul 2024 14:54:10 GMT</pubDate>
       
-        
-        
-      <description>&lt;p&gt;此教程适用于希望快速启动一个干净的系统的人群&lt;/p&gt;
-&lt;h2 id=&quot;准备&quot;&gt;&lt;a href=&quot;#准备&quot; class=&quot;headerlink&quot; title=&quot;准备&quot;&gt;&lt;/a&gt;准备&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;VMware workstation&lt;/li&gt;
-&lt;li&gt;一个系统镜像</description>
-        
+      <description>这篇教程讲解了如何使用VMware Workstation快速部署一个干净的Debian 12系统。文章提供了两种方法：将Debian镜像转换为VMDK格式，或直接使用作者预先配置好的VMDK文件。转换方法使用了StarWind V2V Converter工具，并详细说明了转换步骤和VMware虚拟机的配置过程，包括移除默认硬盘、添加转换后的VMDK磁盘等。文章还提供了预配置VMDK文件和原始镜像的下载链接，以及默认的root账户用户名和密码。最后，文章简要介绍了如何通过DHCP配置网络连接。对于希望快速搭建干净Debian 12环境的用户，这篇教程提供了便捷的解决方案。</description>
       
       
       
