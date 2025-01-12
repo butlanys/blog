@@ -357,10 +357,7 @@
       <guid>https://blog.butlanys.de/posts/6628/</guid>
       <pubDate>Wed, 07 Aug 2024 02:23:28 GMT</pubDate>
       
-        
-        
-      <description>&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;此教程适用于家里有台闲置的、可以长期开机的软路由或支持安装docker的系统使用，目前主流的教程都是bridge端口映射，但</description>
-        
+      <description>这篇教程讲解了如何在软路由或支持Docker的系统上使用macvlan网络模式搭建AdGuard Home，从而避免桥接模式的端口冲突问题。教程首先介绍了Docker和Docker Compose的安装，并推荐使用1Panel简化容器管理。  核心步骤在于使用1Panel创建macvlan网络，并配置AdGuard Home容器，指定静态IP和数据卷挂载路径。教程还提供了故障排除方法，例如开启网卡混杂模式和创建辅助容器。最后，推荐使用加密DNS上游服务器，例如阿里DNS和Cloudflare DNS，以避免DNS劫持。</description>
       
       
       

@@ -250,58 +250,6 @@
       </categories>
   </entry>
   <entry>
-    <title>云崽bot恢复包 --Termux</title>
-    <url>/posts/a1bc7431/</url>
-    <content><![CDATA[<ul>
-<li>自带一键部署脚本</li>
-<li>自带签名服务器(qsign-1.1.7)<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;使用教程&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>下载云盘内的ZeroTermux和恢复包</li>
-<li>先安装ZeroTermux</li>
-<li>把恢复包直接解压在内部存储（防止你们不会放）</li>
-</ul>
-<p>打开ZeroTermux，在左侧边栏中找到备份&#x2F;恢复，然后选择恢复数据包<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/0.jpg"></p>
-<ul>
-<li>选择以后会弹出恢复的系统名字，填一个你喜欢的就行。</li>
-<li>恢复完成后在左侧边栏找到容器切换，切换到你刚才恢复的容器<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;bot使用教程&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>使用方法：</li>
-<li>终端运行</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bash 云崽bot容器启动脚本.sh</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/1.jpg"></p>
-<ul>
-<li>选择 debian-bullseye_arm64 _1–proot<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/2.jpg"></li>
-<li>选择 启动proot debian-bullseye_arm64<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/3.jpg"></li>
-<li>终端运行</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./start.sh</span><br></pre></td></tr></table></figure>
-
-<p>启动签名服务、redis和查看使用说明<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/4.jpg"><br>最后再输入</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd Miao-Yunzai</span><br></pre></td></tr></table></figure>
-
-<p>切换到云崽目录<br>然后运行pnpm app登陆Bot<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/5.jpg"></p>
-<p>运行后你将会看到跟上面一样的内容</p>
-<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>第一次运行可能会出现连接不上签名服务器，请用Ctrl+c结束掉bot进程，然后用ps -le查看正在运行的服务，如果正常，你将看到以下内容<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/6.jpg"></p>
-<ul>
-<li>里面包含一个java程序和redis数据库服务<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;pnpm常用命令&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm app #带log启动</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm run log #查看启动日志</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm start #不带log启动</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm stop #停止bot</span><br></pre></td></tr></table></figure>
-
-<p>以上命令请在云崽bot主目录下运行<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;如果有解决不了的报错请反馈&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<ul>
-<li>制作不易，请勿倒卖&#x2F;商用</li>
-<li>链接已放在评论区</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Termux</category>
-      </categories>
-  </entry>
-  <entry>
     <title>docker安装adguard home (macvlan独享ip)</title>
     <url>/posts/6628/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>此教程适用于家里有台闲置的、可以长期开机的软路由或支持安装docker的系统使用，目前主流的教程都是bridge端口映射，但这种网络模式局限性非常大（需占用53、67…………等一系列重要的端口），所以才有现在这篇教程</strong></p>
@@ -355,6 +303,58 @@
         <tag>adguard home</tag>
         <tag>macvlan</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>云崽bot恢复包 --Termux</title>
+    <url>/posts/a1bc7431/</url>
+    <content><![CDATA[<ul>
+<li>自带一键部署脚本</li>
+<li>自带签名服务器(qsign-1.1.7)<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;使用教程&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>下载云盘内的ZeroTermux和恢复包</li>
+<li>先安装ZeroTermux</li>
+<li>把恢复包直接解压在内部存储（防止你们不会放）</li>
+</ul>
+<p>打开ZeroTermux，在左侧边栏中找到备份&#x2F;恢复，然后选择恢复数据包<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/0.jpg"></p>
+<ul>
+<li>选择以后会弹出恢复的系统名字，填一个你喜欢的就行。</li>
+<li>恢复完成后在左侧边栏找到容器切换，切换到你刚才恢复的容器<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;bot使用教程&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>使用方法：</li>
+<li>终端运行</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bash 云崽bot容器启动脚本.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/1.jpg"></p>
+<ul>
+<li>选择 debian-bullseye_arm64 _1–proot<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/2.jpg"></li>
+<li>选择 启动proot debian-bullseye_arm64<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/3.jpg"></li>
+<li>终端运行</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./start.sh</span><br></pre></td></tr></table></figure>
+
+<p>启动签名服务、redis和查看使用说明<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/4.jpg"><br>最后再输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd Miao-Yunzai</span><br></pre></td></tr></table></figure>
+
+<p>切换到云崽目录<br>然后运行pnpm app登陆Bot<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/5.jpg"></p>
+<p>运行后你将会看到跟上面一样的内容</p>
+<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>第一次运行可能会出现连接不上签名服务器，请用Ctrl+c结束掉bot进程，然后用ps -le查看正在运行的服务，如果正常，你将看到以下内容<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/6.jpg"></p>
+<ul>
+<li>里面包含一个java程序和redis数据库服务<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;pnpm常用命令&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm app #带log启动</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm run log #查看启动日志</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm start #不带log启动</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm stop #停止bot</span><br></pre></td></tr></table></figure>
+
+<p>以上命令请在云崽bot主目录下运行<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;如果有解决不了的报错请反馈&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<ul>
+<li>制作不易，请勿倒卖&#x2F;商用</li>
+<li>链接已放在评论区</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Termux</category>
+      </categories>
   </entry>
   <entry>
     <title>使用bing搜索引擎的用户记得兑换积分</title>
