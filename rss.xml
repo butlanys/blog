@@ -526,13 +526,7 @@
       <guid>https://blog.butlanys.de/posts/204d8c5f/</guid>
       <pubDate>Tue, 14 May 2024 11:51:51 GMT</pubDate>
       
-        
-        
-      <description>&lt;p&gt;&lt;strong&gt;总所周知，cloudflare默认分配的IP都在美国，轻则速度慢运气不好分配的还是被GFW拦截的&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;本教程需要：&lt;/p&gt;
-&lt;p&gt;一张万事达&amp;#x2F;visa过cloudflare for saas验证&lt;/p&gt;
-&lt;p&gt;两条域名，</description>
-        
+      <description>This tutorial explains how to use Cloudflare Tunnel to access services hosted on a local server while bypassing Cloudflare&#39;s default US IP allocation and potential GFW blocking.  It requires a Mastercard/Visa card for Cloudflare for SaaS and two domains: one for routing optimized traffic and another managed by Cloudflare. The tutorial details setting up `cloudflared` (including Docker deployment), creating a tunnel, configuring DNS routing, and testing the connection. Finally, it covers setting up Cloudflare for SaaS with a fallback domain and custom hostname, and using a third-party tool to identify optimal Cloudflare IPs for improved performance. The ultimate goal is to achieve faster and more reliable access to locally hosted services through Cloudflare.</description>
       
       
       
