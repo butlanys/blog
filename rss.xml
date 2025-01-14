@@ -553,10 +553,7 @@
       <guid>https://blog.butlanys.de/posts/bebafed8/</guid>
       <pubDate>Sat, 11 May 2024 16:18:01 GMT</pubDate>
       
-        
-        
-      <description>&lt;h2 id=&quot;点击使用云湖机器人【Gemini-Bot】&quot;&gt;&lt;a href=&quot;#点击使用云湖机器人【Gemini-Bot】&quot; class=&quot;headerlink&quot; title=&quot;点击使用云湖机器人【Gemini Bot】&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://yhfx.j</description>
-        
+      <description>这篇博客文章介绍了云湖机器人平台上的 Gemini Bot (ID: 9804152)，一个基于 Google Gemini AI 的多模态人工智能模型。Gemini Bot 能够处理文本、图像、音频和视频，具备生成文本、翻译、创建多媒体内容、问答等多种功能，旨在提升AI模型的灵活性和效率。该机器人响应速度快，支持无限制对话和连续上下文理解，并提供接近ChatGPT 4.0质量的免费服务和流式输出。文章强调了上下文功能目前仅限于私聊，并提供了清除上下文的方法。用户可以通过多种方式在群组中唤醒机器人。文章最后介绍了该项目的开发情况，包括待开发功能和基于OpenAI Python SDK的部署方法，并提供了GitHub项目地址。</description>
       
       
       
