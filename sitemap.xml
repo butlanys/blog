@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.butlanys.de/about/index.html</loc>
+    
+    <lastmod>2025-01-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.butlanys.de/posts/30145/</loc>
     
     <lastmod>2025-01-19</lastmod>
@@ -104,15 +113,6 @@
     <loc>https://blog.butlanys.de/posts/35504/</loc>
     
     <lastmod>2024-12-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.butlanys.de/about/index.html</loc>
-    
-    <lastmod>2024-11-10</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
