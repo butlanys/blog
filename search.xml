@@ -107,6 +107,11 @@
 <figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">location</span><span class="regexp"> ^~</span> /test/ &#123;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/test/(.*)$</span> /<span class="variable">$1</span> <span class="literal">break</span>; <span class="comment"># 重写 URL</span></span><br><span class="line">    <span class="attribute">proxy_pass</span> https://example.com;</span><br><span class="line">    <span class="attribute">proxy_buffering</span> <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">proxy_request_buffering</span> <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> Connection <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> Host example.com;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> REMOTE-HOST <span class="variable">$remote_addr</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">    <span class="attribute">proxy_cache</span> <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">proxy_ssl_server_name</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">proxy_ssl_name</span> example.com;</span><br><span class="line">    <span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&quot;max-age=31536000&quot;</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Accel-Buffering <span class="literal">no</span>;</span><br><span class="line">    <span class="attribute">add_header</span> X-Proxy-Cache <span class="variable">$upstream_cache_status</span>;</span><br><span class="line">    <span class="attribute">tcp_nodelay</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="section">location</span> <span class="regexp">~* /test/.*\.(css|js)$</span> &#123;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^/test/(.*)$</span> /<span class="variable">$1</span> <span class="literal">break</span>;</span><br><span class="line">        <span class="attribute">proxy_pass</span> https://example.com;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host example.com;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> REMOTE-HOST <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">        <span class="attribute">proxy_cache_key</span> <span class="string">&quot;<span class="variable">$scheme</span><span class="variable">$proxy_host</span><span class="variable">$uri</span>&quot;</span>;</span><br><span class="line">        <span class="attribute">proxy_ssl_server_name</span> <span class="literal">on</span>;</span><br><span class="line">        <span class="attribute">proxy_ssl_name</span> example.com;</span><br><span class="line">        <span class="attribute">expires</span> <span class="number">7d</span>;</span><br><span class="line">        <span class="attribute">add_header</span> Cache-Control <span class="string">&quot;public&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>我这里反代的是某个视频网站，所以我开了缓存+视频流优化，如果不需要请自行删减</p>
+<p>反代前：</p>
+<p><img src="https://file.butlanys.de/img/19560554ab6b1d677b107a173036e02e.png"></p>
+<p>反代后：</p>
+<p><img src="https://file.butlanys.de/img/6bb0dcbca31471d7718d1eaf8dba4bfd.png"></p>
+<p>虽然不知道为什么反代之后资源只会一个个加载了，但起码视频流是正常的，速度比反代前高得多</p>
 ]]></content>
       <categories>
         <category>nginx</category>
@@ -132,6 +137,169 @@
         <tag>alist</tag>
         <tag>music</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>bash执行长命令报错临时解决办法</title>
+    <url>/posts/35504/</url>
+    <content><![CDATA[<p>终端运行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c <span class="string">&quot;hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/*</span></span><br></pre></td></tr></table></figure>
+
+<p>报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash: bash -c hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/* /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<p>目录也存在，而且分步执行也正常，但连起来就报错😓</p>
+<p>将命令转为脚本后运行成功</p>
+<p>上面的命令换成脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">BLOG_DIR=&quot;/opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index&quot;</span><br><span class="line"></span><br><span class="line">mkdir -p &quot;$BLOG_DIR&quot;</span><br><span class="line"></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line">rm -rf &quot;$BLOG_DIR/*&quot;</span><br><span class="line">cp -r /opt/blog/hexo/public/* &quot;$BLOG_DIR/&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;success!&quot;</span><br></pre></td></tr></table></figure>
+
+<p>至此，结束</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>bash</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>cloudflare tunnel优选IP</title>
+    <url>/posts/204d8c5f/</url>
+    <content><![CDATA[<p><strong>总所周知，cloudflare默认分配的IP都在美国，轻则速度慢运气不好分配的还是被GFW拦截的</strong></p>
+<p>本教程需要：</p>
+<p>一张万事达&#x2F;visa过cloudflare for saas验证</p>
+<p>两条域名，一条用于优选，一条托管到cloudfalre</p>
+<h4 id="一、配置cloudflared"><a href="#一、配置cloudflared" class="headerlink" title="一、配置cloudflared"></a>一、配置cloudflared</h4><ul>
+<li>cloudflared可在<a href="https://github.com/cloudflare/cloudflared/">cloudflare&#x2F;cloudflared: Cloudflare Tunnel client (formerly Argo Tunnel) (github.com)</a>上获取</li>
+</ul>
+<h5 id="部署方式（可选）"><a href="#部署方式（可选）" class="headerlink" title="部署方式（可选）"></a>部署方式（可选）</h5><ul>
+<li>本教程以docker为例</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -d --name cloudflared_status --network=host alpine sleep infinity</span><br></pre></td></tr></table></figure>
+
+<h5 id="下载cloudflared"><a href="#下载cloudflared" class="headerlink" title="下载cloudflared"></a>下载cloudflared</h5><p>这里以arm64为例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget -O /usr/bin/cloudflared https://github.hqycloud.top/https://github.com/cloudflare/cloudflared/releases/download/2024.4.1/cloudflared-linux-arm64</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置权限"><a href="#设置权限" class="headerlink" title="设置权限"></a>设置权限</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chmod 777 /usr/bin/cloudflared</span><br></pre></td></tr></table></figure>
+
+<h5 id="查看版本号"><a href="#查看版本号" class="headerlink" title="查看版本号"></a>查看版本号</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared version</span><br></pre></td></tr></table></figure>
+
+<h5 id="登录cloudflared"><a href="#登录cloudflared" class="headerlink" title="登录cloudflared"></a>登录cloudflared</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel login</span><br></pre></td></tr></table></figure>
+
+<h5 id="创建隧道并命名"><a href="#创建隧道并命名" class="headerlink" title="创建隧道并命名"></a>创建隧道并命名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel create 隧道名</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>隧道名可以自定义，但不能重复！</li>
+</ul>
+<h5 id="查看隧道列表"><a href="#查看隧道列表" class="headerlink" title="查看隧道列表"></a>查看隧道列表</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel list</span><br></pre></td></tr></table></figure>
+
+<h5 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;url: http://localhost:8000</span><br><span class="line">tunnel: &lt;Tunnel-UUID&gt;</span><br><span class="line">credentials-file: /root/.cloudflared/&lt;Tunnel-UUID&gt;.json&#x27; &gt; .cloudflared/config.yml</span><br></pre></td></tr></table></figure>
+
+<p>这里的Tunnel-UUID在隧道列表可以看到</p>
+<p><em>查看创建好的config.yml</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat config.yml</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置域名"><a href="#设置域名" class="headerlink" title="设置域名"></a>设置域名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel route dns &lt;UUID or NAME&gt; &lt;hostname&gt;</span><br></pre></td></tr></table></figure>
+
+<p>UUID和NAME二选一，uuid查看隧道列表就能看到，name是你创建时输入的名字</p>
+<p>hostname填的是托管在cloudflare的子域，不需要完整的域名</p>
+<p>例如：tunnel-cdn.test.com（托管在cloudflare</p>
+<p>则只需要填tunnel-cdn</p>
+<h5 id="测试隧道是否正常"><a href="#测试隧道是否正常" class="headerlink" title="测试隧道是否正常"></a>测试隧道是否正常</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel run &lt;UUID or NAME&gt;</span><br></pre></td></tr></table></figure>
+
+<p>访问托管在cloudflare的隧道子域查看是否正常</p>
+<p>如果正常可继续看下一步，如果打不开并报错，请移步至cloudflare文档</p>
+<h5 id="在后台运行隧道"><a href="#在后台运行隧道" class="headerlink" title="在后台运行隧道"></a>在后台运行隧道</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nohup cloudflared tunnel run &lt;UUID or NAME&gt; &amp;</span><br></pre></td></tr></table></figure>
+
+<h4 id="二、配置优选IP"><a href="#二、配置优选IP" class="headerlink" title="二、配置优选IP"></a>二、配置优选IP</h4><h5 id="开通cloudflare-for-saas服务"><a href="#开通cloudflare-for-saas服务" class="headerlink" title="开通cloudflare for saas服务"></a>开通cloudflare for saas服务</h5><p>需要绑卡，这里不过多赘述</p>
+<h5 id="设置回退域"><a href="#设置回退域" class="headerlink" title="设置回退域"></a>设置回退域</h5><p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png"></p>
+<p>回退域必须设置为与隧道绑定的域名</p>
+<h5 id="设置访问域名"><a href="#设置访问域名" class="headerlink" title="设置访问域名"></a>设置访问域名</h5><p>添加一个自定义主机名</p>
+<p>域名填公开访问的域名（必须托管在其他dns服务商，否则cloudflare会检测</p>
+<p>验证方式选TXT</p>
+<h4 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h4><p>在验证过程中，需要把解析设为回退域，否则验证不通过</p>
+<p>等待证书状态和主机名状态都显示有效后访问一下试试</p>
+<p>访问成功后就可以把解析设置为cf的任意IP</p>
+<ul>
+<li>找cloudflare速度快的IP→<a href="https://github.com/XIU2/CloudflareSpeedTest">XIU2&#x2F;CloudflareSpeedTest: 🌩「自选优选 IP」测试 Cloudflare CDN 延迟和速度，获取最快 IP ！当然也支持其他 CDN &#x2F; 网站 IP ~ (github.com)</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>cloudflare</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>cloudflare优选IP</title>
+    <url>/posts/39316/</url>
+    <content><![CDATA[<p>这篇文章补全<a href="https://blog.hqycloud.top/posts/204d8c5f/">cloudflare tunnel优选IP | butlanys的博客 (hqycloud.top)</a>教程中未详细讲述cloudflare优选IP的内容</p>
+<blockquote>
+<p>注意：开通此服务需要准备一张信用卡（貌似黑卡也能过？）</p>
+</blockquote>
+<blockquote>
+<p>需准备两个域名，两个域名需分别托管到cloudflare和支持地域解析的服务商，这里推荐<a href="https://www.huaweicloud.com/">共建智能世界云底座-华为云 (huaweicloud.com)</a> 因为他的tll值可以设置的非常小</p>
+</blockquote>
+<h1 id="cloudflare面板"><a href="#cloudflare面板" class="headerlink" title="cloudflare面板"></a>cloudflare面板</h1><blockquote>
+<p>将回退域托管到cloudflare上</p>
+</blockquote>
+<p>此域名只需要可托管到cloudflare即可，并不需要再花大价钱购买域名，这里推荐1刀一年的数字xyz</p>
+<h3 id="添加域名"><a href="#添加域名" class="headerlink" title="添加域名"></a>添加域名</h3><p>点击添加域——输入或注册域名——点击继续</p>
+<p>跟着配置向导走，最后会要求将nameserver修改为cloudflare提供的两条ns记录</p>
+<p>在你的注册域名的服务商修改ns记录，例如：</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_c6b2ac0573d7ff49683d9da2d0df0329.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_c6b2ac0573d7ff49683d9da2d0df0329.png"></p>
+<p>添加好以后回到cloudflare，点击立刻检查名称服务器即可，cloudflare检测后会给邮箱发一封邮件</p>
+<h3 id="添加一条指向源站的记录"><a href="#添加一条指向源站的记录" class="headerlink" title="添加一条指向源站的记录"></a>添加一条指向源站的记录</h3><p>进入域名后在左侧面板进入DNS——记录</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_b36f1edfb155bce89ee43e720d486463.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_b36f1edfb155bce89ee43e720d486463.png"></p>
+<p>添加一条指向源站的dns记录</p>
+<p>例如：</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_719d6a0f9e37aebda98a80b27b44bdde.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_719d6a0f9e37aebda98a80b27b44bdde.png"></p>
+<p>这里的&lt;代理状态&gt;需要打开</p>
+<h3 id="开通cloudflare-for-saas"><a href="#开通cloudflare-for-saas" class="headerlink" title="开通cloudflare for saas"></a>开通cloudflare for saas</h3><p>添加好后点域名，在左侧面板中按下图进入saas</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_924038f0a2a933cfb518b1c10423fb9a.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_924038f0a2a933cfb518b1c10423fb9a.png"></p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_cf2773496abda9a87c68c9e53cd81320.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_cf2773496abda9a87c68c9e53cd81320.png"></p>
+<p>点击启用cloudflare for saas</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_64a0071114296bada6fe3a7865ec80c7.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_64a0071114296bada6fe3a7865ec80c7.png"></p>
+<p>这里会要求填写信用卡信息，如果你的卡段和环境足够干净，可以免验卡，或者也可以直接绑定PayPal</p>
+<p>点击确认后，返回刚才的页面</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_df762f40b7ec2fd5ad768f48d256f4d2.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_df762f40b7ec2fd5ad768f48d256f4d2.png"></p>
+<p>添加一个回退源</p>
+<p>这里需要填刚才那条指向源站的域名（完整）</p>
+<h3 id="添加域名-1"><a href="#添加域名-1" class="headerlink" title="添加域名"></a>添加域名</h3><p>点击添加自定义主机名</p>
+<p>填写需要优选的域名，例如：</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_272f521a6650a555af1cceaea710d6a1.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_272f521a6650a555af1cceaea710d6a1.png"></p>
+<p>点击添加自定义主机名</p>
+<h1 id="cname接入cloudflare"><a href="#cname接入cloudflare" class="headerlink" title="cname接入cloudflare"></a>cname接入cloudflare</h1><h3 id="接入支持地域解析的服务商"><a href="#接入支持地域解析的服务商" class="headerlink" title="接入支持地域解析的服务商"></a>接入支持地域解析的服务商</h3><blockquote>
+<p>这里以华为云为例</p>
+</blockquote>
+<p>打开华为云<a href="https://www.huaweicloud.com/">共建智能世界云底座-华为云 (huaweicloud.com)</a> 登陆后点右上角控制台——左上角更多搜索域名，选择<em>域名解析服务</em> ——选择公网域名——创建公网域名</p>
+<p>创建好域名后在购买域名的服务商添加华为云的ns记录</p>
+<blockquote>
+<p>ns1.huaweicloud-dns.org</p>
+<p>ns1.huaweicloud-dns.net</p>
+<p>ns1.huaweicloud-dns.cn</p>
+<p>ns1.huaweicloud-dns.com</p>
+</blockquote>
+<h3 id="添加需要优选的域名"><a href="#添加需要优选的域名" class="headerlink" title="添加需要优选的域名"></a>添加需要优选的域名</h3><p>添加完成后点管理解析——添加记录集</p>
+<p>这里需要先cname到你刚才填写的回退源，例如：</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_1aeb98fc69978715c025358a17b5a88f.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_1aeb98fc69978715c025358a17b5a88f.png"></p>
+<h3 id="添加证书验证的记录"><a href="#添加证书验证的记录" class="headerlink" title="添加证书验证的记录"></a>添加证书验证的记录</h3><p>这里推荐使用cloudflare的<strong>自定义主机名的 DCV 委派</strong> ，因为只需添加一次，后面的证书颁发将会自动验证</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_f69f0af222cabeed1e9f57bc0885cd3e.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_f69f0af222cabeed1e9f57bc0885cd3e.png"></p>
+<p>华为云添加：</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_d47ce5ed4d396788fb8a6700b52f0956.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_d47ce5ed4d396788fb8a6700b52f0956.png"></p>
+<p>然后等待cloudflare那边生效</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_b0576e0a8ffcbb9d7aa4b7a84cd945dc.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_b0576e0a8ffcbb9d7aa4b7a84cd945dc.png"></p>
+<p>生效后，就可以自定义cloudflare的cdn ip了</p>
+<p>华为云解析管理中添加一个cname地域解析，选择中国大陆，记录填优选IP或优选域名，别人定时更新的优选域名都行</p>
+<p>当然，如果你想自己也搞个优选域名，这里推荐<a href="https://github.com/netcccyun/dnsmgr">netcccyun&#x2F;dnsmgr: 彩虹聚合DNS管理系统 (github.com)</a></p>
+<p>随便找个虚拟主机或自己部署完之后，添加华为云服务商，接着添加一个域名</p>
+<p>在左侧CF优选IP中添加一个子域</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_7656a5a28353bd3d656f0bb82af34ab0.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_7656a5a28353bd3d656f0bb82af34ab0.png"></p>
+<p>配置好后提交，然后手动更新一遍，再将华为云中的域名cname解析到这条优选域上</p>
+<h1 id="最后！！！"><a href="#最后！！！" class="headerlink" title="最后！！！"></a>最后！！！</h1><p>然后就是喜闻乐见的全国绿（</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_bd2c40a89b5cde3778ccedb59ef4139e.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_bd2c40a89b5cde3778ccedb59ef4139e.png"></p>
+]]></content>
+      <categories>
+        <category>cloudflare</category>
+      </categories>
   </entry>
   <entry>
     <title>docker安装adguard home (macvlan独享ip)</title>
@@ -366,11 +534,11 @@
         <category>Internet</category>
       </categories>
       <tags>
+        <tag>linux</tag>
         <tag>Internet</tag>
         <tag>限速</tag>
         <tag>校园网</tag>
         <tag>网络</tag>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -772,8 +940,8 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
 ]]></content>
       <categories>
         <category>yhchat</category>
-        <category>Google</category>
         <category>cloudflare</category>
+        <category>Google</category>
         <category>cloudflare worker</category>
       </categories>
   </entry>
@@ -797,169 +965,6 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
       <tags>
         <tag>ssl</tag>
         <tag>google cloud</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>cloudflare tunnel优选IP</title>
-    <url>/posts/204d8c5f/</url>
-    <content><![CDATA[<p><strong>总所周知，cloudflare默认分配的IP都在美国，轻则速度慢运气不好分配的还是被GFW拦截的</strong></p>
-<p>本教程需要：</p>
-<p>一张万事达&#x2F;visa过cloudflare for saas验证</p>
-<p>两条域名，一条用于优选，一条托管到cloudfalre</p>
-<h4 id="一、配置cloudflared"><a href="#一、配置cloudflared" class="headerlink" title="一、配置cloudflared"></a>一、配置cloudflared</h4><ul>
-<li>cloudflared可在<a href="https://github.com/cloudflare/cloudflared/">cloudflare&#x2F;cloudflared: Cloudflare Tunnel client (formerly Argo Tunnel) (github.com)</a>上获取</li>
-</ul>
-<h5 id="部署方式（可选）"><a href="#部署方式（可选）" class="headerlink" title="部署方式（可选）"></a>部署方式（可选）</h5><ul>
-<li>本教程以docker为例</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -d --name cloudflared_status --network=host alpine sleep infinity</span><br></pre></td></tr></table></figure>
-
-<h5 id="下载cloudflared"><a href="#下载cloudflared" class="headerlink" title="下载cloudflared"></a>下载cloudflared</h5><p>这里以arm64为例</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget -O /usr/bin/cloudflared https://github.hqycloud.top/https://github.com/cloudflare/cloudflared/releases/download/2024.4.1/cloudflared-linux-arm64</span><br></pre></td></tr></table></figure>
-
-<h5 id="设置权限"><a href="#设置权限" class="headerlink" title="设置权限"></a>设置权限</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chmod 777 /usr/bin/cloudflared</span><br></pre></td></tr></table></figure>
-
-<h5 id="查看版本号"><a href="#查看版本号" class="headerlink" title="查看版本号"></a>查看版本号</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared version</span><br></pre></td></tr></table></figure>
-
-<h5 id="登录cloudflared"><a href="#登录cloudflared" class="headerlink" title="登录cloudflared"></a>登录cloudflared</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel login</span><br></pre></td></tr></table></figure>
-
-<h5 id="创建隧道并命名"><a href="#创建隧道并命名" class="headerlink" title="创建隧道并命名"></a>创建隧道并命名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel create 隧道名</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>隧道名可以自定义，但不能重复！</li>
-</ul>
-<h5 id="查看隧道列表"><a href="#查看隧道列表" class="headerlink" title="查看隧道列表"></a>查看隧道列表</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel list</span><br></pre></td></tr></table></figure>
-
-<h5 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;url: http://localhost:8000</span><br><span class="line">tunnel: &lt;Tunnel-UUID&gt;</span><br><span class="line">credentials-file: /root/.cloudflared/&lt;Tunnel-UUID&gt;.json&#x27; &gt; .cloudflared/config.yml</span><br></pre></td></tr></table></figure>
-
-<p>这里的Tunnel-UUID在隧道列表可以看到</p>
-<p><em>查看创建好的config.yml</em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat config.yml</span><br></pre></td></tr></table></figure>
-
-<h5 id="设置域名"><a href="#设置域名" class="headerlink" title="设置域名"></a>设置域名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel route dns &lt;UUID or NAME&gt; &lt;hostname&gt;</span><br></pre></td></tr></table></figure>
-
-<p>UUID和NAME二选一，uuid查看隧道列表就能看到，name是你创建时输入的名字</p>
-<p>hostname填的是托管在cloudflare的子域，不需要完整的域名</p>
-<p>例如：tunnel-cdn.test.com（托管在cloudflare</p>
-<p>则只需要填tunnel-cdn</p>
-<h5 id="测试隧道是否正常"><a href="#测试隧道是否正常" class="headerlink" title="测试隧道是否正常"></a>测试隧道是否正常</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel run &lt;UUID or NAME&gt;</span><br></pre></td></tr></table></figure>
-
-<p>访问托管在cloudflare的隧道子域查看是否正常</p>
-<p>如果正常可继续看下一步，如果打不开并报错，请移步至cloudflare文档</p>
-<h5 id="在后台运行隧道"><a href="#在后台运行隧道" class="headerlink" title="在后台运行隧道"></a>在后台运行隧道</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nohup cloudflared tunnel run &lt;UUID or NAME&gt; &amp;</span><br></pre></td></tr></table></figure>
-
-<h4 id="二、配置优选IP"><a href="#二、配置优选IP" class="headerlink" title="二、配置优选IP"></a>二、配置优选IP</h4><h5 id="开通cloudflare-for-saas服务"><a href="#开通cloudflare-for-saas服务" class="headerlink" title="开通cloudflare for saas服务"></a>开通cloudflare for saas服务</h5><p>需要绑卡，这里不过多赘述</p>
-<h5 id="设置回退域"><a href="#设置回退域" class="headerlink" title="设置回退域"></a>设置回退域</h5><p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png"></p>
-<p>回退域必须设置为与隧道绑定的域名</p>
-<h5 id="设置访问域名"><a href="#设置访问域名" class="headerlink" title="设置访问域名"></a>设置访问域名</h5><p>添加一个自定义主机名</p>
-<p>域名填公开访问的域名（必须托管在其他dns服务商，否则cloudflare会检测</p>
-<p>验证方式选TXT</p>
-<h4 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h4><p>在验证过程中，需要把解析设为回退域，否则验证不通过</p>
-<p>等待证书状态和主机名状态都显示有效后访问一下试试</p>
-<p>访问成功后就可以把解析设置为cf的任意IP</p>
-<ul>
-<li>找cloudflare速度快的IP→<a href="https://github.com/XIU2/CloudflareSpeedTest">XIU2&#x2F;CloudflareSpeedTest: 🌩「自选优选 IP」测试 Cloudflare CDN 延迟和速度，获取最快 IP ！当然也支持其他 CDN &#x2F; 网站 IP ~ (github.com)</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>cloudflare</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>cloudflare优选IP</title>
-    <url>/posts/39316/</url>
-    <content><![CDATA[<p>这篇文章补全<a href="https://blog.hqycloud.top/posts/204d8c5f/">cloudflare tunnel优选IP | butlanys的博客 (hqycloud.top)</a>教程中未详细讲述cloudflare优选IP的内容</p>
-<blockquote>
-<p>注意：开通此服务需要准备一张信用卡（貌似黑卡也能过？）</p>
-</blockquote>
-<blockquote>
-<p>需准备两个域名，两个域名需分别托管到cloudflare和支持地域解析的服务商，这里推荐<a href="https://www.huaweicloud.com/">共建智能世界云底座-华为云 (huaweicloud.com)</a> 因为他的tll值可以设置的非常小</p>
-</blockquote>
-<h1 id="cloudflare面板"><a href="#cloudflare面板" class="headerlink" title="cloudflare面板"></a>cloudflare面板</h1><blockquote>
-<p>将回退域托管到cloudflare上</p>
-</blockquote>
-<p>此域名只需要可托管到cloudflare即可，并不需要再花大价钱购买域名，这里推荐1刀一年的数字xyz</p>
-<h3 id="添加域名"><a href="#添加域名" class="headerlink" title="添加域名"></a>添加域名</h3><p>点击添加域——输入或注册域名——点击继续</p>
-<p>跟着配置向导走，最后会要求将nameserver修改为cloudflare提供的两条ns记录</p>
-<p>在你的注册域名的服务商修改ns记录，例如：</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_c6b2ac0573d7ff49683d9da2d0df0329.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_c6b2ac0573d7ff49683d9da2d0df0329.png"></p>
-<p>添加好以后回到cloudflare，点击立刻检查名称服务器即可，cloudflare检测后会给邮箱发一封邮件</p>
-<h3 id="添加一条指向源站的记录"><a href="#添加一条指向源站的记录" class="headerlink" title="添加一条指向源站的记录"></a>添加一条指向源站的记录</h3><p>进入域名后在左侧面板进入DNS——记录</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_b36f1edfb155bce89ee43e720d486463.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_b36f1edfb155bce89ee43e720d486463.png"></p>
-<p>添加一条指向源站的dns记录</p>
-<p>例如：</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_719d6a0f9e37aebda98a80b27b44bdde.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_719d6a0f9e37aebda98a80b27b44bdde.png"></p>
-<p>这里的&lt;代理状态&gt;需要打开</p>
-<h3 id="开通cloudflare-for-saas"><a href="#开通cloudflare-for-saas" class="headerlink" title="开通cloudflare for saas"></a>开通cloudflare for saas</h3><p>添加好后点域名，在左侧面板中按下图进入saas</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_924038f0a2a933cfb518b1c10423fb9a.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_924038f0a2a933cfb518b1c10423fb9a.png"></p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_cf2773496abda9a87c68c9e53cd81320.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_cf2773496abda9a87c68c9e53cd81320.png"></p>
-<p>点击启用cloudflare for saas</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_64a0071114296bada6fe3a7865ec80c7.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_64a0071114296bada6fe3a7865ec80c7.png"></p>
-<p>这里会要求填写信用卡信息，如果你的卡段和环境足够干净，可以免验卡，或者也可以直接绑定PayPal</p>
-<p>点击确认后，返回刚才的页面</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_df762f40b7ec2fd5ad768f48d256f4d2.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_df762f40b7ec2fd5ad768f48d256f4d2.png"></p>
-<p>添加一个回退源</p>
-<p>这里需要填刚才那条指向源站的域名（完整）</p>
-<h3 id="添加域名-1"><a href="#添加域名-1" class="headerlink" title="添加域名"></a>添加域名</h3><p>点击添加自定义主机名</p>
-<p>填写需要优选的域名，例如：</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_272f521a6650a555af1cceaea710d6a1.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_272f521a6650a555af1cceaea710d6a1.png"></p>
-<p>点击添加自定义主机名</p>
-<h1 id="cname接入cloudflare"><a href="#cname接入cloudflare" class="headerlink" title="cname接入cloudflare"></a>cname接入cloudflare</h1><h3 id="接入支持地域解析的服务商"><a href="#接入支持地域解析的服务商" class="headerlink" title="接入支持地域解析的服务商"></a>接入支持地域解析的服务商</h3><blockquote>
-<p>这里以华为云为例</p>
-</blockquote>
-<p>打开华为云<a href="https://www.huaweicloud.com/">共建智能世界云底座-华为云 (huaweicloud.com)</a> 登陆后点右上角控制台——左上角更多搜索域名，选择<em>域名解析服务</em> ——选择公网域名——创建公网域名</p>
-<p>创建好域名后在购买域名的服务商添加华为云的ns记录</p>
-<blockquote>
-<p>ns1.huaweicloud-dns.org</p>
-<p>ns1.huaweicloud-dns.net</p>
-<p>ns1.huaweicloud-dns.cn</p>
-<p>ns1.huaweicloud-dns.com</p>
-</blockquote>
-<h3 id="添加需要优选的域名"><a href="#添加需要优选的域名" class="headerlink" title="添加需要优选的域名"></a>添加需要优选的域名</h3><p>添加完成后点管理解析——添加记录集</p>
-<p>这里需要先cname到你刚才填写的回退源，例如：</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_1aeb98fc69978715c025358a17b5a88f.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_1aeb98fc69978715c025358a17b5a88f.png"></p>
-<h3 id="添加证书验证的记录"><a href="#添加证书验证的记录" class="headerlink" title="添加证书验证的记录"></a>添加证书验证的记录</h3><p>这里推荐使用cloudflare的<strong>自定义主机名的 DCV 委派</strong> ，因为只需添加一次，后面的证书颁发将会自动验证</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_f69f0af222cabeed1e9f57bc0885cd3e.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_f69f0af222cabeed1e9f57bc0885cd3e.png"></p>
-<p>华为云添加：</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_d47ce5ed4d396788fb8a6700b52f0956.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_d47ce5ed4d396788fb8a6700b52f0956.png"></p>
-<p>然后等待cloudflare那边生效</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_b0576e0a8ffcbb9d7aa4b7a84cd945dc.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_b0576e0a8ffcbb9d7aa4b7a84cd945dc.png"></p>
-<p>生效后，就可以自定义cloudflare的cdn ip了</p>
-<p>华为云解析管理中添加一个cname地域解析，选择中国大陆，记录填优选IP或优选域名，别人定时更新的优选域名都行</p>
-<p>当然，如果你想自己也搞个优选域名，这里推荐<a href="https://github.com/netcccyun/dnsmgr">netcccyun&#x2F;dnsmgr: 彩虹聚合DNS管理系统 (github.com)</a></p>
-<p>随便找个虚拟主机或自己部署完之后，添加华为云服务商，接着添加一个域名</p>
-<p>在左侧CF优选IP中添加一个子域</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_7656a5a28353bd3d656f0bb82af34ab0.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_7656a5a28353bd3d656f0bb82af34ab0.png"></p>
-<p>配置好后提交，然后手动更新一遍，再将华为云中的域名cname解析到这条优选域上</p>
-<h1 id="最后！！！"><a href="#最后！！！" class="headerlink" title="最后！！！"></a>最后！！！</h1><p>然后就是喜闻乐见的全国绿（</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_bd2c40a89b5cde3778ccedb59ef4139e.png" alt="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_bd2c40a89b5cde3778ccedb59ef4139e.png"></p>
-]]></content>
-      <categories>
-        <category>cloudflare</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>bash执行长命令报错临时解决办法</title>
-    <url>/posts/35504/</url>
-    <content><![CDATA[<p>终端运行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c <span class="string">&quot;hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/*</span></span><br></pre></td></tr></table></figure>
-
-<p>报错：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash: bash -c hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/* /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/: No such file or directory</span><br></pre></td></tr></table></figure>
-
-<p>目录也存在，而且分步执行也正常，但连起来就报错😓</p>
-<p>将命令转为脚本后运行成功</p>
-<p>上面的命令换成脚本</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">BLOG_DIR=&quot;/opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index&quot;</span><br><span class="line"></span><br><span class="line">mkdir -p &quot;$BLOG_DIR&quot;</span><br><span class="line"></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line">rm -rf &quot;$BLOG_DIR/*&quot;</span><br><span class="line">cp -r /opt/blog/hexo/public/* &quot;$BLOG_DIR/&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;success!&quot;</span><br></pre></td></tr></table></figure>
-
-<p>至此，结束</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>bash</tag>
       </tags>
   </entry>
 </search>
