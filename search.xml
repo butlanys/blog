@@ -139,30 +139,6 @@
       </tags>
   </entry>
   <entry>
-    <title>bash执行长命令报错临时解决办法</title>
-    <url>/posts/35504/</url>
-    <content><![CDATA[<p>终端运行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c <span class="string">&quot;hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/*</span></span><br></pre></td></tr></table></figure>
-
-<p>报错：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash: bash -c hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/* /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/: No such file or directory</span><br></pre></td></tr></table></figure>
-
-<p>目录也存在，而且分步执行也正常，但连起来就报错😓</p>
-<p>将命令转为脚本后运行成功</p>
-<p>上面的命令换成脚本</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">BLOG_DIR=&quot;/opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index&quot;</span><br><span class="line"></span><br><span class="line">mkdir -p &quot;$BLOG_DIR&quot;</span><br><span class="line"></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line">rm -rf &quot;$BLOG_DIR/*&quot;</span><br><span class="line">cp -r /opt/blog/hexo/public/* &quot;$BLOG_DIR/&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;success!&quot;</span><br></pre></td></tr></table></figure>
-
-<p>至此，结束</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>bash</tag>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>cloudflare tunnel优选IP</title>
     <url>/posts/204d8c5f/</url>
     <content><![CDATA[<p><strong>总所周知，cloudflare默认分配的IP都在美国，轻则速度慢运气不好分配的还是被GFW拦截的</strong></p>
@@ -363,6 +339,30 @@
         <tag>docker</tag>
         <tag>adguard home</tag>
         <tag>macvlan</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>bash执行长命令报错临时解决办法</title>
+    <url>/posts/35504/</url>
+    <content><![CDATA[<p>终端运行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c <span class="string">&quot;hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/*</span></span><br></pre></td></tr></table></figure>
+
+<p>报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash: bash -c hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/* /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<p>目录也存在，而且分步执行也正常，但连起来就报错😓</p>
+<p>将命令转为脚本后运行成功</p>
+<p>上面的命令换成脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">BLOG_DIR=&quot;/opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index&quot;</span><br><span class="line"></span><br><span class="line">mkdir -p &quot;$BLOG_DIR&quot;</span><br><span class="line"></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line">rm -rf &quot;$BLOG_DIR/*&quot;</span><br><span class="line">cp -r /opt/blog/hexo/public/* &quot;$BLOG_DIR/&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;success!&quot;</span><br></pre></td></tr></table></figure>
+
+<p>至此，结束</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>bash</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
