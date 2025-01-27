@@ -281,27 +281,6 @@
 
   
   <url>
-    <loc>https://blog.butlanys.de/tags/aplayer/</loc>
-    <lastmod>2025-01-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.butlanys.de/tags/alist/</loc>
-    <lastmod>2025-01-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.butlanys.de/tags/music/</loc>
-    <lastmod>2025-01-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.butlanys.de/tags/nginx/</loc>
     <lastmod>2025-01-27</lastmod>
     <changefreq>weekly</changefreq>
@@ -317,6 +296,27 @@
   
   <url>
     <loc>https://blog.butlanys.de/tags/config/</loc>
+    <lastmod>2025-01-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.butlanys.de/tags/aplayer/</loc>
+    <lastmod>2025-01-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.butlanys.de/tags/alist/</loc>
+    <lastmod>2025-01-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.butlanys.de/tags/music/</loc>
     <lastmod>2025-01-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -472,14 +472,14 @@
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/aplayer/</loc>
+    <loc>https://blog.butlanys.de/categories/nginx/</loc>
     <lastmod>2025-01-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/nginx/</loc>
+    <loc>https://blog.butlanys.de/categories/aplayer/</loc>
     <lastmod>2025-01-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
