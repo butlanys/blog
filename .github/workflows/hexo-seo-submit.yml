@@ -39,7 +39,6 @@ jobs:
       - run: |
           npm init -y
           npm install hexo-seo-submit
-          cp cdn/hexo-seo-submit/index.js node_modules/hexo-seo-submit/dist/bin/
 
 
       - name: push search engine bing

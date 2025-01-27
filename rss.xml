@@ -8,7 +8,7 @@
     
     <atom:link href="https://blog.butlanys.de/rss.xml" rel="self" type="application/rss+xml"/>
     
-    <description>feedId:68844391603512320+userId:69593297238667264</description>
+    <description></description>
     <pubDate>Sat, 25 Jan 2025 12:32:23 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
@@ -122,9 +122,9 @@
       <category domain="https://blog.butlanys.de/categories/linux/">linux</category>
       
       
-      <category domain="https://blog.butlanys.de/tags/bash/">bash</category>
-      
       <category domain="https://blog.butlanys.de/tags/linux/">linux</category>
+      
+      <category domain="https://blog.butlanys.de/tags/bash/">bash</category>
       
       
       <comments>https://blog.butlanys.de/posts/35504/#disqus_thread</comments>
@@ -466,8 +466,6 @@
       <category domain="https://blog.butlanys.de/categories/Internet/">Internet</category>
       
       
-      <category domain="https://blog.butlanys.de/tags/linux/">linux</category>
-      
       <category domain="https://blog.butlanys.de/tags/Internet/">Internet</category>
       
       <category domain="https://blog.butlanys.de/tags/%E9%99%90%E9%80%9F/">限速</category>
@@ -475,6 +473,8 @@
       <category domain="https://blog.butlanys.de/tags/%E6%A0%A1%E5%9B%AD%E7%BD%91/">校园网</category>
       
       <category domain="https://blog.butlanys.de/tags/%E7%BD%91%E7%BB%9C/">网络</category>
+      
+      <category domain="https://blog.butlanys.de/tags/linux/">linux</category>
       
       
       <comments>https://blog.butlanys.de/posts/6159/#disqus_thread</comments>
