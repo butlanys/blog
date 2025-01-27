@@ -122,9 +122,9 @@
       <category domain="https://blog.butlanys.de/categories/linux/">linux</category>
       
       
-      <category domain="https://blog.butlanys.de/tags/linux/">linux</category>
-      
       <category domain="https://blog.butlanys.de/tags/bash/">bash</category>
+      
+      <category domain="https://blog.butlanys.de/tags/linux/">linux</category>
       
       
       <comments>https://blog.butlanys.de/posts/35504/#disqus_thread</comments>
@@ -137,11 +137,7 @@
       <guid>https://blog.butlanys.de/posts/12944/</guid>
       <pubDate>Sat, 09 Nov 2024 06:28:33 GMT</pubDate>
       
-        
-        
-      <description>&lt;p&gt;此次更新不仅支持了更多的系统以及架构，还更新了深色模式&lt;del&gt;（熬夜党狂喜）&lt;/del&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://file.hqycloud.top/img/a94fc06ca35dee6d196e9e6b975f802a.png&quot; alt=&quot;h</description>
-        
+      <description>This update expands compatibility to more systems and architectures, and excitingly introduces a dark mode.  The update is available for download via WeChat.  A Linux beta version is also now available for testing.  The focus is on enhancing WeChat&#39;s accessibility and user experience across a wider range of devices and platforms.  The dark mode is a significant addition catering to user preferences and potentially reducing eye strain for users working late at night.</description>
       
       
       
@@ -166,12 +162,7 @@
       <guid>https://blog.butlanys.de/posts/22724/</guid>
       <pubDate>Tue, 05 Nov 2024 05:52:31 GMT</pubDate>
       
-        
-        
-      <description>&lt;p&gt;地址：&lt;a href=&quot;https://rewards.bing.com/redeem/?form=ML2UXN&quot;&gt;Microsoft Rewards 兑换目录&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;目前中国大陆地区可兑换的礼品：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://gith</description>
-        
+      <description>Please provide me with the blog post content about the Microsoft Rewards redemption catalog in mainland China.  I need the text of the blog post to write a summary for you.  I cannot access external websites or specific files online.</description>
       
       
       
@@ -403,7 +394,7 @@
       <guid>https://blog.butlanys.de/posts/6628/</guid>
       <pubDate>Wed, 07 Aug 2024 02:23:28 GMT</pubDate>
       
-      <description>这篇教程讲解了如何在软路由或支持Docker的系统上使用macvlan网络模式搭建AdGuard Home，从而避免桥接模式的端口冲突问题。教程首先介绍了Docker和Docker Compose的安装，并推荐使用1Panel简化容器管理。  核心步骤在于使用1Panel创建macvlan网络，并配置AdGuard Home容器，指定静态IP和数据卷挂载路径。教程还提供了故障排除方法，例如开启网卡混杂模式和创建辅助容器。最后，推荐使用加密DNS上游服务器，例如阿里DNS和Cloudflare DNS，以避免DNS劫持。</description>
+      <description>本教程介绍如何在软路由或支持Docker的设备上，利用Macvlan网络模式部署AdGuardHome广告拦截器，避免传统Bridge模式带来的端口冲突问题。教程推荐使用1Panel简化Docker容器管理。  首先，教程指导安装Docker和Docker Compose（或直接使用1Panel）。  核心步骤是通过1Panel创建一个Macvlan网络，并基于此网络部署AdGuardHome容器，配置其IP地址及挂载目录。  教程特别强调选择合适的、安全的DNS上游服务器，并提供了解决容器无法访问及其他潜在问题的排错方法，包括启用网卡混杂模式和创建辅助容器。  最终，用户可以通过容器的IP地址访问AdGuardHome的管理界面，实现全网广告拦截。</description>
       
       
       
@@ -430,11 +421,7 @@
       <guid>https://blog.butlanys.de/posts/7480/</guid>
       <pubDate>Sun, 21 Jul 2024 15:15:35 GMT</pubDate>
       
-        
-        
-      <description>&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/alexkirsz/dispatch&quot;&gt;dispatch&lt;/a&gt;是一种Rust语言的客户端负载均衡器，可实现带宽叠加、带宽聚合&lt;/strong&gt;&lt;/p&gt;
-&lt;h2 id=&quot;使用场景&quot;&gt;&lt;a href=&quot;#</description>
-        
+      <description>这篇博客文章介绍了Dispatch，一个Rust编写的客户端负载均衡器，用于实现多网卡带宽叠加和聚合。通过绑定多个本地IP接口并创建一个本地Socks5代理，Dispatch可在不同的网络接口间进行加权负载均衡，从而提升网络速度。  它支持上下行带宽叠加，无需VPN或其他代理即可实现，并可与其他代理软件（如V2RayN、Netch）结合使用。文章详细讲解了在Windows 11上安装和配置Dispatch的方法，包括获取多个IP地址、启动Dispatch服务，以及将Dispatch作为代理连接到其他程序。文章还列举了Dispatch的几个应用场景，例如叠加WiFi和LAN以提升内网速度，以及叠加多个光猫LAN口或蜂窝网络来增加带宽。  需要注意的是，Dispatch本身不提供加密和混淆功能，多IP的使用需要谨慎处理，且叠加多个外网可能会导致出口IP不一致。</description>
       
       
       
@@ -479,6 +466,8 @@
       <category domain="https://blog.butlanys.de/categories/Internet/">Internet</category>
       
       
+      <category domain="https://blog.butlanys.de/tags/linux/">linux</category>
+      
       <category domain="https://blog.butlanys.de/tags/Internet/">Internet</category>
       
       <category domain="https://blog.butlanys.de/tags/%E9%99%90%E9%80%9F/">限速</category>
@@ -486,8 +475,6 @@
       <category domain="https://blog.butlanys.de/tags/%E6%A0%A1%E5%9B%AD%E7%BD%91/">校园网</category>
       
       <category domain="https://blog.butlanys.de/tags/%E7%BD%91%E7%BB%9C/">网络</category>
-      
-      <category domain="https://blog.butlanys.de/tags/linux/">linux</category>
       
       
       <comments>https://blog.butlanys.de/posts/6159/#disqus_thread</comments>
