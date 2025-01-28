@@ -29,9 +29,6 @@ https://blog.butlanys.de/categories/index.html
 https://blog.butlanys.de/posts/6159/
 https://blog.butlanys.de/posts/e491bdf7/
 https://blog.butlanys.de/
-https://blog.butlanys.de/tags/nginx/
-https://blog.butlanys.de/tags/site/
-https://blog.butlanys.de/tags/config/
 https://blog.butlanys.de/tags/aplayer/
 https://blog.butlanys.de/tags/alist/
 https://blog.butlanys.de/tags/music/
@@ -55,8 +52,10 @@ https://blog.butlanys.de/tags/%E5%BE%AE%E4%BF%A1/
 https://blog.butlanys.de/tags/web/
 https://blog.butlanys.de/tags/ssl/
 https://blog.butlanys.de/tags/google-cloud/
+https://blog.butlanys.de/tags/nginx/
+https://blog.butlanys.de/tags/site/
+https://blog.butlanys.de/tags/config/
 https://blog.butlanys.de/categories/yhchat/
-https://blog.butlanys.de/categories/nginx/
 https://blog.butlanys.de/categories/aplayer/
 https://blog.butlanys.de/categories/linux/
 https://blog.butlanys.de/categories/cloudflare/
@@ -72,4 +71,5 @@ https://blog.butlanys.de/categories/wireguard/
 https://blog.butlanys.de/categories/wechat/
 https://blog.butlanys.de/categories/Google/
 https://blog.butlanys.de/categories/ssl/
+https://blog.butlanys.de/categories/nginx/
 https://blog.butlanys.de/categories/cloudflare-worker/
