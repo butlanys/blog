@@ -9,8 +9,27 @@
     <atom:link href="https://blog.butlanys.de/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Tue, 28 Jan 2025 14:59:28 GMT</pubDate>
+    <pubDate>Tue, 28 Jan 2025 15:02:39 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>Qexo报错/bin/sh: 1: bash build.sh: not found解决方法</title>
+      <link>https://blog.butlanys.de/posts/54164/</link>
+      <guid>https://blog.butlanys.de/posts/54164/</guid>
+      <pubDate>Tue, 28 Jan 2025 14:32:09 GMT</pubDate>
+      
+      <description>这篇文章讨论了一个与Hexo静态博客部署相关的、反复出现的、未明确定义的错误。文章作者并未完全理解错误的根本原因，而是提供了三种解决方法：第一，使用绝对路径避免路径解析问题；第二，创建一个Bash脚本，该脚本包含清理、生成、部署Hexo站点以及将生成的静态文件复制到目标目录（`/opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index`）的命令，并删除旧文件；第三，建议参考其他文章，通过配置环境变量来解决由Supervisor进程守护导致的潜在问题。  作者指出，Bash脚本方法在解决该反复出现的错误方面意外地有效，并将其用作便捷的部署工具。  总而言之，文章主要关注的是解决问题而非问题本身的根本原因，并提供了一些实用的解决方法。</description>
+      
+      
+      
+      <content:encoded><![CDATA[<p>说实话吧，我在写这篇文章的时候也没搞懂这报错的触发机制，只能给出几种解决方式，<del>反正每次重启机器都要操作一次</del></p><p><strong>1、绝对路径</strong></p><p><img src="https://file.butlanys.de/img/1dc478f9219979d4992e116a20120306.png"></p><p>2、将命令打包成bash脚本</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">TARGET_DIR=<span class="string">&quot;/opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$TARGET_DIR</span>&quot;</span></span><br><span class="line"></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line"><span class="built_in">rm</span> -rf <span class="string">&quot;<span class="variable">$TARGET_DIR</span>/*&quot;</span></span><br><span class="line"><span class="built_in">cp</span> -r /opt/blog/hexo/public/* <span class="string">&quot;<span class="variable">$TARGET_DIR</span>/&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;部署和更新完成!&quot;</span></span><br></pre></td></tr></table></figure><p>我这个脚本其实是为了方便build后直接push到1panel网站目录下才写的，后面发现对上述报错有奇效</p><p><strong>3、配置环境变量（针对Supervisor进程守护）</strong></p><p>参考<a href="https://blog.butlanys.de/posts/43650/">这篇文章</a></p>]]></content:encoded>
+      
+      
+      
+      
+      <comments>https://blog.butlanys.de/posts/54164/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>记录下使用Supervisor(进程守护)遇到的一些小问题</title>
