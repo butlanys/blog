@@ -9,8 +9,27 @@
     <atom:link href="https://blog.butlanys.de/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Sat, 25 Jan 2025 12:32:23 GMT</pubDate>
+    <pubDate>Tue, 28 Jan 2025 14:59:28 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>记录下使用Supervisor(进程守护)遇到的一些小问题</title>
+      <link>https://blog.butlanys.de/posts/43650/</link>
+      <guid>https://blog.butlanys.de/posts/43650/</guid>
+      <pubDate>Tue, 28 Jan 2025 14:16:26 GMT</pubDate>
+      
+      <description>本文介绍了如何将qexo从screen迁移到Supervisor进行守护进程运行，并解决了迁移过程中遇到的两个问题。首先，由于Supervisor环境变量不完整，文章指出需要手动在`/etc/supervisor/conf.d/env.conf`中添加环境变量`PYTHONPATH`，其值应为`echo $PATH`的输出结果。其次，文章解决了git push时提示未配置昵称和邮件地址的问题。作者建议使用`git config --global user.email`和`git config --global user.name`命令进行配置，并为了方便Supervisor读取，将`/root/.gitconfig`的内容追加到`/etc/gitconfig`。  文章最后提示后续会更新更多问题的解决方法。</description>
+      
+      
+      
+      <content:encoded><![CDATA[<p>前言：因为我的qexo一直以来都是通过screen直接运行的，这样虽然省事，但每次vps重启，以及qexo自己更新，都要进screen会话重新运行，所以就迁移到Supervisor进程守护运行</p><p><strong>1、环境变量问题</strong></p><p>由于Supervisor的环境变量并不是很全，所以需要手动在配置文件里添加一下</p><p>查看当前的环境变量</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure><p>创建文件</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">touch</span> /etc/supervisor/conf.d/env.conf </span><br></pre></td></tr></table></figure><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/supervisor/conf.d/env.conf </span><br></pre></td></tr></table></figure><p>填写以下内容</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">environment=PYTHONPATH=<span class="string">&quot;刚才运行echo <span class="variable">$PATH</span>输出的内容&quot;</span></span><br></pre></td></tr></table></figure><p><strong>2、git在push代码时提示未配置昵称和邮件地址</strong></p><p>如果你不确定你有没有配置，可以输出下面命令查看</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --list</span><br></pre></td></tr></table></figure><p>查看<code>user.email</code>和<code>user.name</code>，如果不存在，则说明当前用户压根没配置，请运行</p><p><code>git config --global user.email &quot;you@example.com&quot;</code><br><code>git config --global user.name &quot;Your Name&quot;</code></p><p>这两条命令其实只会为当前用户配置，也就是~&#x2F;.gitconfig目录下</p><p>可以输入<code>git config --list --show-origin</code>查看</p><p>为了让Supervisor读取，则需要丢到&#x2F;etc&#x2F;gitconfig下（如果你的vps有多用户，且不方便给其他用户查看，可使用其他方案）</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /root/.gitconfig &gt;&gt; /etc/gitconfig</span><br></pre></td></tr></table></figure><p><strong>后面如果又遇到其他问题，且我解决了，则会再次更新此文章</strong></p>]]></content:encoded>
+      
+      
+      
+      
+      <comments>https://blog.butlanys.de/posts/43650/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>cmhk融合怪留档</title>
