@@ -425,6 +425,20 @@
   </url>
   
   <url>
+    <loc>https://blog.butlanys.de/tags/wechat/</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.butlanys.de/tags/%E5%BE%AE%E4%BF%A1/</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.butlanys.de/tags/%E5%8D%8E%E4%B8%BA%E4%BA%91/</loc>
     <lastmod>2025-01-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -440,20 +454,6 @@
   
   <url>
     <loc>https://blog.butlanys.de/tags/server/</loc>
-    <lastmod>2025-01-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.butlanys.de/tags/wechat/</loc>
-    <lastmod>2025-01-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.butlanys.de/tags/%E5%BE%AE%E4%BF%A1/</loc>
     <lastmod>2025-01-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -567,6 +567,13 @@
   </url>
   
   <url>
+    <loc>https://blog.butlanys.de/categories/wechat/</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.butlanys.de/categories/wireguard/</loc>
     <lastmod>2025-01-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -575,13 +582,6 @@
   
   <url>
     <loc>https://blog.butlanys.de/categories/cloud/</loc>
-    <lastmod>2025-01-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.butlanys.de/categories/wechat/</loc>
     <lastmod>2025-01-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
