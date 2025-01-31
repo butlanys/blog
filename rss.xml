@@ -9,8 +9,27 @@
     <atom:link href="https://blog.butlanys.de/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Fri, 31 Jan 2025 12:30:34 GMT</pubDate>
+    <pubDate>Fri, 31 Jan 2025 12:57:20 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>关于我离开云湖的声明</title>
+      <link>https://blog.butlanys.de/posts/37249/</link>
+      <guid>https://blog.butlanys.de/posts/37249/</guid>
+      <pubDate>Fri, 31 Jan 2025 12:56:38 GMT</pubDate>
+      
+      <description>作者在本文中宣布告别云湖平台及其开发工作。  三年多的持续使用后，作者总结了云湖的不足，包括动画僵硬、UI设计欠佳、Bot API 不完善以及需要过多的人工干预来处理垃圾信息和黑产渗透等问题。  尽管承认云湖有改进空间，但作者认为其发展速度过慢且存在诸多缺陷，无法满足其需求。  作者已停用所有机器人账号并注销所有相关账户，并决定不再返回云湖。  为了方便其他开发者，作者将公开其所有云湖 Bot 的源码，并使用 MIT 协议授权，允许自由修改和分发，但不会再提供任何技术支持。  作者最后表达了对云湖的祝福，并暗示了转投其他平台的意向。</description>
+      
+      
+      
+      <content:encoded><![CDATA[<ul><li><strong>在2025&#x2F;1&#x2F;30日晚我已停用所有机器人并注销所有有关云湖的账号</strong></li></ul><blockquote><p><strong>此次离开，已经做好不再回去的打算，我在云湖所写的bot，源码我等一会贴到评论区，有兴趣的话可以自己部署，并且这些项目我将加上MIT协议，你可以自由的修改、分发。但我会将这些存储库设为只读状态，意不再接受任何新需求、bug等反馈。</strong></p></blockquote><h2 id="致云湖开发者"><a href="#致云湖开发者" class="headerlink" title="致云湖开发者"></a>致云湖开发者</h2><p>****我使用这款软件快3年，连续在线天数几百天，这段时间，我见证了这款软件的成长，也感到了许多不足（动画僵硬、ui也不算好看，bot api也不怎么完善）但好在遇到问题可以和开发者面对面交流，问题很快就能得到解决</p><p>****但，不管怎么说，这充其量就是个半成品，跟其他软件相比，缺点太多了。也许你会说，这是个刚起步的产品啊，还有很大的改进空间。对，但等到这款产品完全成熟时，需要太多时间，我已经等不起了，许多操作甚至需要用户权限。而且，对垃圾、18+的广告还要开发者人工处理，前阵子黑产渗透到云湖时，居然要花上一堆时间来人工处理？</p><p>****总之，就目前来说，可替代云湖的产品有太多太多</p><p><strong>江湖，有缘再见~</strong></p>]]></content:encoded>
+      
+      
+      
+      
+      <comments>https://blog.butlanys.de/posts/37249/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>云湖群管理bot(指令版)</title>
