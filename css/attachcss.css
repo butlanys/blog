@@ -15,10 +15,10 @@
   background: rgba(255, 255, 255, 0.5);
   /*backdrop-filter: blur(10px);*/
 }
-.recent-post-item,.card-widget{
+[data-theme="light"]{.recent-post-item,.card-widget{
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
-}
+}}
 /* 夜间模式 */
 [data-theme="dark"] { 
   /* #aside-content, */
