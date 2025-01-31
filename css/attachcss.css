@@ -49,7 +49,7 @@
 .recent-post-item,.card-widget {
   /* 其他样式 */
   transition: transform 0.3s ease; /* 添加过渡效果 */
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* 添加默认阴影 */
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* 添加默认阴影 */
 }
 
 .recent-post-item,.card-widget:hover {
