@@ -71,6 +71,46 @@
       </categories>
   </entry>
   <entry>
+    <title>aplayer播放器对接alist</title>
+    <url>/posts/51355/</url>
+    <content><![CDATA[<p>如果你不是通过官方的方式引入aplayer，那么建议你先看看这篇文章<a href="https://blog.hqycloud.top/posts/16450/">网页接入aplayer音乐播放器 | butlanys的博客</a></p>
+<p>只需要在aplayer的配置js中改为下面的js</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> urlParams = <span class="keyword">new</span> <span class="title class_">URLSearchParams</span>(<span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">search</span>);</span><br><span class="line"><span class="keyword">const</span> path = urlParams.<span class="title function_">get</span>(<span class="string">&#x27;path&#x27;</span>) || <span class="string">&#x27;/music&#x27;</span>; <span class="comment">// alist中访客可看到音乐的路径</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">`https://alist.hqycloud.top/api/fs/list`</span>, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123;</span><br><span class="line">    <span class="attr">path</span>: path,</span><br><span class="line">    <span class="attr">password</span>: <span class="string">&#x27;&#x27;</span>, <span class="comment">// 如果用的是访客权限，这里可以为空</span></span><br><span class="line">    <span class="attr">page</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">per_page</span>: <span class="number">100</span>, <span class="comment">//获取的最大音乐数量，此值可大不可小，否则获取的音乐不全</span></span><br><span class="line">    <span class="attr">refresh</span>: <span class="literal">false</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> response.<span class="title function_">json</span>())</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (data.<span class="property">code</span> === <span class="number">200</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> audioList = data.<span class="property">data</span>.<span class="property">content</span></span><br><span class="line">        .<span class="title function_">filter</span>(<span class="function"><span class="params">item</span> =&gt;</span> !item.<span class="property">is_dir</span>)</span><br><span class="line">        .<span class="title function_">map</span>(<span class="function"><span class="params">item</span> =&gt;</span> (&#123;</span><br><span class="line">          <span class="attr">name</span>: item.<span class="property">name</span>.<span class="title function_">replace</span>(<span class="regexp">/\.[^/.]+$/</span>, <span class="string">&quot;&quot;</span>),</span><br><span class="line">          <span class="attr">url</span>: <span class="string">`https://alist.hqycloud.top/d/onedrive-data<span class="subst">$&#123;path&#125;</span>/<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(item.name)&#125;</span>`</span>, </span><br><span class="line">          <span class="attr">cover</span>: item.<span class="property">thumb</span> <span class="comment">// 可选：设置封面图片</span></span><br><span class="line">        &#125;));</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> ap = <span class="keyword">new</span> <span class="title class_">APlayer</span>(&#123;</span><br><span class="line">        <span class="attr">container</span>: <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;aplayer&#x27;</span>),</span><br><span class="line">        <span class="attr">fixed</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">autoplay</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">audio</span>: audioList</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;获取音乐列表失败:&#x27;</span>, data.<span class="property">message</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;获取音乐列表出错:&#x27;</span>, error);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>aplayer</category>
+      </categories>
+      <tags>
+        <tag>aplayer</tag>
+        <tag>alist</tag>
+        <tag>music</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>bash执行长命令报错临时解决办法</title>
+    <url>/posts/35504/</url>
+    <content><![CDATA[<p>终端运行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c <span class="string">&quot;hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/*</span></span><br></pre></td></tr></table></figure>
+
+<p>报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash: bash -c hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/* /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<p>目录也存在，而且分步执行也正常，但连起来就报错😓</p>
+<p>将命令转为脚本后运行成功</p>
+<p>上面的命令换成脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">BLOG_DIR=&quot;/opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index&quot;</span><br><span class="line"></span><br><span class="line">mkdir -p &quot;$BLOG_DIR&quot;</span><br><span class="line"></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line">rm -rf &quot;$BLOG_DIR/*&quot;</span><br><span class="line">cp -r /opt/blog/hexo/public/* &quot;$BLOG_DIR/&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;success!&quot;</span><br></pre></td></tr></table></figure>
+
+<p>至此，结束</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>bash</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OpenResty(nginx)子目录反向代理</title>
     <url>/posts/30145/</url>
     <content><![CDATA[<p>一般来说，子目录反向代理只需要以下配置就足够了：</p>
@@ -120,46 +160,6 @@
         <tag>nginx</tag>
         <tag>site</tag>
         <tag>config</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>aplayer播放器对接alist</title>
-    <url>/posts/51355/</url>
-    <content><![CDATA[<p>如果你不是通过官方的方式引入aplayer，那么建议你先看看这篇文章<a href="https://blog.hqycloud.top/posts/16450/">网页接入aplayer音乐播放器 | butlanys的博客</a></p>
-<p>只需要在aplayer的配置js中改为下面的js</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> urlParams = <span class="keyword">new</span> <span class="title class_">URLSearchParams</span>(<span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">search</span>);</span><br><span class="line"><span class="keyword">const</span> path = urlParams.<span class="title function_">get</span>(<span class="string">&#x27;path&#x27;</span>) || <span class="string">&#x27;/music&#x27;</span>; <span class="comment">// alist中访客可看到音乐的路径</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">`https://alist.hqycloud.top/api/fs/list`</span>, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123;</span><br><span class="line">    <span class="attr">path</span>: path,</span><br><span class="line">    <span class="attr">password</span>: <span class="string">&#x27;&#x27;</span>, <span class="comment">// 如果用的是访客权限，这里可以为空</span></span><br><span class="line">    <span class="attr">page</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">per_page</span>: <span class="number">100</span>, <span class="comment">//获取的最大音乐数量，此值可大不可小，否则获取的音乐不全</span></span><br><span class="line">    <span class="attr">refresh</span>: <span class="literal">false</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> response.<span class="title function_">json</span>())</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (data.<span class="property">code</span> === <span class="number">200</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> audioList = data.<span class="property">data</span>.<span class="property">content</span></span><br><span class="line">        .<span class="title function_">filter</span>(<span class="function"><span class="params">item</span> =&gt;</span> !item.<span class="property">is_dir</span>)</span><br><span class="line">        .<span class="title function_">map</span>(<span class="function"><span class="params">item</span> =&gt;</span> (&#123;</span><br><span class="line">          <span class="attr">name</span>: item.<span class="property">name</span>.<span class="title function_">replace</span>(<span class="regexp">/\.[^/.]+$/</span>, <span class="string">&quot;&quot;</span>),</span><br><span class="line">          <span class="attr">url</span>: <span class="string">`https://alist.hqycloud.top/d/onedrive-data<span class="subst">$&#123;path&#125;</span>/<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(item.name)&#125;</span>`</span>, </span><br><span class="line">          <span class="attr">cover</span>: item.<span class="property">thumb</span> <span class="comment">// 可选：设置封面图片</span></span><br><span class="line">        &#125;));</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> ap = <span class="keyword">new</span> <span class="title class_">APlayer</span>(&#123;</span><br><span class="line">        <span class="attr">container</span>: <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;aplayer&#x27;</span>),</span><br><span class="line">        <span class="attr">fixed</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">autoplay</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">audio</span>: audioList</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;获取音乐列表失败:&#x27;</span>, data.<span class="property">message</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;获取音乐列表出错:&#x27;</span>, error);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>aplayer</category>
-      </categories>
-      <tags>
-        <tag>aplayer</tag>
-        <tag>alist</tag>
-        <tag>music</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>bash执行长命令报错临时解决办法</title>
-    <url>/posts/35504/</url>
-    <content><![CDATA[<p>终端运行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c <span class="string">&quot;hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/*</span></span><br></pre></td></tr></table></figure>
-
-<p>报错：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash: bash -c hexo clean &amp;&amp; hexo g &amp;&amp; hexo d &amp;&amp; rm -rf /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/* &amp;&amp; cp -r /opt/blog/hexo/public/* /opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index/: No such file or directory</span><br></pre></td></tr></table></figure>
-
-<p>目录也存在，而且分步执行也正常，但连起来就报错😓</p>
-<p>将命令转为脚本后运行成功</p>
-<p>上面的命令换成脚本</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">BLOG_DIR=&quot;/opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index&quot;</span><br><span class="line"></span><br><span class="line">mkdir -p &quot;$BLOG_DIR&quot;</span><br><span class="line"></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line">rm -rf &quot;$BLOG_DIR/*&quot;</span><br><span class="line">cp -r /opt/blog/hexo/public/* &quot;$BLOG_DIR/&quot;</span><br><span class="line"></span><br><span class="line">echo &quot;success!&quot;</span><br></pre></td></tr></table></figure>
-
-<p>至此，结束</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>bash</tag>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -424,8 +424,9 @@
 <p>命令示例：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#### 命令帮助</span><br><span class="line">* !ban | 禁言</span><br><span class="line">&gt; !ban @用户 时间（禁言时长只能是 10、1h、6h、12h</span><br><span class="line">* !unban | 取消禁言</span><br><span class="line">&gt; !unban @用户（对用户取消禁言</span><br><span class="line">* !kick | 将用户移出群聊</span><br><span class="line">&gt; !kick @用户</span><br><span class="line">* !delmsg | 删除用户消息</span><br><span class="line">&gt; !delmsg (并引用需要撤回的消息</span><br><span class="line">&gt; !delmsg @用户 需要撤回的条数(最大400条</span><br><span class="line">* !addadmin | 添加临时管理员</span><br><span class="line">&gt; !addadmin @用户</span><br><span class="line">* !deladmin | 删除临时管理员</span><br><span class="line">&gt; !deladmin @用户</span><br><span class="line">* !adminlist | 查看临时管理员列表</span><br></pre></td></tr></table></figure>
 
-<p>下载链接：<a href="https://github.com/butlanys/YunhuManagebots/releases/download/1.0/dist.zip">https://github.com/butlanys/YunhuManagebots/releases/download/1.0/dist.zip</a></p>
-<p>源代码已加密，虽然是加密的，但保证是安全的，数据只会存储到你自己的MySQL服务器，并不会上传到第三方，也不会危害宿主机安全（如果仍不放心，欢迎使用docker部署使用）</p>
+<p>下载链接：<a href="https://github.com/butlanys/YunhuManagebots/">https://github.com/butlanys/YunhuManagebots/</a></p>
+<p><del>源代码已加密，虽然是加密的，但保证是安全的，数据只会存储到你自己的MySQL服务器，并不会上传到第三方，也不会危害宿主机安全（如果仍不放心，欢迎使用docker部署使用）</del></p>
+<p>源码已上传，git clone即可食用</p>
 <p><strong>下载后解压得到</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── app.py</span><br><span class="line">└── pyarmor_runtime_000000</span><br><span class="line">    ├── __init__.py</span><br><span class="line">    └── pyarmor_runtime.so</span><br></pre></td></tr></table></figure>
 
@@ -447,6 +448,20 @@
 <p>例如 <code>https://you_server.com:8080/yhchat</code></p>
 <p>接着在群聊中发送!help命令，如果bot有回应则大功告成，你可以愉快的使用此bot了</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>使用bing搜索引擎的用户记得兑换积分</title>
+    <url>/posts/22724/</url>
+    <content><![CDATA[<p>地址：<a href="https://rewards.bing.com/redeem/?form=ML2UXN">Microsoft Rewards 兑换目录</a></p>
+<p>目前中国大陆地区可兑换的礼品：</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/11/image_de5fa5cf6e11c29867d41f8f16ec8e83.png" alt="https:&#x2F;&#x2F;github.hqycloud.top&#x2F;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;hqycloud&#x2F;blog-images&#x2F;main&#x2F;hexo-images&#x2F;24&#x2F;11&#x2F;image_de5fa5cf6e11c29867d41f8f16ec8e83.png"></p>
+]]></content>
+      <categories>
+        <category>bing</category>
+      </categories>
+      <tags>
+        <tag>bing</tag>
+      </tags>
   </entry>
   <entry>
     <title>免费使用chatGPT</title>
@@ -475,20 +490,6 @@
       <categories>
         <category>chatgpt</category>
       </categories>
-  </entry>
-  <entry>
-    <title>使用bing搜索引擎的用户记得兑换积分</title>
-    <url>/posts/22724/</url>
-    <content><![CDATA[<p>地址：<a href="https://rewards.bing.com/redeem/?form=ML2UXN">Microsoft Rewards 兑换目录</a></p>
-<p>目前中国大陆地区可兑换的礼品：</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/11/image_de5fa5cf6e11c29867d41f8f16ec8e83.png" alt="https:&#x2F;&#x2F;github.hqycloud.top&#x2F;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;hqycloud&#x2F;blog-images&#x2F;main&#x2F;hexo-images&#x2F;24&#x2F;11&#x2F;image_de5fa5cf6e11c29867d41f8f16ec8e83.png"></p>
-]]></content>
-      <categories>
-        <category>bing</category>
-      </categories>
-      <tags>
-        <tag>bing</tag>
-      </tags>
   </entry>
   <entry>
     <title>免费的二级域名(可绑cloudflare)</title>
