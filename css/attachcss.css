@@ -53,7 +53,7 @@
 }
 
 #recent-posts .recent-post-item:hover {
-  transform: scale(0.9); /* 鼠标悬停时放大卡片 */
+  transform: scale(1.02); /* 鼠标悬停时放大卡片 */
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2); /* 增强悬停阴影 */
 }
 /* 页脚透明 */
