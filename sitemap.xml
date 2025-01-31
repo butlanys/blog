@@ -335,20 +335,6 @@
 
   
   <url>
-    <loc>https://blog.butlanys.de/tags/bash/</loc>
-    <lastmod>2025-01-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.butlanys.de/tags/linux/</loc>
-    <lastmod>2025-01-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.butlanys.de/tags/nginx/</loc>
     <lastmod>2025-01-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -385,6 +371,20 @@
   
   <url>
     <loc>https://blog.butlanys.de/tags/music/</loc>
+    <lastmod>2025-01-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.butlanys.de/tags/bash/</loc>
+    <lastmod>2025-01-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.butlanys.de/tags/linux/</loc>
     <lastmod>2025-01-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -447,13 +447,6 @@
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/tags/Windows/</loc>
-    <lastmod>2025-01-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.butlanys.de/tags/wireguard/</loc>
     <lastmod>2025-01-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -496,6 +489,13 @@
   </url>
   
   <url>
+    <loc>https://blog.butlanys.de/tags/Windows/</loc>
+    <lastmod>2025-01-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.butlanys.de/tags/web/</loc>
     <lastmod>2025-01-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -526,13 +526,6 @@
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/linux/</loc>
-    <lastmod>2025-01-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.butlanys.de/categories/nginx/</loc>
     <lastmod>2025-01-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -554,7 +547,7 @@
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/Termux/</loc>
+    <loc>https://blog.butlanys.de/categories/linux/</loc>
     <lastmod>2025-01-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -582,6 +575,13 @@
   </url>
   
   <url>
+    <loc>https://blog.butlanys.de/categories/Termux/</loc>
+    <lastmod>2025-01-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.butlanys.de/categories/domain/</loc>
     <lastmod>2025-01-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -603,14 +603,14 @@
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/cloud/</loc>
+    <loc>https://blog.butlanys.de/categories/wireguard/</loc>
     <lastmod>2025-01-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/wireguard/</loc>
+    <loc>https://blog.butlanys.de/categories/cloud/</loc>
     <lastmod>2025-01-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
