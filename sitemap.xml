@@ -554,14 +554,14 @@
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/Termux/</loc>
+    <loc>https://blog.butlanys.de/categories/docker/</loc>
     <lastmod>2025-01-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/docker/</loc>
+    <loc>https://blog.butlanys.de/categories/Termux/</loc>
     <lastmod>2025-01-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

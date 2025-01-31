@@ -311,58 +311,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>云崽bot恢复包 --Termux</title>
-    <url>/posts/a1bc7431/</url>
-    <content><![CDATA[<ul>
-<li>自带一键部署脚本</li>
-<li>自带签名服务器(qsign-1.1.7)<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;使用教程&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>下载云盘内的ZeroTermux和恢复包</li>
-<li>先安装ZeroTermux</li>
-<li>把恢复包直接解压在内部存储（防止你们不会放）</li>
-</ul>
-<p>打开ZeroTermux，在左侧边栏中找到备份&#x2F;恢复，然后选择恢复数据包<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/0.jpg"></p>
-<ul>
-<li>选择以后会弹出恢复的系统名字，填一个你喜欢的就行。</li>
-<li>恢复完成后在左侧边栏找到容器切换，切换到你刚才恢复的容器<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;bot使用教程&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>使用方法：</li>
-<li>终端运行</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bash 云崽bot容器启动脚本.sh</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/1.jpg"></p>
-<ul>
-<li>选择 debian-bullseye_arm64 _1–proot<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/2.jpg"></li>
-<li>选择 启动proot debian-bullseye_arm64<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/3.jpg"></li>
-<li>终端运行</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./start.sh</span><br></pre></td></tr></table></figure>
-
-<p>启动签名服务、redis和查看使用说明<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/4.jpg"><br>最后再输入</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd Miao-Yunzai</span><br></pre></td></tr></table></figure>
-
-<p>切换到云崽目录<br>然后运行pnpm app登陆Bot<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/5.jpg"></p>
-<p>运行后你将会看到跟上面一样的内容</p>
-<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>第一次运行可能会出现连接不上签名服务器，请用Ctrl+c结束掉bot进程，然后用ps -le查看正在运行的服务，如果正常，你将看到以下内容<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/6.jpg"></p>
-<ul>
-<li>里面包含一个java程序和redis数据库服务<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;pnpm常用命令&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm app #带log启动</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm run log #查看启动日志</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm start #不带log启动</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm stop #停止bot</span><br></pre></td></tr></table></figure>
-
-<p>以上命令请在云崽bot主目录下运行<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;如果有解决不了的报错请反馈&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<ul>
-<li>制作不易，请勿倒卖&#x2F;商用</li>
-<li>链接已放在评论区</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Termux</category>
-      </categories>
-  </entry>
-  <entry>
     <title>docker安装adguard home (macvlan独享ip)</title>
     <url>/posts/6628/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>此教程适用于家里有台闲置的、可以长期开机的软路由或支持安装docker的系统使用，目前主流的教程都是bridge端口映射，但这种网络模式局限性非常大（需占用53、67…………等一系列重要的端口），所以才有现在这篇教程</strong></p>
@@ -416,6 +364,58 @@
         <tag>adguard home</tag>
         <tag>macvlan</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>云崽bot恢复包 --Termux</title>
+    <url>/posts/a1bc7431/</url>
+    <content><![CDATA[<ul>
+<li>自带一键部署脚本</li>
+<li>自带签名服务器(qsign-1.1.7)<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;使用教程&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>下载云盘内的ZeroTermux和恢复包</li>
+<li>先安装ZeroTermux</li>
+<li>把恢复包直接解压在内部存储（防止你们不会放）</li>
+</ul>
+<p>打开ZeroTermux，在左侧边栏中找到备份&#x2F;恢复，然后选择恢复数据包<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/0.jpg"></p>
+<ul>
+<li>选择以后会弹出恢复的系统名字，填一个你喜欢的就行。</li>
+<li>恢复完成后在左侧边栏找到容器切换，切换到你刚才恢复的容器<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;bot使用教程&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>使用方法：</li>
+<li>终端运行</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bash 云崽bot容器启动脚本.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/1.jpg"></p>
+<ul>
+<li>选择 debian-bullseye_arm64 _1–proot<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/2.jpg"></li>
+<li>选择 启动proot debian-bullseye_arm64<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/3.jpg"></li>
+<li>终端运行</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./start.sh</span><br></pre></td></tr></table></figure>
+
+<p>启动签名服务、redis和查看使用说明<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/4.jpg"><br>最后再输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd Miao-Yunzai</span><br></pre></td></tr></table></figure>
+
+<p>切换到云崽目录<br>然后运行pnpm app登陆Bot<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/5.jpg"></p>
+<p>运行后你将会看到跟上面一样的内容</p>
+<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>第一次运行可能会出现连接不上签名服务器，请用Ctrl+c结束掉bot进程，然后用ps -le查看正在运行的服务，如果正常，你将看到以下内容<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/6.jpg"></p>
+<ul>
+<li>里面包含一个java程序和redis数据库服务<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;pnpm常用命令&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm app #带log启动</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm run log #查看启动日志</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm start #不带log启动</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm stop #停止bot</span><br></pre></td></tr></table></figure>
+
+<p>以上命令请在云崽bot主目录下运行<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;如果有解决不了的报错请反馈&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<ul>
+<li>制作不易，请勿倒卖&#x2F;商用</li>
+<li>链接已放在评论区</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Termux</category>
+      </categories>
   </entry>
   <entry>
     <title>云湖群管理bot(指令版)</title>
@@ -528,21 +528,6 @@
       </categories>
   </entry>
   <entry>
-    <title>关于我离开云湖的声明</title>
-    <url>/posts/37249/</url>
-    <content><![CDATA[<ul>
-<li><strong>在2025&#x2F;1&#x2F;30日晚我已停用所有机器人并注销所有有关云湖的账号</strong></li>
-</ul>
-<blockquote>
-<p><strong>此次离开，已经做好不再回去的打算，我在云湖所写的bot，源码我等一会贴到评论区，有兴趣的话可以自己部署，并且这些项目我将加上MIT协议，你可以自由的修改、分发。但我会将这些存储库设为只读状态，意不再接受任何新需求、bug等反馈。</strong></p>
-</blockquote>
-<h2 id="致云湖开发者"><a href="#致云湖开发者" class="headerlink" title="致云湖开发者"></a>致云湖开发者</h2><p><strong>我使用这款软件快3年，连续在线天数几百天，这段时间，我见证了这款软件的成长，也感到了许多不足（动画僵硬、ui也不算好看，bot api也不怎么完善）但好在遇到问题可以和开发者面对面交流，问题很快就能得到解决</strong></p>
-<p><strong>但，不管怎么说，这充其量就是个半成品，跟其他软件相比，缺点太多了。也许你会说，这是个刚起步的产品啊，还有很大的改进空间。对，但等到这款产品完全成熟时，需要太多时间，我已经等不起了，许多操作甚至需要用户权限。而且，对垃圾、18+的广告还要开发者人工处理，前阵子黑产渗透到云湖时，居然要花上一堆时间来人工处理？</strong></p>
-<p><strong>总之，就目前来说，可替代云湖的产品有太多太多</strong></p>
-<p><strong>江湖很大，有缘再见~</strong></p>
-]]></content>
-  </entry>
-  <entry>
     <title>利用dispatch突破网络限速（Linux）</title>
     <url>/posts/6159/</url>
     <content><![CDATA[<p><strong><a href="https://github.com/alexkirsz/dispatch">dispatch</a>是一种Rust语言的客户端负载均衡器，可实现带宽叠加、带宽聚合</strong></p>
@@ -596,6 +581,21 @@
         <tag>校园网</tag>
         <tag>网络</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>关于我离开云湖的声明</title>
+    <url>/posts/37249/</url>
+    <content><![CDATA[<ul>
+<li><strong>在2025&#x2F;1&#x2F;30日晚我已停用所有机器人并注销所有有关云湖的账号</strong></li>
+</ul>
+<blockquote>
+<p><strong>此次离开，已经做好不再回去的打算，我在云湖所写的bot，源码我等一会贴到评论区，有兴趣的话可以自己部署，并且这些项目我将加上MIT协议，你可以自由的修改、分发。但我会将这些存储库设为只读状态，意不再接受任何新需求、bug等反馈。</strong></p>
+</blockquote>
+<h2 id="致云湖开发者"><a href="#致云湖开发者" class="headerlink" title="致云湖开发者"></a>致云湖开发者</h2><p><strong>我使用这款软件快3年，连续在线天数几百天，这段时间，我见证了这款软件的成长，也感到了许多不足（动画僵硬、ui也不算好看，bot api也不怎么完善）但好在遇到问题可以和开发者面对面交流，问题很快就能得到解决</strong></p>
+<p><strong>但，不管怎么说，这充其量就是个半成品，跟其他软件相比，缺点太多了。也许你会说，这是个刚起步的产品啊，还有很大的改进空间。对，但等到这款产品完全成熟时，需要太多时间，我已经等不起了，许多操作甚至需要用户权限。而且，对垃圾、18+的广告还要开发者人工处理，前阵子黑产渗透到云湖时，居然要花上一堆时间来人工处理？</strong></p>
+<p><strong>总之，就目前来说，可替代云湖的产品有太多太多</strong></p>
+<p><strong>江湖很大，有缘再见~</strong></p>
+]]></content>
   </entry>
   <entry>
     <title>利用dispatch突破网络限速（Windows）</title>
