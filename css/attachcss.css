@@ -16,6 +16,7 @@
   /*backdrop-filter: blur(10px);*/
 }
 .recent-post-item,.card-widget{
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
 }
 /* 夜间模式 */
@@ -39,6 +40,11 @@
     /* backdrop-filter: blur(5px);*/
   }
 }
+
+[data-theme="dark"] {.recent-post-item,.card-widget{
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+}}
 
 /* 页脚透明 */
 #footer{
