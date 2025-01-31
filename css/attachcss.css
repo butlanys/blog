@@ -48,12 +48,12 @@
 /* 卡片突出效果 */
 #recent-posts .recent-post-item {
   /* 其他样式 */
-  transition: transform 0.3s ease; /* 添加过渡效果 */
+  transition: transform 0.5s ease; /* 添加过渡效果 */
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* 添加默认阴影 */
 }
 
 #recent-posts .recent-post-item:hover {
-  transform: scale(1.05); /* 鼠标悬停时放大卡片 */
+  transform: scale(0.9); /* 鼠标悬停时放大卡片 */
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2); /* 增强悬停阴影 */
 }
 /* 页脚透明 */
