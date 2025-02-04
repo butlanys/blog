@@ -23,8 +23,7 @@
 [data-theme="dark"] { 
   /* #aside-content, */
   #search-mask,
-  #sidebar #menu-mask,
-  #post {
+  #sidebar #menu-mask{
     background: rgba(20, 20, 20, 0.8);
   }
 }
@@ -42,7 +41,7 @@
   }
 }
 
-[data-theme="dark"] {.recent-post-item,.card-widget{
+[data-theme="dark"] {.recent-post-item,.card-widget,#post{
   background: rgba(30, 30, 30, 0.2)!important;
   backdrop-filter: blur(10px);
 }}
