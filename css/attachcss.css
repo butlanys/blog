@@ -15,7 +15,7 @@
   background: rgba(255, 255, 255, 0.5);
   /*backdrop-filter: blur(10px);*/
 }
-[data-theme="light"]{.recent-post-item,.card-widget{
+[data-theme="light"]{.recent-post-item,.card-widget,#post{
   background: rgba(255, 255, 255, 0.5) !important;
   backdrop-filter: blur(10px);
 }}
@@ -23,7 +23,8 @@
 [data-theme="dark"] { 
   /* #aside-content, */
   #search-mask,
-  #sidebar #menu-mask {
+  #sidebar #menu-mask,
+  #post {
     background: rgba(20, 20, 20, 0.8);
   }
 }
