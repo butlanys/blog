@@ -9,8 +9,35 @@
     <atom:link href="https://blog.butlanys.de/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Fri, 07 Feb 2025 17:09:54 GMT</pubDate>
+    <pubDate>Fri, 07 Feb 2025 18:05:45 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>解决服务器smtp端口出站流量被阻断</title>
+      <link>https://blog.butlanys.de/posts/32447/</link>
+      <guid>https://blog.butlanys.de/posts/32447/</guid>
+      <pubDate>Fri, 07 Feb 2025 17:46:02 GMT</pubDate>
+      
+      <description>本文介绍了如何解决Alicenetwork VPS无法通过阿里云企业邮SMTP服务器发信的问题。由于怀疑是上游阻断或阿里云限制，作者建议使用华为云服务器作为反向代理。  文章详细说明了组网方案（推荐WireGuard或EasyTier），以及在Ubuntu/Debian系统上安装Nginx并配置反向代理转发SMTP请求到阿里云SMTP服务器(smtp.qiye.aliyun.com:465)的步骤。  最终，只需在转发机hosts文件中添加映射，即可通过转发机发送邮件。  文章简明地阐述了问题、解决方案以及具体操作步骤，适合遇到类似问题的用户参考。</description>
+      
+      
+      
+      <content:encoded><![CDATA[<blockquote><p>我手上这台alicenetwork vps就无法通过阿里云企业邮smtp服务器发信，ping正常，其他端口也正常，应该是上游阻断或阿里云限制了，所以用华为云反代一下阿里的smtp</p></blockquote><h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><blockquote><p>需要一台可以正常向邮件服务器smtp发信的服务器，并且服务器之间最好组个网</p></blockquote><p>组网推荐用 <code>wireguard</code>、<code>easytier</code></p><p>前者通用型强，连linux维护者也推崇，后者配置简单，性能也不差，官网：<a href="https://easytier.cn/">https://easytier.cn/</a></p><h2 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h2><p>ubuntu、debian</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install nginx</span><br></pre></td></tr></table></figure><h2 id="编写配置文件"><a href="#编写配置文件" class="headerlink" title="编写配置文件"></a>编写配置文件</h2><p>在转发机上的nginx.conf中添加</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">stream</span> &#123;</span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line"><span class="attribute">listen</span> <span class="number">465</span>;</span><br><span class="line"><span class="attribute">proxy_pass</span> smtp.qiye.aliyun.com:<span class="number">465</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>仅需在&#x2F;etc&#x2F;hosts中新增</p><p><code>&lt;转发机IP&gt; &lt;smtp域名&gt;</code></p><p>即可，docker中可以也可以通过挂载只读的hosts文件到容器内部就能使用</p>]]></content:encoded>
+      
+      
+      <category domain="https://blog.butlanys.de/categories/nginx/">nginx</category>
+      
+      
+      <category domain="https://blog.butlanys.de/tags/nginx/">nginx</category>
+      
+      <category domain="https://blog.butlanys.de/tags/mail/">mail</category>
+      
+      <category domain="https://blog.butlanys.de/tags/smtp/">smtp</category>
+      
+      
+      <comments>https://blog.butlanys.de/posts/32447/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>netcup g11s测评</title>

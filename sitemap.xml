@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.butlanys.de/posts/32447/</loc>
+    
+    <lastmod>2025-02-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.butlanys.de/charts/index.html</loc>
     
     <lastmod>2025-02-07</lastmod>
@@ -474,14 +483,14 @@
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/tags/Windows/</loc>
+    <loc>https://blog.butlanys.de/tags/wireguard/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/tags/wireguard/</loc>
+    <loc>https://blog.butlanys.de/tags/Windows/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -530,6 +539,20 @@
   </url>
   
   <url>
+    <loc>https://blog.butlanys.de/tags/mail/</loc>
+    <lastmod>2025-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.butlanys.de/tags/smtp/</loc>
+    <lastmod>2025-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.butlanys.de/tags/ssl/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -567,14 +590,14 @@
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/cloudflare/</loc>
+    <loc>https://blog.butlanys.de/categories/linux/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/linux/</loc>
+    <loc>https://blog.butlanys.de/categories/cloudflare/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -595,14 +618,14 @@
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/bing/</loc>
+    <loc>https://blog.butlanys.de/categories/chatgpt/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/chatgpt/</loc>
+    <loc>https://blog.butlanys.de/categories/bing/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -630,14 +653,14 @@
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/cloud/</loc>
+    <loc>https://blog.butlanys.de/categories/wireguard/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/categories/wireguard/</loc>
+    <loc>https://blog.butlanys.de/categories/cloud/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
