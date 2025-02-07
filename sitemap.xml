@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.butlanys.de/charts/index.html</loc>
+    
+    <lastmod>2025-02-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.butlanys.de/posts/48591/</loc>
     
     <lastmod>2025-02-07</lastmod>
@@ -479,20 +488,6 @@
   </url>
   
   <url>
-    <loc>https://blog.butlanys.de/tags/wechat/</loc>
-    <lastmod>2025-02-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.butlanys.de/tags/%E5%BE%AE%E4%BF%A1/</loc>
-    <lastmod>2025-02-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.butlanys.de/tags/%E5%8D%8E%E4%B8%BA%E4%BA%91/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -508,6 +503,20 @@
   
   <url>
     <loc>https://blog.butlanys.de/tags/server/</loc>
+    <lastmod>2025-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.butlanys.de/tags/wechat/</loc>
+    <lastmod>2025-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.butlanys.de/tags/%E5%BE%AE%E4%BF%A1/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -621,6 +630,13 @@
   </url>
   
   <url>
+    <loc>https://blog.butlanys.de/categories/cloud/</loc>
+    <lastmod>2025-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.butlanys.de/categories/wireguard/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -629,13 +645,6 @@
   
   <url>
     <loc>https://blog.butlanys.de/categories/wechat/</loc>
-    <lastmod>2025-02-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.butlanys.de/categories/cloud/</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
