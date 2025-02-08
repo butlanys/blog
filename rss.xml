@@ -9,16 +9,16 @@
     <atom:link href="https://blog.butlanys.de/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Sat, 08 Feb 2025 16:55:06 GMT</pubDate>
+    <pubDate>Sat, 08 Feb 2025 17:00:31 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
-      <title>title</title>
-      <link>https://blog.butlanys.de/posts/42496/</link>
-      <guid>https://blog.butlanys.de/posts/42496/</guid>
+      <title>解决自建不算子接入butterfly后一直转圈的问题</title>
+      <link>https://blog.butlanys.de/posts/33089/</link>
+      <guid>https://blog.butlanys.de/posts/33089/</guid>
       <pubDate>Sat, 08 Feb 2025 16:46:39 GMT</pubDate>
       
-      <description>这篇博客文章介绍了如何更新Busuanzi网站访问计数器的JavaScript代码，以适应其API的最新变化。  旧版本的代码使用`busuanzi_page_pv`变量，新版本则改为`busuanzi_value_page_pv`。文章的核心内容是提供一段更新后的JavaScript代码，该代码通过XMLHttpRequest向Busuanzi API发送POST请求获取网站访问数据（网站PV、UV、页面PV、页面UV），并根据`data-api`和`data-prefix`属性自定义API地址和前缀。  代码还包含一个`formatValue`函数，用于格式化计数器的显示方式（默认、逗号分隔、简写）。  此外，代码还处理了PJAX的情况，以确保在页面局部更新时也能正确更新计数器。  最后，文章强调需要将代码中的API地址替换成用户自己的API地址。</description>
+      <description>这篇文章介绍了如何修改Busuanzi网站访问统计计数器的JavaScript代码，以适应其API的更新。  原代码中 `busuanzi_page_pv` 变量已更改为 `busuanzi_value_page_pv`，文章提供了修正后的JavaScript代码片段。该代码通过XMLHttpRequest向指定的API（可自定义）发送POST请求，获取网站访问量（PV、UV等）数据，并将其显示在页面上。代码包含了错误处理、数据格式化（支持逗号分隔、简写格式）和PJAX支持，使其能够在页面动态更新时正确显示计数器。  文章特别强调需要将代码中的API地址替换为用户自己的API地址，并建议用户理解代码逻辑后进行修改和使用。</description>
       
       
       
@@ -27,7 +27,7 @@
       
       
       
-      <comments>https://blog.butlanys.de/posts/42496/#disqus_thread</comments>
+      <comments>https://blog.butlanys.de/posts/33089/#disqus_thread</comments>
       
     </item>
     
