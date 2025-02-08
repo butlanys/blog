@@ -15,7 +15,7 @@
   background: rgba(255, 255, 255, 0.5);
   /*backdrop-filter: blur(10px);*/
 }
-[data-theme="light"]{.recent-post-item,.card-widget,#post{
+[data-theme="light"]{.recent-post-item,.card-widget,#post,#page{
   background: rgba(255, 255, 255, 0.5) !important;
   backdrop-filter: blur(10px);
 }}
@@ -41,21 +41,10 @@
   }
 }
 
-[data-theme="dark"] {.recent-post-item,.card-widget,#post{
+[data-theme="dark"] {.recent-post-item,.card-widget,#post,#page{
   background: rgba(30, 30, 30, 0.2)!important;
   backdrop-filter: blur(10px);
 }}
-/* 卡片突出效果 */
-#recent-posts .recent-post-item,.card-widget{
-  /* 其他样式 */
-  transition: transform 0.3s ease; /* 添加过渡效果 */
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* 添加默认阴影 */
-}
-
-#recent-posts .recent-post-item,.card-widget:hover {
-  transform: scale(1.02); /* 鼠标悬停时放大卡片 */
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2); /* 增强悬停阴影 */
-}
 /* 页脚透明 */
 #footer{
   background: transparent!important;
