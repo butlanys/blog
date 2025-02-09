@@ -541,6 +541,13 @@
   </url>
   
   <url>
+    <loc>https://blog.butlanys.de/tags/web/</loc>
+    <lastmod>2025-02-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.butlanys.de/tags/mail/</loc>
     <lastmod>2025-02-09</lastmod>
     <changefreq>weekly</changefreq>
@@ -549,13 +556,6 @@
   
   <url>
     <loc>https://blog.butlanys.de/tags/smtp/</loc>
-    <lastmod>2025-02-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.butlanys.de/tags/web/</loc>
     <lastmod>2025-02-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
