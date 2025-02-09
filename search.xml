@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>OpenResty(nginx)子目录反向代理</title>
+    <url>/posts/30145/</url>
+    <content><![CDATA[<p>一般来说，子目录反向代理只需要以下配置就足够了：</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">location</span><span class="regexp"> ^~</span> /test/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> https://example.com; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> Host example.com; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> REMOTE-HOST <span class="variable">$remote_addr</span>; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> Upgrade <span class="variable">$http_upgrade</span>; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> Connection <span class="variable">$http_connection</span>; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>; </span><br><span class="line">    <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>; </span><br><span class="line">    <span class="attribute">add_header</span> X-Cache <span class="variable">$upstream_cache_status</span>; </span><br><span class="line">    <span class="attribute">add_header</span> Cache-Control <span class="literal">no</span>-cache; </span><br><span class="line">    <span class="attribute">proxy_ssl_server_name</span> <span class="literal">off</span>; </span><br><span class="line">    <span class="attribute">proxy_ssl_name</span> <span class="variable">$proxy_host</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每条配置解释：</p>
+<ul>
+<li><code>location ^~ /test/</code>:  匹配以 <code>/test/</code> 开头的 URL 请求。<code>^~</code> 表示优先匹配。</li>
+<li><code>proxy_pass https://example.com;</code>: 将请求转发到 <code>https://example.com</code>。</li>
+<li><code>proxy_set_header</code>: 设置请求头，将一些客户端信息传递给后端服务器。<ul>
+<li><code>Host example.com;</code>:  将请求头中的 Host 字段设置为 <code>example.com</code>，这是必须的，否则后端服务器可能无法正确处理请求。</li>
+<li><code>X-Real-IP $remote_addr;</code>: 传递客户端的真实 IP 地址。</li>
+<li><code>X-Forwarded-For $proxy_add_x_forwarded_for;</code>:  追加客户端的 IP 地址到 X-Forwarded-For 头部，用于记录完整的请求链路。</li>
+<li><code>REMOTE-HOST $remote_addr;</code>:  传递客户端的主机名（通常是 IP 地址）。</li>
+<li><code>Upgrade $http_upgrade;</code> 和 <code>Connection $http_connection;</code>:  用于支持 WebSocket 代理。</li>
+<li><code>X-Forwarded-Proto $scheme;</code>:  传递请求的协议 (http 或 https)。</li>
+</ul>
+</li>
+<li><code>proxy_http_version 1.1;</code>:  设置 HTTP 协议版本为 1.1。</li>
+<li><code>add_header X-Cache $upstream_cache_status;</code>:  添加一个响应头，显示缓存状态 (HIT, MISS, EXPIRED 等)。</li>
+<li><code>add_header Cache-Control no-cache;</code>:  设置响应头，指示客户端不要缓存响应。</li>
+<li><code>proxy_ssl_server_name off;</code>:  关闭 SNI (Server Name Indication)。</li>
+<li><code>proxy_ssl_name $proxy_host;</code>:  设置用于验证后端服务器证书的域名。</li>
+</ul>
+<p>但实际使用会发现，如果反向代理的是一些有绝对路径的网站，就会出现 404 错误。</p>
+<p>举个例子：</p>
+<p>假设我们使用上述配置将 <code>/test/</code> 映射到 <code>https://example.com</code>。当访问 <code>http://your_server/test/</code> 时，Nginx 会将其代理到 <code>https://example.com/</code>。这通常没有问题。</p>
+<p>但是，如果 <code>https://example.com</code> 的网页中有一个资源的链接是绝对路径，例如：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;/images/logo.png&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当浏览器解析到这个标签时，它会尝试请求 <code>http://server/images/logo.png</code>，而不是 <code>http://server/test/images/logo.png</code>。由于服务器上 <code>/images/logo.png</code> 路径并不存在，就会导致 404 错误。</p>
+<p>问题的原因在于，当网站使用绝对路径时，浏览器会根据当前的域名来拼接完整的 URL，而忽略了反向代理的子目录 <code>/test/</code>。</p>
+<p><strong>使用rewrite重写url</strong></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">location</span><span class="regexp"> ^~</span> /test/ &#123;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/test/(.*)$</span> /<span class="variable">$1</span> <span class="literal">break</span>; <span class="comment"># 重写 URL</span></span><br><span class="line">    <span class="attribute">proxy_pass</span> https://example.com;</span><br><span class="line">    <span class="attribute">proxy_buffering</span> <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">proxy_request_buffering</span> <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> Connection <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> Host example.com;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> REMOTE-HOST <span class="variable">$remote_addr</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">    <span class="attribute">proxy_cache</span> <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">proxy_ssl_server_name</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">proxy_ssl_name</span> example.com;</span><br><span class="line">    <span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&quot;max-age=31536000&quot;</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Accel-Buffering <span class="literal">no</span>;</span><br><span class="line">    <span class="attribute">add_header</span> X-Proxy-Cache <span class="variable">$upstream_cache_status</span>;</span><br><span class="line">    <span class="attribute">tcp_nodelay</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="section">location</span> <span class="regexp">~* /test/.*\.(css|js)$</span> &#123;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^/test/(.*)$</span> /<span class="variable">$1</span> <span class="literal">break</span>;</span><br><span class="line">        <span class="attribute">proxy_pass</span> https://example.com;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host example.com;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> REMOTE-HOST <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">        <span class="attribute">proxy_cache_key</span> <span class="string">&quot;<span class="variable">$scheme</span><span class="variable">$proxy_host</span><span class="variable">$uri</span>&quot;</span>;</span><br><span class="line">        <span class="attribute">proxy_ssl_server_name</span> <span class="literal">on</span>;</span><br><span class="line">        <span class="attribute">proxy_ssl_name</span> example.com;</span><br><span class="line">        <span class="attribute">expires</span> <span class="number">7d</span>;</span><br><span class="line">        <span class="attribute">add_header</span> Cache-Control <span class="string">&quot;public&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我这里反代的是某个视频网站，所以我开了缓存+视频流优化，如果不需要请自行删减</p>
+<p>反代前：</p>
+<p><img src="https://file.butlanys.de/img/19560554ab6b1d677b107a173036e02e.png"></p>
+<p>反代后：</p>
+<p><img src="https://file.butlanys.de/img/6bb0dcbca31471d7718d1eaf8dba4bfd.png"></p>
+<p>虽然不知道为什么反代之后资源只会一个个加载了，但起码视频流是正常的，速度比反代前高得多</p>
+]]></content>
+      <categories>
+        <category>nginx</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+        <tag>site</tag>
+        <tag>config</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Google Gemini Ai for yhchat</title>
     <url>/posts/bebafed8/</url>
     <content><![CDATA[<h2 id="点击使用云湖机器人【Gemini-Bot】"><a href="#点击使用云湖机器人【Gemini-Bot】" class="headerlink" title="点击使用云湖机器人【Gemini Bot】"></a><a href="https://yhfx.jwznb.com/share?key=O1pAnYgHTycu&ts=1709444123">点击使用云湖机器人【Gemini Bot】</a></h2><p>机器人ID: 9804152</p>
@@ -69,58 +121,6 @@
       <categories>
         <category>yhchat</category>
       </categories>
-  </entry>
-  <entry>
-    <title>OpenResty(nginx)子目录反向代理</title>
-    <url>/posts/30145/</url>
-    <content><![CDATA[<p>一般来说，子目录反向代理只需要以下配置就足够了：</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">location</span><span class="regexp"> ^~</span> /test/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> https://example.com; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> Host example.com; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> REMOTE-HOST <span class="variable">$remote_addr</span>; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> Upgrade <span class="variable">$http_upgrade</span>; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> Connection <span class="variable">$http_connection</span>; </span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>; </span><br><span class="line">    <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>; </span><br><span class="line">    <span class="attribute">add_header</span> X-Cache <span class="variable">$upstream_cache_status</span>; </span><br><span class="line">    <span class="attribute">add_header</span> Cache-Control <span class="literal">no</span>-cache; </span><br><span class="line">    <span class="attribute">proxy_ssl_server_name</span> <span class="literal">off</span>; </span><br><span class="line">    <span class="attribute">proxy_ssl_name</span> <span class="variable">$proxy_host</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>每条配置解释：</p>
-<ul>
-<li><code>location ^~ /test/</code>:  匹配以 <code>/test/</code> 开头的 URL 请求。<code>^~</code> 表示优先匹配。</li>
-<li><code>proxy_pass https://example.com;</code>: 将请求转发到 <code>https://example.com</code>。</li>
-<li><code>proxy_set_header</code>: 设置请求头，将一些客户端信息传递给后端服务器。<ul>
-<li><code>Host example.com;</code>:  将请求头中的 Host 字段设置为 <code>example.com</code>，这是必须的，否则后端服务器可能无法正确处理请求。</li>
-<li><code>X-Real-IP $remote_addr;</code>: 传递客户端的真实 IP 地址。</li>
-<li><code>X-Forwarded-For $proxy_add_x_forwarded_for;</code>:  追加客户端的 IP 地址到 X-Forwarded-For 头部，用于记录完整的请求链路。</li>
-<li><code>REMOTE-HOST $remote_addr;</code>:  传递客户端的主机名（通常是 IP 地址）。</li>
-<li><code>Upgrade $http_upgrade;</code> 和 <code>Connection $http_connection;</code>:  用于支持 WebSocket 代理。</li>
-<li><code>X-Forwarded-Proto $scheme;</code>:  传递请求的协议 (http 或 https)。</li>
-</ul>
-</li>
-<li><code>proxy_http_version 1.1;</code>:  设置 HTTP 协议版本为 1.1。</li>
-<li><code>add_header X-Cache $upstream_cache_status;</code>:  添加一个响应头，显示缓存状态 (HIT, MISS, EXPIRED 等)。</li>
-<li><code>add_header Cache-Control no-cache;</code>:  设置响应头，指示客户端不要缓存响应。</li>
-<li><code>proxy_ssl_server_name off;</code>:  关闭 SNI (Server Name Indication)。</li>
-<li><code>proxy_ssl_name $proxy_host;</code>:  设置用于验证后端服务器证书的域名。</li>
-</ul>
-<p>但实际使用会发现，如果反向代理的是一些有绝对路径的网站，就会出现 404 错误。</p>
-<p>举个例子：</p>
-<p>假设我们使用上述配置将 <code>/test/</code> 映射到 <code>https://example.com</code>。当访问 <code>http://your_server/test/</code> 时，Nginx 会将其代理到 <code>https://example.com/</code>。这通常没有问题。</p>
-<p>但是，如果 <code>https://example.com</code> 的网页中有一个资源的链接是绝对路径，例如：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;/images/logo.png&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>当浏览器解析到这个标签时，它会尝试请求 <code>http://server/images/logo.png</code>，而不是 <code>http://server/test/images/logo.png</code>。由于服务器上 <code>/images/logo.png</code> 路径并不存在，就会导致 404 错误。</p>
-<p>问题的原因在于，当网站使用绝对路径时，浏览器会根据当前的域名来拼接完整的 URL，而忽略了反向代理的子目录 <code>/test/</code>。</p>
-<p><strong>使用rewrite重写url</strong></p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">location</span><span class="regexp"> ^~</span> /test/ &#123;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/test/(.*)$</span> /<span class="variable">$1</span> <span class="literal">break</span>; <span class="comment"># 重写 URL</span></span><br><span class="line">    <span class="attribute">proxy_pass</span> https://example.com;</span><br><span class="line">    <span class="attribute">proxy_buffering</span> <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">proxy_request_buffering</span> <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> Connection <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> Host example.com;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> REMOTE-HOST <span class="variable">$remote_addr</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">    <span class="attribute">proxy_cache</span> <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">proxy_ssl_server_name</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">proxy_ssl_name</span> example.com;</span><br><span class="line">    <span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&quot;max-age=31536000&quot;</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Accel-Buffering <span class="literal">no</span>;</span><br><span class="line">    <span class="attribute">add_header</span> X-Proxy-Cache <span class="variable">$upstream_cache_status</span>;</span><br><span class="line">    <span class="attribute">tcp_nodelay</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="section">location</span> <span class="regexp">~* /test/.*\.(css|js)$</span> &#123;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^/test/(.*)$</span> /<span class="variable">$1</span> <span class="literal">break</span>;</span><br><span class="line">        <span class="attribute">proxy_pass</span> https://example.com;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host example.com;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> REMOTE-HOST <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">        <span class="attribute">proxy_cache_key</span> <span class="string">&quot;<span class="variable">$scheme</span><span class="variable">$proxy_host</span><span class="variable">$uri</span>&quot;</span>;</span><br><span class="line">        <span class="attribute">proxy_ssl_server_name</span> <span class="literal">on</span>;</span><br><span class="line">        <span class="attribute">proxy_ssl_name</span> example.com;</span><br><span class="line">        <span class="attribute">expires</span> <span class="number">7d</span>;</span><br><span class="line">        <span class="attribute">add_header</span> Cache-Control <span class="string">&quot;public&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>我这里反代的是某个视频网站，所以我开了缓存+视频流优化，如果不需要请自行删减</p>
-<p>反代前：</p>
-<p><img src="https://file.butlanys.de/img/19560554ab6b1d677b107a173036e02e.png"></p>
-<p>反代后：</p>
-<p><img src="https://file.butlanys.de/img/6bb0dcbca31471d7718d1eaf8dba4bfd.png"></p>
-<p>虽然不知道为什么反代之后资源只会一个个加载了，但起码视频流是正常的，速度比反代前高得多</p>
-]]></content>
-      <categories>
-        <category>nginx</category>
-      </categories>
-      <tags>
-        <tag>nginx</tag>
-        <tag>site</tag>
-        <tag>config</tag>
-      </tags>
   </entry>
   <entry>
     <title>aplayer播放器对接alist</title>
@@ -366,6 +366,58 @@
       </tags>
   </entry>
   <entry>
+    <title>云崽bot恢复包 --Termux</title>
+    <url>/posts/a1bc7431/</url>
+    <content><![CDATA[<ul>
+<li>自带一键部署脚本</li>
+<li>自带签名服务器(qsign-1.1.7)<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;使用教程&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>下载云盘内的ZeroTermux和恢复包</li>
+<li>先安装ZeroTermux</li>
+<li>把恢复包直接解压在内部存储（防止你们不会放）</li>
+</ul>
+<p>打开ZeroTermux，在左侧边栏中找到备份&#x2F;恢复，然后选择恢复数据包<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/0.jpg"></p>
+<ul>
+<li>选择以后会弹出恢复的系统名字，填一个你喜欢的就行。</li>
+<li>恢复完成后在左侧边栏找到容器切换，切换到你刚才恢复的容器<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;bot使用教程&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>使用方法：</li>
+<li>终端运行</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bash 云崽bot容器启动脚本.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/1.jpg"></p>
+<ul>
+<li>选择 debian-bullseye_arm64 _1–proot<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/2.jpg"></li>
+<li>选择 启动proot debian-bullseye_arm64<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/3.jpg"></li>
+<li>终端运行</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./start.sh</span><br></pre></td></tr></table></figure>
+
+<p>启动签名服务、redis和查看使用说明<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/4.jpg"><br>最后再输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd Miao-Yunzai</span><br></pre></td></tr></table></figure>
+
+<p>切换到云崽目录<br>然后运行pnpm app登陆Bot<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/5.jpg"></p>
+<p>运行后你将会看到跟上面一样的内容</p>
+<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>第一次运行可能会出现连接不上签名服务器，请用Ctrl+c结束掉bot进程，然后用ps -le查看正在运行的服务，如果正常，你将看到以下内容<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/6.jpg"></p>
+<ul>
+<li>里面包含一个java程序和redis数据库服务<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;pnpm常用命令&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm app #带log启动</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm run log #查看启动日志</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm start #不带log启动</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm stop #停止bot</span><br></pre></td></tr></table></figure>
+
+<p>以上命令请在云崽bot主目录下运行<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;如果有解决不了的报错请反馈&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<ul>
+<li>制作不易，请勿倒卖&#x2F;商用</li>
+<li>链接已放在评论区</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Termux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>netcup g11s测评</title>
     <url>/posts/48591/</url>
     <content><![CDATA[<blockquote>
@@ -567,56 +619,18 @@
 ]]></content>
   </entry>
   <entry>
-    <title>云崽bot恢复包 --Termux</title>
-    <url>/posts/a1bc7431/</url>
-    <content><![CDATA[<ul>
-<li>自带一键部署脚本</li>
-<li>自带签名服务器(qsign-1.1.7)<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;使用教程&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>下载云盘内的ZeroTermux和恢复包</li>
-<li>先安装ZeroTermux</li>
-<li>把恢复包直接解压在内部存储（防止你们不会放）</li>
-</ul>
-<p>打开ZeroTermux，在左侧边栏中找到备份&#x2F;恢复，然后选择恢复数据包<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/0.jpg"></p>
-<ul>
-<li>选择以后会弹出恢复的系统名字，填一个你喜欢的就行。</li>
-<li>恢复完成后在左侧边栏找到容器切换，切换到你刚才恢复的容器<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;bot使用教程&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>使用方法：</li>
-<li>终端运行</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bash 云崽bot容器启动脚本.sh</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/1.jpg"></p>
-<ul>
-<li>选择 debian-bullseye_arm64 _1–proot<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/2.jpg"></li>
-<li>选择 启动proot debian-bullseye_arm64<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/3.jpg"></li>
-<li>终端运行</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./start.sh</span><br></pre></td></tr></table></figure>
-
-<p>启动签名服务、redis和查看使用说明<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/4.jpg"><br>最后再输入</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd Miao-Yunzai</span><br></pre></td></tr></table></figure>
-
-<p>切换到云崽目录<br>然后运行pnpm app登陆Bot<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/5.jpg"></p>
-<p>运行后你将会看到跟上面一样的内容</p>
-<p>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>第一次运行可能会出现连接不上签名服务器，请用Ctrl+c结束掉bot进程，然后用ps -le查看正在运行的服务，如果正常，你将看到以下内容<br><img src="https://alist.hqycloud.top/d/onedrive-oss/img/yunzaibot-0/6.jpg"></p>
-<ul>
-<li>里面包含一个java程序和redis数据库服务<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;pnpm常用命令&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm app #带log启动</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm run log #查看启动日志</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm start #不带log启动</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pnpm stop #停止bot</span><br></pre></td></tr></table></figure>
-
-<p>以上命令请在云崽bot主目录下运行<br>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;如果有解决不了的报错请反馈&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<ul>
-<li>制作不易，请勿倒卖&#x2F;商用</li>
-<li>链接已放在评论区</li>
-</ul>
+    <title>使用bing搜索引擎的用户记得兑换积分</title>
+    <url>/posts/22724/</url>
+    <content><![CDATA[<p>地址：<a href="https://rewards.bing.com/redeem/?form=ML2UXN">Microsoft Rewards 兑换目录</a></p>
+<p>目前中国大陆地区可兑换的礼品：</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/11/image_de5fa5cf6e11c29867d41f8f16ec8e83.png" alt="https:&#x2F;&#x2F;github.hqycloud.top&#x2F;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;hqycloud&#x2F;blog-images&#x2F;main&#x2F;hexo-images&#x2F;24&#x2F;11&#x2F;image_de5fa5cf6e11c29867d41f8f16ec8e83.png"></p>
 ]]></content>
       <categories>
-        <category>Termux</category>
+        <category>bing</category>
       </categories>
+      <tags>
+        <tag>bing</tag>
+      </tags>
   </entry>
   <entry>
     <title>云湖群管理bot(指令版)</title>
@@ -649,20 +663,6 @@
 <p>例如 <code>https://you_server.com:8080/yhchat</code></p>
 <p>接着在群聊中发送!help命令，如果bot有回应则大功告成，你可以愉快的使用此bot了</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>使用bing搜索引擎的用户记得兑换积分</title>
-    <url>/posts/22724/</url>
-    <content><![CDATA[<p>地址：<a href="https://rewards.bing.com/redeem/?form=ML2UXN">Microsoft Rewards 兑换目录</a></p>
-<p>目前中国大陆地区可兑换的礼品：</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/11/image_de5fa5cf6e11c29867d41f8f16ec8e83.png" alt="https:&#x2F;&#x2F;github.hqycloud.top&#x2F;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;hqycloud&#x2F;blog-images&#x2F;main&#x2F;hexo-images&#x2F;24&#x2F;11&#x2F;image_de5fa5cf6e11c29867d41f8f16ec8e83.png"></p>
-]]></content>
-      <categories>
-        <category>bing</category>
-      </categories>
-      <tags>
-        <tag>bing</tag>
-      </tags>
   </entry>
   <entry>
     <title>免费使用chatGPT</title>
@@ -976,6 +976,22 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
 ]]></content>
   </entry>
   <entry>
+    <title>微信一号多登版分享（Android）</title>
+    <url>/posts/19950/</url>
+    <content><![CDATA[<blockquote>
+<p>这个版本可以在备用机上使用平板登录</p>
+</blockquote>
+<p>跟lspatch打入mod相比，这个启动速度更快</p>
+<p>链接：<a href="https://alist.hqycloud.top/res/Wechat/">https://alist.hqycloud.top/res/Wechat/</a></p>
+]]></content>
+      <categories>
+        <category>wechat</category>
+      </categories>
+      <tags>
+        <tag>wechat</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>微信4.0测试版上线</title>
     <url>/posts/12944/</url>
     <content><![CDATA[<p>此次更新不仅支持了更多的系统以及架构，还更新了深色模式<del>（熬夜党狂喜）</del></p>
@@ -993,20 +1009,34 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
       </tags>
   </entry>
   <entry>
-    <title>微信一号多登版分享（Android）</title>
-    <url>/posts/19950/</url>
-    <content><![CDATA[<blockquote>
-<p>这个版本可以在备用机上使用平板登录</p>
-</blockquote>
-<p>跟lspatch打入mod相比，这个启动速度更快</p>
-<p>链接：<a href="https://alist.hqycloud.top/res/Wechat/">https://alist.hqycloud.top/res/Wechat/</a></p>
+    <title>晚高峰的华为云io</title>
+    <url>/posts/12995/</url>
+    <content><![CDATA[<p>华为云新加坡Flexus L：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@host-192-168-7-62:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 8.37634 s, 32.0 MB/s</span><br></pre></td></tr></table></figure>
+
+<p>作为对比，下面是阿里云香港和rn美西的测试结果：<br>阿里云：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@ubuntu:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 6.12062 s, 43.9 MB/s</span><br></pre></td></tr></table></figure>
+
+<p>rn：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@racknerd-server:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 1.92984 s, 139 MB/s</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>wechat</category>
+        <category>cloud</category>
       </categories>
       <tags>
-        <tag>wechat</tag>
+        <tag>华为云</tag>
+        <tag>huaweicloud</tag>
+        <tag>server</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>纪念碑谷3免登陆版分享</title>
+    <url>/posts/44134/</url>
+    <content><![CDATA[<blockquote>
+<p>去除了登录限制</p>
+</blockquote>
+<p>链接：<a href="https://alist.hqycloud.top/res/Monument_Valley3.0">https://alist.hqycloud.top/res/Monument_Valley3.0</a></p>
+]]></content>
   </entry>
   <entry>
     <title>快速搭建debian运行环境</title>
@@ -1096,36 +1126,6 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
 <li><a href="https://alist.hqycloud.top/res/linux/debian.img">debian.img | 资源站 (hqycloud.top)</a></li>
 <li><a href="https://alist.hqycloud.top/res/linux/debian.vmdk">debian.vmdk | 资源站 (hqycloud.top)</a></li>
 </ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>晚高峰的华为云io</title>
-    <url>/posts/12995/</url>
-    <content><![CDATA[<p>华为云新加坡Flexus L：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@host-192-168-7-62:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 8.37634 s, 32.0 MB/s</span><br></pre></td></tr></table></figure>
-
-<p>作为对比，下面是阿里云香港和rn美西的测试结果：<br>阿里云：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@ubuntu:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 6.12062 s, 43.9 MB/s</span><br></pre></td></tr></table></figure>
-
-<p>rn：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@racknerd-server:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 1.92984 s, 139 MB/s</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>cloud</category>
-      </categories>
-      <tags>
-        <tag>华为云</tag>
-        <tag>huaweicloud</tag>
-        <tag>server</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>纪念碑谷3免登陆版分享</title>
-    <url>/posts/44134/</url>
-    <content><![CDATA[<blockquote>
-<p>去除了登录限制</p>
-</blockquote>
-<p>链接：<a href="https://alist.hqycloud.top/res/Monument_Valley3.0">https://alist.hqycloud.top/res/Monument_Valley3.0</a></p>
 ]]></content>
   </entry>
   <entry>
@@ -1252,28 +1252,6 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
 ]]></content>
   </entry>
   <entry>
-    <title>记一次解决网站接入cloudflare后使用http申请Google ssl失败的方法</title>
-    <url>/posts/24457/</url>
-    <content><![CDATA[<p>在一次偶然的聊天过程中，无意间聊到了谷歌证书，然后就想着全站使用谷歌证书（谷歌其实跟其他证书机构相比真的没啥区别，唯一的用处就是装逼？</p>
-<p>在使用1panel申请后，出现验证失败的log，往后一翻发现验证链接403</p>
-<p>然后我也尝试过同样的验证方法，就谷歌403，不管是问ai还是搜索，都没找到解决方法（</p>
-<p>后面上cloudflare一看，waf的日志里有几条拦截的请求，点开一看发现是Google的IP</p>
-<p>原图如下：</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_43c8169599e24e2f267159a9fc5427d1.png" alt="https:&#x2F;&#x2F;github.hqycloud.top&#x2F;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;hqycloud&#x2F;blog-images&#x2F;main&#x2F;hexo-images&#x2F;24&#x2F;10&#x2F;image_43c8169599e24e2f267159a9fc5427d1.png"></p>
-<p>然后可从匹配服务中发现是浏览器完整性检查在搞鬼，在左边的面板中的安全性——设置中关掉浏览器完整性检查</p>
-<p>关掉之后就能正常申请了</p>
-<p>最后：不是我说cloudflare无端端的拦Google的IP干什么…………</p>
-<p>商业互撕？😴</p>
-]]></content>
-      <categories>
-        <category>ssl</category>
-      </categories>
-      <tags>
-        <tag>ssl</tag>
-        <tag>google cloud</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>记录下使用Supervisor(进程守护)遇到的一些小问题</title>
     <url>/posts/43650/</url>
     <content><![CDATA[<p>前言：因为我的qexo一直以来都是通过screen直接运行的，这样虽然省事，但每次vps重启，以及qexo自己更新，都要进screen会话重新运行，所以就迁移到Supervisor进程守护运行</p>
@@ -1305,6 +1283,28 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
 
 <p><strong>后面如果又遇到其他问题，且我解决了，则会再次更新此文章</strong></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>记一次解决网站接入cloudflare后使用http申请Google ssl失败的方法</title>
+    <url>/posts/24457/</url>
+    <content><![CDATA[<p>在一次偶然的聊天过程中，无意间聊到了谷歌证书，然后就想着全站使用谷歌证书（谷歌其实跟其他证书机构相比真的没啥区别，唯一的用处就是装逼？</p>
+<p>在使用1panel申请后，出现验证失败的log，往后一翻发现验证链接403</p>
+<p>然后我也尝试过同样的验证方法，就谷歌403，不管是问ai还是搜索，都没找到解决方法（</p>
+<p>后面上cloudflare一看，waf的日志里有几条拦截的请求，点开一看发现是Google的IP</p>
+<p>原图如下：</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_43c8169599e24e2f267159a9fc5427d1.png" alt="https:&#x2F;&#x2F;github.hqycloud.top&#x2F;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;hqycloud&#x2F;blog-images&#x2F;main&#x2F;hexo-images&#x2F;24&#x2F;10&#x2F;image_43c8169599e24e2f267159a9fc5427d1.png"></p>
+<p>然后可从匹配服务中发现是浏览器完整性检查在搞鬼，在左边的面板中的安全性——设置中关掉浏览器完整性检查</p>
+<p>关掉之后就能正常申请了</p>
+<p>最后：不是我说cloudflare无端端的拦Google的IP干什么…………</p>
+<p>商业互撕？😴</p>
+]]></content>
+      <categories>
+        <category>ssl</category>
+      </categories>
+      <tags>
+        <tag>ssl</tag>
+        <tag>google cloud</tag>
+      </tags>
   </entry>
   <entry>
     <title>Qexo报错/bin/sh: 1: bash build.sh: not found解决方法</title>
