@@ -9,8 +9,31 @@
     <atom:link href="https://blog.butlanys.de/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Sat, 08 Feb 2025 17:00:31 GMT</pubDate>
+    <pubDate>Fri, 07 Mar 2025 15:54:26 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>windows 下连接ssh提示Bad permissions的解决方法</title>
+      <link>https://blog.butlanys.de/posts/65485/</link>
+      <guid>https://blog.butlanys.de/posts/65485/</guid>
+      <pubDate>Fri, 07 Mar 2025 15:45:08 GMT</pubDate>
+      
+      <description>This blog post describes how to resolve a &quot;Bad permissions&quot; error when connecting to a remote server via SSH. The error, specifically referencing a problem with the `.ssh/config` file, arises from incorrect file permissions.  The solution involves removing all existing permissions on the `.ssh` folder and then explicitly granting full control to the current user. This is achieved by navigating to the `.ssh` directory, accessing its properties,  uninheriting permissions, and adding the current user with full access rights.  After these permissions adjustments, the SSH connection was successfully established.  The post provides a concise step-by-step guide to resolving common SSH permission issues.</description>
+      
+      
+      
+      <content:encoded><![CDATA[<p>前阵子因为某些原因需要新建个用户，今天连接ssh提示：</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">butla</span>&gt;<span class="title">ssh</span> <span class="title">alice</span></span></span><br><span class="line"><span class="function"><span class="title">Bad</span> <span class="title">permissions</span>. <span class="title">Try</span> <span class="title">removing</span> <span class="title">permissions</span> <span class="title">for</span> <span class="title">user</span>: <span class="title">redmiG</span>\\<span class="title">butlanys1</span> (<span class="title">S</span>-1-5-21-) <span class="title">on</span> <span class="title">file</span> <span class="title">C</span>:/<span class="title">Users</span>/<span class="title">butla</span>/.<span class="title">ssh</span>/<span class="title">config</span>.</span></span><br><span class="line"><span class="function"><span class="title">Bad</span> <span class="title">owner</span> <span class="title">or</span> <span class="title">permissions</span> <span class="title">on</span> <span class="title">C</span>:\\<span class="title">Users</span>\\<span class="title">butla</span>/.<span class="title">ssh</span>/<span class="title">config</span></span></span><br></pre></td></tr></table></figure><p>解决方法：</p><p>打开.ssh目录我这里是C:&#x2F;Users&#x2F;butla&#x2F;</p><p>右击.ssh文件夹——属性——安全——下方的高级——点击下方取消继承——选择第一项</p><p>取消掉所有用户权限后，为当前用户单独赋权</p><p>还是右击.ssh文件夹——属性——安全——下方的高级——添加——选择主体——高级——立刻查找——找到当前用户——添加——一路确定</p><p>然后在终端重新输入ssh连接命令</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">butla</span>&gt;<span class="title">ssh</span> <span class="title">alice</span></span></span><br><span class="line"><span class="function"><span class="title">Welcome</span> <span class="title">to</span> <span class="title">Ubuntu</span> 22.04.5 <span class="title">LTS</span> (<span class="title">GNU</span>/<span class="title">Linux</span> 6.5.0-41-<span class="title">generic</span> <span class="title">x86_64</span>)</span></span><br></pre></td></tr></table></figure><p>完！</p>]]></content:encoded>
+      
+      
+      <category domain="https://blog.butlanys.de/categories/ssh/">ssh</category>
+      
+      
+      <category domain="https://blog.butlanys.de/tags/ssh/">ssh</category>
+      
+      
+      <comments>https://blog.butlanys.de/posts/65485/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>解决自建不算子接入butterfly后一直转圈的问题</title>
