@@ -1,0 +1,149 @@
+/* 默认主题 */
+#aside-content,
+#search-mask,
+#sidebar #menu-mask {
+  background: rgba(255, 255, 255, 0);
+}
+
+.search-dialog ,
+#aside-content > .card-widget:first-child,
+#aside-content .card-widget,
+.layout > div:first-child:not(.recent-posts),
+#recent-posts > .recent-post-item,
+#page-header.nav-visible #nav,
+#sidebar #sidebar-menus.open {
+  background: rgba(255, 255, 255, 0.5);
+  /*backdrop-filter: blur(10px);*/
+}
+[data-theme="light"]{.recent-post-item,.card-widget,#post,#page{
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(10px);
+}}
+/* 夜间模式 */
+[data-theme="dark"] { 
+  /* #aside-content, */
+  #search-mask,
+  #sidebar #menu-mask{
+    background: rgba(20, 20, 20, 0.8);
+  }
+}
+
+[data-theme="dark"] {
+  .search-dialog,
+  #aside-content > .card-widget:first-child,
+  #aside-content .card-widget,
+  .layout > div:first-child:not(.recent-posts),
+  #recent-posts > .recent-post-item,
+  #page-header.nav-visible #nav,
+  #sidebar #sidebar-menus.open {
+    background: rgba(30, 30, 30, 0.7);
+    /* backdrop-filter: blur(5px);*/
+  }
+}
+
+[data-theme="dark"] {.recent-post-item,.card-widget,#post,#page{
+  background: rgba(30, 30, 30, 0.2)!important;
+  backdrop-filter: blur(10px);
+}}
+/* 页脚透明 */
+#footer{
+  background: transparent!important;
+}
+
+img.post-bg {border-radius: 10px;}
+
+/* 全局默认鼠标指针 */
+body,
+html {
+	cursor: url('../cdn/normal.cur'),auto !important;
+}
+/* 悬停图片时的鼠标指针 */
+img { 
+	cursor: url('../cdn/work.ani'), auto !important;
+}
+/* 悬停图片弹出窗口时的鼠标指针 */
+.fancybox__slide{
+	cursor: url('../cdn/work.ani'), auto !important;
+}
+.carousel__slide{
+	cursor: url('../cdn/work.ani'), auto !important;
+}
+/* 选择链接标签时的鼠标指针 */
+a:hover,#site-name:hover {
+    cursor: url('../cdn/ayuda.cur'), auto !important;
+}
+/* 选择代码框展开和复制按钮时的鼠标指针 */
+.copy-button:hover,.expand:hover {
+    cursor: url('../cdn/ayuda.cur'), auto !important;
+}
+/* 选中输入框时的鼠标指针 */
+input:hover, textarea:hover {
+    cursor: url('../cdn/texto.cur'), auto;
+}
+/* 悬停按钮时的鼠标指针 */
+button:hover,.scroll-down-effects:hover {
+    cursor: url('../cdn/no-disponible.cur'), auto;
+}
+/* 悬停页脚链接标签（例如页脚徽标）时的鼠标指针 */
+#footer-wrap a:hover {
+    cursor: url('../cdn/normal.cur'), auto;
+}
+/* 悬停页码时的鼠标指针 */
+#pagination .page-number:hover {
+    cursor: url('../cdn/normal.cur'), auto;
+}
+/* 悬停菜单栏时的鼠标指针 */
+#nav .site-page:hover {
+    cursor: url('../cdn/normal.cur'), auto !important;
+}
+/* 悬停滚动条的鼠标指针（只对Chrome有效） */
+::-webkit-scrollbar:hover{
+	cursor: url('../cdn/normal.cur'), auto!important;
+}
+/* 悬停评论按钮的鼠标指针（我使用的是Gitalk/Valine） */
+.switch-btn,.switch-btn:before,.gt-user-inner,.gt-ico,.gt-user-name,.gt-btn,.vbtn,svg,.at_button{
+	cursor: url('../cdn/normal.cur'), auto !important;
+}
+/* 悬停非链接文本时的鼠标指针 */
+h1,h2,h3,h4,h5,h6,#subtitle,.content,.line,.post-content p,.post-content li{
+	cursor: url('../cdn/normal.cur'), auto;
+}
+/* 悬停文章日期 */
+.post-meta-date:hover,.post-meta-date-created:hover{
+	cursor: url('../cdn/normal.cur'), auto!important;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(73, 177, 245, 0.2);
+  border-radius: 2em;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #49b1f5;
+  background-image: -webkit-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.4) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.4) 75%,
+    transparent 75%,
+    transparent
+  );
+  border-radius: 2em;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+::-moz-selection {
+  color: #fff;
+  background-color: #49b1f5;
+}
