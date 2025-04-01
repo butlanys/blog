@@ -163,6 +163,72 @@
       </tags>
   </entry>
   <entry>
+    <title>cloudflare tunnel优选IP</title>
+    <url>/posts/204d8c5f/</url>
+    <content><![CDATA[<p><strong>总所周知，cloudflare默认分配的IP都在美国，轻则速度慢运气不好分配的还是被GFW拦截的</strong></p>
+<p>本教程需要：</p>
+<p>一张万事达&#x2F;visa过cloudflare for saas验证</p>
+<p>两条域名，一条用于优选，一条托管到cloudfalre</p>
+<h4 id="一、配置cloudflared"><a href="#一、配置cloudflared" class="headerlink" title="一、配置cloudflared"></a>一、配置cloudflared</h4><ul>
+<li>cloudflared可在<a href="https://github.com/cloudflare/cloudflared/">cloudflare&#x2F;cloudflared: Cloudflare Tunnel client (formerly Argo Tunnel) (github.com)</a>上获取</li>
+</ul>
+<h5 id="部署方式（可选）"><a href="#部署方式（可选）" class="headerlink" title="部署方式（可选）"></a>部署方式（可选）</h5><ul>
+<li>本教程以docker为例</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -d --name cloudflared_status --network=host alpine sleep infinity</span><br></pre></td></tr></table></figure>
+
+<h5 id="下载cloudflared"><a href="#下载cloudflared" class="headerlink" title="下载cloudflared"></a>下载cloudflared</h5><p>这里以arm64为例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget -O /usr/bin/cloudflared https://github.hqycloud.top/https://github.com/cloudflare/cloudflared/releases/download/2024.4.1/cloudflared-linux-arm64</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置权限"><a href="#设置权限" class="headerlink" title="设置权限"></a>设置权限</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chmod 777 /usr/bin/cloudflared</span><br></pre></td></tr></table></figure>
+
+<h5 id="查看版本号"><a href="#查看版本号" class="headerlink" title="查看版本号"></a>查看版本号</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared version</span><br></pre></td></tr></table></figure>
+
+<h5 id="登录cloudflared"><a href="#登录cloudflared" class="headerlink" title="登录cloudflared"></a>登录cloudflared</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel login</span><br></pre></td></tr></table></figure>
+
+<h5 id="创建隧道并命名"><a href="#创建隧道并命名" class="headerlink" title="创建隧道并命名"></a>创建隧道并命名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel create 隧道名</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>隧道名可以自定义，但不能重复！</li>
+</ul>
+<h5 id="查看隧道列表"><a href="#查看隧道列表" class="headerlink" title="查看隧道列表"></a>查看隧道列表</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel list</span><br></pre></td></tr></table></figure>
+
+<h5 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;url: http://localhost:8000</span><br><span class="line">tunnel: &lt;Tunnel-UUID&gt;</span><br><span class="line">credentials-file: /root/.cloudflared/&lt;Tunnel-UUID&gt;.json&#x27; &gt; .cloudflared/config.yml</span><br></pre></td></tr></table></figure>
+
+<p>这里的Tunnel-UUID在隧道列表可以看到</p>
+<p><em>查看创建好的config.yml</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat config.yml</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置域名"><a href="#设置域名" class="headerlink" title="设置域名"></a>设置域名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel route dns &lt;UUID or NAME&gt; &lt;hostname&gt;</span><br></pre></td></tr></table></figure>
+
+<p>UUID和NAME二选一，uuid查看隧道列表就能看到，name是你创建时输入的名字</p>
+<p>hostname填的是托管在cloudflare的子域，不需要完整的域名</p>
+<p>例如：tunnel-cdn.test.com（托管在cloudflare</p>
+<p>则只需要填tunnel-cdn</p>
+<h5 id="测试隧道是否正常"><a href="#测试隧道是否正常" class="headerlink" title="测试隧道是否正常"></a>测试隧道是否正常</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel run &lt;UUID or NAME&gt;</span><br></pre></td></tr></table></figure>
+
+<p>访问托管在cloudflare的隧道子域查看是否正常</p>
+<p>如果正常可继续看下一步，如果打不开并报错，请移步至cloudflare文档</p>
+<h5 id="在后台运行隧道"><a href="#在后台运行隧道" class="headerlink" title="在后台运行隧道"></a>在后台运行隧道</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nohup cloudflared tunnel run &lt;UUID or NAME&gt; &amp;</span><br></pre></td></tr></table></figure>
+
+<h4 id="二、配置优选IP"><a href="#二、配置优选IP" class="headerlink" title="二、配置优选IP"></a>二、配置优选IP</h4><h5 id="开通cloudflare-for-saas服务"><a href="#开通cloudflare-for-saas服务" class="headerlink" title="开通cloudflare for saas服务"></a>开通cloudflare for saas服务</h5><p>需要绑卡，这里不过多赘述</p>
+<h5 id="设置回退域"><a href="#设置回退域" class="headerlink" title="设置回退域"></a>设置回退域</h5><p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png" alt="https:&#x2F;&#x2F;github.hqycloud.top&#x2F;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;hqycloud&#x2F;blog-images&#x2F;main&#x2F;hexo-images&#x2F;24&#x2F;5&#x2F;image_01ef7296fe69d35d4ec735ff7050b501.png"></p>
+<p>回退域必须设置为与隧道绑定的域名</p>
+<h5 id="设置访问域名"><a href="#设置访问域名" class="headerlink" title="设置访问域名"></a>设置访问域名</h5><p>添加一个自定义主机名</p>
+<p>域名填公开访问的域名（必须托管在其他dns服务商，否则cloudflare会检测</p>
+<p>验证方式选TXT</p>
+<h4 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h4><p>在验证过程中，需要把解析设为回退域，否则验证不通过</p>
+<p>等待证书状态和主机名状态都显示有效后访问一下试试</p>
+<p>访问成功后就可以把解析设置为cf的任意IP</p>
+<ul>
+<li>找cloudflare速度快的IP→<a href="https://github.com/XIU2/CloudflareSpeedTest">XIU2&#x2F;CloudflareSpeedTest: 🌩「自选优选 IP」测试 Cloudflare CDN 延迟和速度，获取最快 IP ！当然也支持其他 CDN &#x2F; 网站 IP ~ (github.com)</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>cloudflare</category>
+      </categories>
+  </entry>
+  <entry>
     <title>cloudflare优选IP</title>
     <url>/posts/39316/</url>
     <content><![CDATA[<p>这篇文章补全<a href="https://blog.hqycloud.top/posts/204d8c5f/">cloudflare tunnel优选IP | butlanys的博客 (hqycloud.top)</a>教程中未详细讲述cloudflare优选IP的内容</p>
@@ -230,72 +296,6 @@
 <p>配置好后提交，然后手动更新一遍，再将华为云中的域名cname解析到这条优选域上</p>
 <h1 id="最后！！！"><a href="#最后！！！" class="headerlink" title="最后！！！"></a>最后！！！</h1><p>然后就是喜闻乐见的全国绿（</p>
 <p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/10/image_bd2c40a89b5cde3778ccedb59ef4139e.png" alt="https:&#x2F;&#x2F;github.hqycloud.top&#x2F;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;hqycloud&#x2F;blog-images&#x2F;main&#x2F;hexo-images&#x2F;24&#x2F;10&#x2F;image_bd2c40a89b5cde3778ccedb59ef4139e.png"></p>
-]]></content>
-      <categories>
-        <category>cloudflare</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>cloudflare tunnel优选IP</title>
-    <url>/posts/204d8c5f/</url>
-    <content><![CDATA[<p><strong>总所周知，cloudflare默认分配的IP都在美国，轻则速度慢运气不好分配的还是被GFW拦截的</strong></p>
-<p>本教程需要：</p>
-<p>一张万事达&#x2F;visa过cloudflare for saas验证</p>
-<p>两条域名，一条用于优选，一条托管到cloudfalre</p>
-<h4 id="一、配置cloudflared"><a href="#一、配置cloudflared" class="headerlink" title="一、配置cloudflared"></a>一、配置cloudflared</h4><ul>
-<li>cloudflared可在<a href="https://github.com/cloudflare/cloudflared/">cloudflare&#x2F;cloudflared: Cloudflare Tunnel client (formerly Argo Tunnel) (github.com)</a>上获取</li>
-</ul>
-<h5 id="部署方式（可选）"><a href="#部署方式（可选）" class="headerlink" title="部署方式（可选）"></a>部署方式（可选）</h5><ul>
-<li>本教程以docker为例</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -d --name cloudflared_status --network=host alpine sleep infinity</span><br></pre></td></tr></table></figure>
-
-<h5 id="下载cloudflared"><a href="#下载cloudflared" class="headerlink" title="下载cloudflared"></a>下载cloudflared</h5><p>这里以arm64为例</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget -O /usr/bin/cloudflared https://github.hqycloud.top/https://github.com/cloudflare/cloudflared/releases/download/2024.4.1/cloudflared-linux-arm64</span><br></pre></td></tr></table></figure>
-
-<h5 id="设置权限"><a href="#设置权限" class="headerlink" title="设置权限"></a>设置权限</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">chmod 777 /usr/bin/cloudflared</span><br></pre></td></tr></table></figure>
-
-<h5 id="查看版本号"><a href="#查看版本号" class="headerlink" title="查看版本号"></a>查看版本号</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared version</span><br></pre></td></tr></table></figure>
-
-<h5 id="登录cloudflared"><a href="#登录cloudflared" class="headerlink" title="登录cloudflared"></a>登录cloudflared</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel login</span><br></pre></td></tr></table></figure>
-
-<h5 id="创建隧道并命名"><a href="#创建隧道并命名" class="headerlink" title="创建隧道并命名"></a>创建隧道并命名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel create 隧道名</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>隧道名可以自定义，但不能重复！</li>
-</ul>
-<h5 id="查看隧道列表"><a href="#查看隧道列表" class="headerlink" title="查看隧道列表"></a>查看隧道列表</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel list</span><br></pre></td></tr></table></figure>
-
-<h5 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;url: http://localhost:8000</span><br><span class="line">tunnel: &lt;Tunnel-UUID&gt;</span><br><span class="line">credentials-file: /root/.cloudflared/&lt;Tunnel-UUID&gt;.json&#x27; &gt; .cloudflared/config.yml</span><br></pre></td></tr></table></figure>
-
-<p>这里的Tunnel-UUID在隧道列表可以看到</p>
-<p><em>查看创建好的config.yml</em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat config.yml</span><br></pre></td></tr></table></figure>
-
-<h5 id="设置域名"><a href="#设置域名" class="headerlink" title="设置域名"></a>设置域名</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel route dns &lt;UUID or NAME&gt; &lt;hostname&gt;</span><br></pre></td></tr></table></figure>
-
-<p>UUID和NAME二选一，uuid查看隧道列表就能看到，name是你创建时输入的名字</p>
-<p>hostname填的是托管在cloudflare的子域，不需要完整的域名</p>
-<p>例如：tunnel-cdn.test.com（托管在cloudflare</p>
-<p>则只需要填tunnel-cdn</p>
-<h5 id="测试隧道是否正常"><a href="#测试隧道是否正常" class="headerlink" title="测试隧道是否正常"></a>测试隧道是否正常</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cloudflared tunnel run &lt;UUID or NAME&gt;</span><br></pre></td></tr></table></figure>
-
-<p>访问托管在cloudflare的隧道子域查看是否正常</p>
-<p>如果正常可继续看下一步，如果打不开并报错，请移步至cloudflare文档</p>
-<h5 id="在后台运行隧道"><a href="#在后台运行隧道" class="headerlink" title="在后台运行隧道"></a>在后台运行隧道</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nohup cloudflared tunnel run &lt;UUID or NAME&gt; &amp;</span><br></pre></td></tr></table></figure>
-
-<h4 id="二、配置优选IP"><a href="#二、配置优选IP" class="headerlink" title="二、配置优选IP"></a>二、配置优选IP</h4><h5 id="开通cloudflare-for-saas服务"><a href="#开通cloudflare-for-saas服务" class="headerlink" title="开通cloudflare for saas服务"></a>开通cloudflare for saas服务</h5><p>需要绑卡，这里不过多赘述</p>
-<h5 id="设置回退域"><a href="#设置回退域" class="headerlink" title="设置回退域"></a>设置回退域</h5><p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/5/image_01ef7296fe69d35d4ec735ff7050b501.png" alt="https:&#x2F;&#x2F;github.hqycloud.top&#x2F;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;hqycloud&#x2F;blog-images&#x2F;main&#x2F;hexo-images&#x2F;24&#x2F;5&#x2F;image_01ef7296fe69d35d4ec735ff7050b501.png"></p>
-<p>回退域必须设置为与隧道绑定的域名</p>
-<h5 id="设置访问域名"><a href="#设置访问域名" class="headerlink" title="设置访问域名"></a>设置访问域名</h5><p>添加一个自定义主机名</p>
-<p>域名填公开访问的域名（必须托管在其他dns服务商，否则cloudflare会检测</p>
-<p>验证方式选TXT</p>
-<h4 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h4><p>在验证过程中，需要把解析设为回退域，否则验证不通过</p>
-<p>等待证书状态和主机名状态都显示有效后访问一下试试</p>
-<p>访问成功后就可以把解析设置为cf的任意IP</p>
-<ul>
-<li>找cloudflare速度快的IP→<a href="https://github.com/XIU2/CloudflareSpeedTest">XIU2&#x2F;CloudflareSpeedTest: 🌩「自选优选 IP」测试 Cloudflare CDN 延迟和速度，获取最快 IP ！当然也支持其他 CDN &#x2F; 网站 IP ~ (github.com)</a></li>
-</ul>
 ]]></content>
       <categories>
         <category>cloudflare</category>
@@ -674,6 +674,30 @@
 ]]></content>
   </entry>
   <entry>
+    <title>使用bing搜索引擎的用户记得兑换积分</title>
+    <url>/posts/22724/</url>
+    <content><![CDATA[<p>地址：<a href="https://rewards.bing.com/redeem/?form=ML2UXN">Microsoft Rewards 兑换目录</a></p>
+<p>目前中国大陆地区可兑换的礼品：</p>
+<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/11/image_de5fa5cf6e11c29867d41f8f16ec8e83.png" alt="https:&#x2F;&#x2F;github.hqycloud.top&#x2F;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;hqycloud&#x2F;blog-images&#x2F;main&#x2F;hexo-images&#x2F;24&#x2F;11&#x2F;image_de5fa5cf6e11c29867d41f8f16ec8e83.png"></p>
+]]></content>
+      <categories>
+        <category>bing</category>
+      </categories>
+      <tags>
+        <tag>bing</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>免费的二级域名(可绑cloudflare)</title>
+    <url>/posts/e491bdf7/</url>
+    <content><![CDATA[<p>先点击<a href="https://l53.net/">这里</a>注册账号，选filegear-sg.me后缀 使用优惠吗码提交 一次性可以注册2个 因为有2个优惠码</p>
+<p>优惠码 newuser 、workersday (5月31号过期)</p>
+]]></content>
+      <categories>
+        <category>domain</category>
+      </categories>
+  </entry>
+  <entry>
     <title>免费使用chatGPT</title>
     <url>/posts/a1df2910/</url>
     <content><![CDATA[<p><strong>ChatGPT是一个基于大型语言模型的聊天机器人，由OpenAI开发并于2022年11月30日发布1。ChatGPT可以与用户进行对话，根据用户的指示提供详细的回答，或者生成有创意的内容，例如诗歌、故事、代码、歌曲等2。ChatGPT还可以看、听和说，可以处理图像、音频和视频的输入和输出1。ChatGPT是一个免费的服务，用户可以在网页上试用1，或者下载桌面应用程序3。ChatGPT是一个强大而有趣的工具，可以帮助用户获取即时的答案，找到创造性的灵感，或者学习新的知识。</strong></p>
@@ -699,30 +723,6 @@
 ]]></content>
       <categories>
         <category>chatgpt</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用bing搜索引擎的用户记得兑换积分</title>
-    <url>/posts/22724/</url>
-    <content><![CDATA[<p>地址：<a href="https://rewards.bing.com/redeem/?form=ML2UXN">Microsoft Rewards 兑换目录</a></p>
-<p>目前中国大陆地区可兑换的礼品：</p>
-<p><img src="https://github.hqycloud.top/https://raw.githubusercontent.com/hqycloud/blog-images/main/hexo-images/24/11/image_de5fa5cf6e11c29867d41f8f16ec8e83.png" alt="https:&#x2F;&#x2F;github.hqycloud.top&#x2F;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;hqycloud&#x2F;blog-images&#x2F;main&#x2F;hexo-images&#x2F;24&#x2F;11&#x2F;image_de5fa5cf6e11c29867d41f8f16ec8e83.png"></p>
-]]></content>
-      <categories>
-        <category>bing</category>
-      </categories>
-      <tags>
-        <tag>bing</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>免费的二级域名(可绑cloudflare)</title>
-    <url>/posts/e491bdf7/</url>
-    <content><![CDATA[<p>先点击<a href="https://l53.net/">这里</a>注册账号，选filegear-sg.me后缀 使用优惠吗码提交 一次性可以注册2个 因为有2个优惠码</p>
-<p>优惠码 newuser 、workersday (5月31号过期)</p>
-]]></content>
-      <categories>
-        <category>domain</category>
       </categories>
   </entry>
   <entry>
@@ -822,53 +822,6 @@
       </tags>
   </entry>
   <entry>
-    <title>利用wireguard给多台服务器组网</title>
-    <url>/posts/11111/</url>
-    <content><![CDATA[<p>前言：上个月在alice白嫖了一台4c8g的vps，性能虽好，但中国大陆方向优化几乎没有，广东电信ping不低于300ms，而手上又有一台阿里云香港轻量，所以就拿来给alice的vps作跳板机。本来部署项目一切顺利，但是到反代时1panel罢工，反代http正常，https报错。所以为了不让流量裸奔，所以就给他俩组了个网😓</p>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
-<li>俩台可安装wireguard的vps</li>
-</ul>
-<h2 id="安装wireguard"><a href="#安装wireguard" class="headerlink" title="安装wireguard"></a>安装wireguard</h2><p><strong>Debian&#x2F;Ubuntu&#x2F;Linux Mint:</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install wireguard</span><br></pre></td></tr></table></figure>
-
-<p><strong>Fedora&#x2F;CentOS&#x2F;RHEL:</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> yum install wireguard-tools</span><br></pre></td></tr></table></figure>
-
-<p><strong>Arch Linux&#x2F;Manjaro:</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> pacman -S wire</span><br></pre></td></tr></table></figure>
-
-<h2 id="生成密钥"><a href="#生成密钥" class="headerlink" title="生成密钥"></a>生成密钥</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wg genkey | <span class="built_in">tee</span> privatekey | wg pubkey &gt; publickey</span><br></pre></td></tr></table></figure>
-
-<p>私钥：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> privatekey</span><br></pre></td></tr></table></figure>
-
-<p>公钥：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> publickey</span><br></pre></td></tr></table></figure>
-
-<h2 id="填入配置文件"><a href="#填入配置文件" class="headerlink" title="填入配置文件"></a>填入配置文件</h2><p>照着模板填写</p>
-<p>第一台vps</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[Interface]</span><br><span class="line">PrivateKey = &lt;替换为VPS1的私钥&gt;</span><br><span class="line">Address = 10.0.0.1/32</span><br><span class="line">ListenPort = 51820 </span><br><span class="line"></span><br><span class="line">[Peer]</span><br><span class="line">PublicKey = &lt;替换为VPS 2的公钥&gt;</span><br><span class="line">AllowedIPs = 10.0.0.2/32</span><br><span class="line">Endpoint = &lt;替换为VPS2的IP&gt;:51820</span><br><span class="line">PersistentKeepalive = 25</span><br></pre></td></tr></table></figure>
-
-<p>第二台vps</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[Interface]</span><br><span class="line">PrivateKey = &lt;替换为VPS 2的私钥&gt;</span><br><span class="line">Address = 10.0.0.2/32</span><br><span class="line">ListenPort = 51820 </span><br><span class="line"></span><br><span class="line">[Peer]</span><br><span class="line">PublicKey = &lt;替换为VPS 1的公钥&gt;</span><br><span class="line">AllowedIPs = 10.0.0.1/32</span><br><span class="line">Endpoint = &lt;替换为VPS1的IP&gt;:51820</span><br></pre></td></tr></table></figure>
-
-<h2 id="防火墙放行端口"><a href="#防火墙放行端口" class="headerlink" title="防火墙放行端口"></a>防火墙放行端口</h2><p>ufw：</p>
-<p><code>ufw allow 51820</code></p>
-<h2 id="启动隧道"><a href="#启动隧道" class="headerlink" title="启动隧道"></a>启动隧道</h2><p>·<code>wg-quick up wg0</code>·</p>
-<h2 id="配置开机自启"><a href="#配置开机自启" class="headerlink" title="配置开机自启"></a>配置开机自启</h2><p><code>systemctl enable wg-quick@wg0.service</code></p>
-<p><strong>警告</strong></p>
-<p>此协议无任何伪装，GFW可精准探测，不要拿此协议过GFW</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-        <category>wireguard</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>wireguard</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>利用dispatch突破网络限速（Windows）</title>
     <url>/posts/7480/</url>
     <content><![CDATA[<p><strong><a href="https://github.com/alexkirsz/dispatch">dispatch</a>是一种Rust语言的客户端负载均衡器，可实现带宽叠加、带宽聚合</strong></p>
@@ -921,6 +874,53 @@
         <tag>校园网</tag>
         <tag>网络</tag>
         <tag>Windows</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用wireguard给多台服务器组网</title>
+    <url>/posts/11111/</url>
+    <content><![CDATA[<p>前言：上个月在alice白嫖了一台4c8g的vps，性能虽好，但中国大陆方向优化几乎没有，广东电信ping不低于300ms，而手上又有一台阿里云香港轻量，所以就拿来给alice的vps作跳板机。本来部署项目一切顺利，但是到反代时1panel罢工，反代http正常，https报错。所以为了不让流量裸奔，所以就给他俩组了个网😓</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
+<li>俩台可安装wireguard的vps</li>
+</ul>
+<h2 id="安装wireguard"><a href="#安装wireguard" class="headerlink" title="安装wireguard"></a>安装wireguard</h2><p><strong>Debian&#x2F;Ubuntu&#x2F;Linux Mint:</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install wireguard</span><br></pre></td></tr></table></figure>
+
+<p><strong>Fedora&#x2F;CentOS&#x2F;RHEL:</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> yum install wireguard-tools</span><br></pre></td></tr></table></figure>
+
+<p><strong>Arch Linux&#x2F;Manjaro:</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> pacman -S wire</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成密钥"><a href="#生成密钥" class="headerlink" title="生成密钥"></a>生成密钥</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wg genkey | <span class="built_in">tee</span> privatekey | wg pubkey &gt; publickey</span><br></pre></td></tr></table></figure>
+
+<p>私钥：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> privatekey</span><br></pre></td></tr></table></figure>
+
+<p>公钥：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> publickey</span><br></pre></td></tr></table></figure>
+
+<h2 id="填入配置文件"><a href="#填入配置文件" class="headerlink" title="填入配置文件"></a>填入配置文件</h2><p>照着模板填写</p>
+<p>第一台vps</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[Interface]</span><br><span class="line">PrivateKey = &lt;替换为VPS1的私钥&gt;</span><br><span class="line">Address = 10.0.0.1/32</span><br><span class="line">ListenPort = 51820 </span><br><span class="line"></span><br><span class="line">[Peer]</span><br><span class="line">PublicKey = &lt;替换为VPS 2的公钥&gt;</span><br><span class="line">AllowedIPs = 10.0.0.2/32</span><br><span class="line">Endpoint = &lt;替换为VPS2的IP&gt;:51820</span><br><span class="line">PersistentKeepalive = 25</span><br></pre></td></tr></table></figure>
+
+<p>第二台vps</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[Interface]</span><br><span class="line">PrivateKey = &lt;替换为VPS 2的私钥&gt;</span><br><span class="line">Address = 10.0.0.2/32</span><br><span class="line">ListenPort = 51820 </span><br><span class="line"></span><br><span class="line">[Peer]</span><br><span class="line">PublicKey = &lt;替换为VPS 1的公钥&gt;</span><br><span class="line">AllowedIPs = 10.0.0.1/32</span><br><span class="line">Endpoint = &lt;替换为VPS1的IP&gt;:51820</span><br></pre></td></tr></table></figure>
+
+<h2 id="防火墙放行端口"><a href="#防火墙放行端口" class="headerlink" title="防火墙放行端口"></a>防火墙放行端口</h2><p>ufw：</p>
+<p><code>ufw allow 51820</code></p>
+<h2 id="启动隧道"><a href="#启动隧道" class="headerlink" title="启动隧道"></a>启动隧道</h2><p>·<code>wg-quick up wg0</code>·</p>
+<h2 id="配置开机自启"><a href="#配置开机自启" class="headerlink" title="配置开机自启"></a>配置开机自启</h2><p><code>systemctl enable wg-quick@wg0.service</code></p>
+<p><strong>警告</strong></p>
+<p>此协议无任何伪装，GFW可精准探测，不要拿此协议过GFW</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>wireguard</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>wireguard</tag>
       </tags>
   </entry>
   <entry>
@@ -993,23 +993,6 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
       </tags>
   </entry>
   <entry>
-    <title>微信4.0测试版上线</title>
-    <url>/posts/12944/</url>
-    <content><![CDATA[<p>此次更新不仅支持了更多的系统以及架构，还更新了深色模式<del>（熬夜党狂喜）</del></p>
-<p><img src="https://file.hqycloud.top/img/a94fc06ca35dee6d196e9e6b975f802a.png" alt="https:&#x2F;&#x2F;file.hqycloud.top&#x2F;img&#x2F;a94fc06ca35dee6d196e9e6b975f802a.png"></p>
-<p>下载地址</p>
-<p><a href="https://weixin.qq.com/">微信，是一个生活方式</a></p>
-<p><a href="https://linux.weixin.qq.com/">微信 Linux 测试版</a></p>
-]]></content>
-      <categories>
-        <category>wechat</category>
-      </categories>
-      <tags>
-        <tag>wechat</tag>
-        <tag>微信</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>已经有人因为崩铁魔怔了😂</title>
     <url>/posts/39369/</url>
     <content><![CDATA[<h1 id="难绷"><a href="#难绷" class="headerlink" title="难绷"></a>难绷</h1><p><img src="https://file.butlanys.de/img/f0552840a85d21f8905fb1696de79f6e.jpg"></p>
@@ -1032,33 +1015,20 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
       </tags>
   </entry>
   <entry>
-    <title>纪念碑谷3免登陆版分享</title>
-    <url>/posts/44134/</url>
-    <content><![CDATA[<blockquote>
-<p>去除了登录限制</p>
-</blockquote>
-<p>链接：<a href="https://alist.hqycloud.top/res/Monument_Valley3.0">https://alist.hqycloud.top/res/Monument_Valley3.0</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>晚高峰的华为云io</title>
-    <url>/posts/12995/</url>
-    <content><![CDATA[<p>华为云新加坡Flexus L：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@host-192-168-7-62:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 8.37634 s, 32.0 MB/s</span><br></pre></td></tr></table></figure>
-
-<p>作为对比，下面是阿里云香港和rn美西的测试结果：<br>阿里云：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@ubuntu:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 6.12062 s, 43.9 MB/s</span><br></pre></td></tr></table></figure>
-
-<p>rn：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@racknerd-server:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 1.92984 s, 139 MB/s</span><br></pre></td></tr></table></figure>
+    <title>微信4.0测试版上线</title>
+    <url>/posts/12944/</url>
+    <content><![CDATA[<p>此次更新不仅支持了更多的系统以及架构，还更新了深色模式<del>（熬夜党狂喜）</del></p>
+<p><img src="https://file.hqycloud.top/img/a94fc06ca35dee6d196e9e6b975f802a.png" alt="https:&#x2F;&#x2F;file.hqycloud.top&#x2F;img&#x2F;a94fc06ca35dee6d196e9e6b975f802a.png"></p>
+<p>下载地址</p>
+<p><a href="https://weixin.qq.com/">微信，是一个生活方式</a></p>
+<p><a href="https://linux.weixin.qq.com/">微信 Linux 测试版</a></p>
 ]]></content>
       <categories>
-        <category>cloud</category>
+        <category>wechat</category>
       </categories>
       <tags>
-        <tag>华为云</tag>
-        <tag>huaweicloud</tag>
-        <tag>server</tag>
+        <tag>wechat</tag>
+        <tag>微信</tag>
       </tags>
   </entry>
   <entry>
@@ -1152,6 +1122,69 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
 ]]></content>
   </entry>
   <entry>
+    <title>晚高峰的华为云io</title>
+    <url>/posts/12995/</url>
+    <content><![CDATA[<p>华为云新加坡Flexus L：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@host-192-168-7-62:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 8.37634 s, 32.0 MB/s</span><br></pre></td></tr></table></figure>
+
+<p>作为对比，下面是阿里云香港和rn美西的测试结果：<br>阿里云：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@ubuntu:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 6.12062 s, 43.9 MB/s</span><br></pre></td></tr></table></figure>
+
+<p>rn：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">root@racknerd-server:~# dd if=/dev/zero of=test bs=64k count=4k oflag=dsync</span><br><span class="line">4096+0 records in</span><br><span class="line">4096+0 records out</span><br><span class="line">268435456 bytes (268 MB, 256 MiB) copied, 1.92984 s, 139 MB/s</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>cloud</category>
+      </categories>
+      <tags>
+        <tag>华为云</tag>
+        <tag>huaweicloud</tag>
+        <tag>server</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>纪念碑谷3免登陆版分享</title>
+    <url>/posts/44134/</url>
+    <content><![CDATA[<blockquote>
+<p>去除了登录限制</p>
+</blockquote>
+<p>链接：<a href="https://alist.hqycloud.top/res/Monument_Valley3.0">https://alist.hqycloud.top/res/Monument_Valley3.0</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>网页接入aplayer音乐播放器</title>
+    <url>/posts/16450/</url>
+    <content><![CDATA[<h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><p>此教程适用自行开发网页、博客，以及有自定义aplayer需求的群体</p>
+<p>比如说<a href="https://blog.hqycloud.top/posts/51355/">aplayer播放器对接alist | butlanys的博客</a>播放等 <del>（此文章正在写，稍安毋操）</del></p>
+<h1 id="二、准备"><a href="#二、准备" class="headerlink" title="二、准备"></a>二、准备</h1><p>下载css、js到自己的网站目录下</p>
+<p>地址：<a href="https://github.com/DIYgod/APlayer/tree/master/dist">APlayer&#x2F;dist at master · DIYgod&#x2F;APlayer</a></p>
+<p>致使用hexo butterfly主题的站长们，如果已在博客中使用aplayer需要在配置文件中把aplayerInject里enable值改为false</p>
+<h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>这里以hexo butterfly为例</p>
+<p>在_config.butterfly.yml文件的inject—head中加入</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">&lt;link rel=&quot;stylesheet&quot; href=&quot;/pluginsSrc/aplayer/dist/APlayer<span class="selector-class">.min</span><span class="selector-class">.css</span>&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>请将路径改为你自己的路径</p>
+<p>在bottom中加入</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script src=<span class="string">&quot;/pluginsSrc/aplayer/dist/APlayer.min.js&quot;</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h1><p>新建一个js文件</p>
+<p>并参照官方文档进行修改：<a href="https://aplayer.js.org/#/zh-Hans/?id=%E5%85%A5%E9%97%A8">首页 - APlayer</a></p>
+<h1 id="引入自定义的配置文件"><a href="#引入自定义的配置文件" class="headerlink" title="引入自定义的配置文件"></a>引入自定义的配置文件</h1><p>回到_config.butterfly.yml中，在bottom字段添加</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;div id=<span class="string">&quot;aplayer&quot;</span>&gt;&lt;/div&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;自定义的js文件名.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h1 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h1><p>接下来就可以刷新你的网页，查看是否出现aplayer播放器</p>
+<h1 id="后续美化"><a href="#后续美化" class="headerlink" title="后续美化"></a>后续美化</h1><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* Aplayer日间模式调整 */</span></span><br><span class="line"><span class="comment">/* 背景色 */</span></span><br><span class="line"><span class="selector-class">.aplayer</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0.6</span>) <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">2px</span> <span class="number">2px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.07</span>), <span class="number">0</span> <span class="number">1px</span> <span class="number">5px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>);</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-lrc</span><span class="selector-pseudo">:after</span>,</span><br><span class="line"><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-lrc</span><span class="selector-pseudo">:before</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-body</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0.6</span>) <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">2px</span> <span class="number">2px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.07</span>), <span class="number">0</span> <span class="number">1px</span> <span class="number">5px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>);</span><br><span class="line">  <span class="attribute">position</span>: fixed;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 滚动条 */</span></span><br><span class="line"><span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span>::-webkit-scrollbar &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">5px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span>::-webkit-scrollbar-thumb &#123;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">3px</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="built_in">var</span>(--theme-color) <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span>::-webkit-scrollbar-thumb:hover &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="built_in">var</span>(--theme-color) <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 圆角 */</span></span><br><span class="line"><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-list</span> &#123;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">6px</span> <span class="number">6px</span> <span class="number">0</span> <span class="number">0</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-miniswitcher</span> &#123;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">0</span> <span class="number">6px</span> <span class="number">6px</span> <span class="number">0</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span><span class="selector-class">.aplayer-narrow</span> <span class="selector-class">.aplayer-body</span> &#123;</span><br><span class="line">  <span class="attribute">transition</span>: <span class="number">0.28s</span> <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">6px</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 选中与播放中歌曲激活颜色 */</span></span><br><span class="line"><span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span> <span class="selector-tag">li</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">var</span>(--theme-color) <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span> <span class="selector-tag">li</span><span class="selector-class">.aplayer-list-light</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">var</span>(--theme-color) <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 歌词 */</span></span><br><span class="line"><span class="selector-class">.aplayer-lrc</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#ffffff</span> <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">text-shadow</span>: <span class="number">#000000</span> <span class="number">1px</span> <span class="number">0</span> <span class="number">0</span>, <span class="number">#000000</span> <span class="number">0</span> <span class="number">1px</span> <span class="number">0</span>, <span class="number">#000000</span> -<span class="number">1px</span> <span class="number">0</span> <span class="number">0</span>, <span class="number">#000000</span></span><br><span class="line">      <span class="number">0</span> -<span class="number">1px</span> <span class="number">0</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Aplayer黑暗模式 */</span></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">22</span>, <span class="number">22</span>, <span class="number">22</span>, <span class="number">0.6</span>) <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="built_in">rgb</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>);</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">2px</span> <span class="number">2px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.07</span>), <span class="number">0</span> <span class="number">1px</span> <span class="number">5px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-body</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">22</span>, <span class="number">22</span>, <span class="number">22</span>, <span class="number">0.6</span>) <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="built_in">rgb</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>);</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">2px</span> <span class="number">2px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.07</span>), <span class="number">0</span> <span class="number">1px</span> <span class="number">5px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span></span><br><span class="line">  <span class="selector-class">.aplayer</span></span><br><span class="line">  <span class="selector-class">.aplayer-info</span></span><br><span class="line">  <span class="selector-class">.aplayer-controller</span></span><br><span class="line">  <span class="selector-class">.aplayer-time</span></span><br><span class="line">  <span class="selector-tag">path</span> &#123;</span><br><span class="line">  <span class="attribute">fill</span>: <span class="number">#d4d4d4</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span> <span class="selector-tag">li</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">var</span>(--theme-color) <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span> <span class="selector-tag">li</span><span class="selector-class">.aplayer-list-light</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">var</span>(--theme-color) <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-info</span> <span class="selector-class">.aplayer-controller</span> <span class="selector-class">.aplayer-time</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#d4d4d4</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span> <span class="selector-tag">li</span> <span class="selector-class">.aplayer-list-index</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#d4d4d4</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span> <span class="selector-tag">li</span> <span class="selector-class">.aplayer-list-author</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#d4d4d4</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-miniswitcher</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">22</span>, <span class="number">22</span>, <span class="number">22</span>, <span class="number">0.6</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>aplayer</category>
+      </categories>
+      <tags>
+        <tag>aplayer</tag>
+        <tag>music</tag>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>自己部署一个google search for yhchat</title>
     <url>/posts/47372/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>此bot可以在<a href="https://www.yhchat.com/">云湖</a>上使用Google搜索</strong></p>
@@ -1242,39 +1275,6 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
 ]]></content>
   </entry>
   <entry>
-    <title>网页接入aplayer音乐播放器</title>
-    <url>/posts/16450/</url>
-    <content><![CDATA[<h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><p>此教程适用自行开发网页、博客，以及有自定义aplayer需求的群体</p>
-<p>比如说<a href="https://blog.hqycloud.top/posts/51355/">aplayer播放器对接alist | butlanys的博客</a>播放等 <del>（此文章正在写，稍安毋操）</del></p>
-<h1 id="二、准备"><a href="#二、准备" class="headerlink" title="二、准备"></a>二、准备</h1><p>下载css、js到自己的网站目录下</p>
-<p>地址：<a href="https://github.com/DIYgod/APlayer/tree/master/dist">APlayer&#x2F;dist at master · DIYgod&#x2F;APlayer</a></p>
-<p>致使用hexo butterfly主题的站长们，如果已在博客中使用aplayer需要在配置文件中把aplayerInject里enable值改为false</p>
-<h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>这里以hexo butterfly为例</p>
-<p>在_config.butterfly.yml文件的inject—head中加入</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">&lt;link rel=&quot;stylesheet&quot; href=&quot;/pluginsSrc/aplayer/dist/APlayer<span class="selector-class">.min</span><span class="selector-class">.css</span>&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-<p>请将路径改为你自己的路径</p>
-<p>在bottom中加入</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script src=<span class="string">&quot;/pluginsSrc/aplayer/dist/APlayer.min.js&quot;</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<h1 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h1><p>新建一个js文件</p>
-<p>并参照官方文档进行修改：<a href="https://aplayer.js.org/#/zh-Hans/?id=%E5%85%A5%E9%97%A8">首页 - APlayer</a></p>
-<h1 id="引入自定义的配置文件"><a href="#引入自定义的配置文件" class="headerlink" title="引入自定义的配置文件"></a>引入自定义的配置文件</h1><p>回到_config.butterfly.yml中，在bottom字段添加</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;div id=<span class="string">&quot;aplayer&quot;</span>&gt;&lt;/div&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;自定义的js文件名.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<h1 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h1><p>接下来就可以刷新你的网页，查看是否出现aplayer播放器</p>
-<h1 id="后续美化"><a href="#后续美化" class="headerlink" title="后续美化"></a>后续美化</h1><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* Aplayer日间模式调整 */</span></span><br><span class="line"><span class="comment">/* 背景色 */</span></span><br><span class="line"><span class="selector-class">.aplayer</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0.6</span>) <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">2px</span> <span class="number">2px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.07</span>), <span class="number">0</span> <span class="number">1px</span> <span class="number">5px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>);</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-lrc</span><span class="selector-pseudo">:after</span>,</span><br><span class="line"><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-lrc</span><span class="selector-pseudo">:before</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-body</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0.6</span>) <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">2px</span> <span class="number">2px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.07</span>), <span class="number">0</span> <span class="number">1px</span> <span class="number">5px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>);</span><br><span class="line">  <span class="attribute">position</span>: fixed;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 滚动条 */</span></span><br><span class="line"><span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span>::-webkit-scrollbar &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">5px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span>::-webkit-scrollbar-thumb &#123;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">3px</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="built_in">var</span>(--theme-color) <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span>::-webkit-scrollbar-thumb:hover &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="built_in">var</span>(--theme-color) <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 圆角 */</span></span><br><span class="line"><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-list</span> &#123;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">6px</span> <span class="number">6px</span> <span class="number">0</span> <span class="number">0</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-miniswitcher</span> &#123;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">0</span> <span class="number">6px</span> <span class="number">6px</span> <span class="number">0</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span><span class="selector-class">.aplayer-narrow</span> <span class="selector-class">.aplayer-body</span> &#123;</span><br><span class="line">  <span class="attribute">transition</span>: <span class="number">0.28s</span> <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">6px</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 选中与播放中歌曲激活颜色 */</span></span><br><span class="line"><span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span> <span class="selector-tag">li</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">var</span>(--theme-color) <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span> <span class="selector-tag">li</span><span class="selector-class">.aplayer-list-light</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">var</span>(--theme-color) <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 歌词 */</span></span><br><span class="line"><span class="selector-class">.aplayer-lrc</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#ffffff</span> <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">text-shadow</span>: <span class="number">#000000</span> <span class="number">1px</span> <span class="number">0</span> <span class="number">0</span>, <span class="number">#000000</span> <span class="number">0</span> <span class="number">1px</span> <span class="number">0</span>, <span class="number">#000000</span> -<span class="number">1px</span> <span class="number">0</span> <span class="number">0</span>, <span class="number">#000000</span></span><br><span class="line">      <span class="number">0</span> -<span class="number">1px</span> <span class="number">0</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Aplayer黑暗模式 */</span></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">22</span>, <span class="number">22</span>, <span class="number">22</span>, <span class="number">0.6</span>) <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="built_in">rgb</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>);</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">2px</span> <span class="number">2px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.07</span>), <span class="number">0</span> <span class="number">1px</span> <span class="number">5px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-body</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">22</span>, <span class="number">22</span>, <span class="number">22</span>, <span class="number">0.6</span>) <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="built_in">rgb</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>);</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">2px</span> <span class="number">2px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.07</span>), <span class="number">0</span> <span class="number">1px</span> <span class="number">5px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span></span><br><span class="line">  <span class="selector-class">.aplayer</span></span><br><span class="line">  <span class="selector-class">.aplayer-info</span></span><br><span class="line">  <span class="selector-class">.aplayer-controller</span></span><br><span class="line">  <span class="selector-class">.aplayer-time</span></span><br><span class="line">  <span class="selector-tag">path</span> &#123;</span><br><span class="line">  <span class="attribute">fill</span>: <span class="number">#d4d4d4</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span> <span class="selector-tag">li</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">var</span>(--theme-color) <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span> <span class="selector-tag">li</span><span class="selector-class">.aplayer-list-light</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">var</span>(--theme-color) <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-info</span> <span class="selector-class">.aplayer-controller</span> <span class="selector-class">.aplayer-time</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#d4d4d4</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span> <span class="selector-tag">li</span> <span class="selector-class">.aplayer-list-index</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#d4d4d4</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span> <span class="selector-class">.aplayer-list</span> <span class="selector-tag">ol</span> <span class="selector-tag">li</span> <span class="selector-class">.aplayer-list-author</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#d4d4d4</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> <span class="selector-class">.aplayer</span><span class="selector-class">.aplayer-fixed</span> <span class="selector-class">.aplayer-miniswitcher</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">22</span>, <span class="number">22</span>, <span class="number">22</span>, <span class="number">0.6</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>aplayer</category>
-      </categories>
-      <tags>
-        <tag>aplayer</tag>
-        <tag>music</tag>
-        <tag>web</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>记一次解决网站接入cloudflare后使用http申请Google ssl失败的方法</title>
     <url>/posts/24457/</url>
     <content><![CDATA[<p>在一次偶然的聊天过程中，无意间聊到了谷歌证书，然后就想着全站使用谷歌证书（谷歌其实跟其他证书机构相比真的没啥区别，唯一的用处就是装逼？</p>
@@ -1295,20 +1295,6 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
         <tag>ssl</tag>
         <tag>google cloud</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Qexo报错/bin/sh: 1: bash build.sh: not found解决方法</title>
-    <url>/posts/54164/</url>
-    <content><![CDATA[<p>说实话吧，我在写这篇文章的时候也没搞懂这报错的触发机制，只能给出几种解决方式，<del>反正每次重启机器都要操作一次</del></p>
-<p><strong>1、绝对路径</strong></p>
-<p><img src="https://file.butlanys.de/img/1dc478f9219979d4992e116a20120306.png"></p>
-<p>2、将命令打包成bash脚本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">TARGET_DIR=<span class="string">&quot;/opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$TARGET_DIR</span>&quot;</span></span><br><span class="line"></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line"><span class="built_in">rm</span> -rf <span class="string">&quot;<span class="variable">$TARGET_DIR</span>/*&quot;</span></span><br><span class="line"><span class="built_in">cp</span> -r /opt/blog/hexo/public/* <span class="string">&quot;<span class="variable">$TARGET_DIR</span>/&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;部署和更新完成!&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>我这个脚本其实是为了方便build后直接push到1panel网站目录下才写的，后面发现对上述报错有奇效</p>
-<p><strong>3、配置环境变量（针对Supervisor进程守护）</strong></p>
-<p>参考<a href="https://blog.butlanys.de/posts/43650/">这篇文章</a></p>
-]]></content>
   </entry>
   <entry>
     <title>记录下使用Supervisor(进程守护)遇到的一些小问题</title>
@@ -1341,6 +1327,20 @@ IP地址黑名单数据库：  有效 439   正常 397   已标记 42   黑名�
 
 
 <p><strong>后面如果又遇到其他问题，且我解决了，则会再次更新此文章</strong></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Qexo报错/bin/sh: 1: bash build.sh: not found解决方法</title>
+    <url>/posts/54164/</url>
+    <content><![CDATA[<p>说实话吧，我在写这篇文章的时候也没搞懂这报错的触发机制，只能给出几种解决方式，<del>反正每次重启机器都要操作一次</del></p>
+<p><strong>1、绝对路径</strong></p>
+<p><img src="https://file.butlanys.de/img/1dc478f9219979d4992e116a20120306.png"></p>
+<p>2、将命令打包成bash脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">TARGET_DIR=<span class="string">&quot;/opt/1panel/apps/openresty/openresty/www/sites/blog.butlanys.de/index&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$TARGET_DIR</span>&quot;</span></span><br><span class="line"></span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br><span class="line"></span><br><span class="line"><span class="built_in">rm</span> -rf <span class="string">&quot;<span class="variable">$TARGET_DIR</span>/*&quot;</span></span><br><span class="line"><span class="built_in">cp</span> -r /opt/blog/hexo/public/* <span class="string">&quot;<span class="variable">$TARGET_DIR</span>/&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;部署和更新完成!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>我这个脚本其实是为了方便build后直接push到1panel网站目录下才写的，后面发现对上述报错有奇效</p>
+<p><strong>3、配置环境变量（针对Supervisor进程守护）</strong></p>
+<p>参考<a href="https://blog.butlanys.de/posts/43650/">这篇文章</a></p>
 ]]></content>
   </entry>
 </search>
