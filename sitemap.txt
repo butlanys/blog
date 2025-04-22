@@ -41,7 +41,6 @@ https://blog.butlanys.de/posts/47372/
 https://blog.butlanys.de/posts/39316/
 https://blog.butlanys.de/categories/index.html
 https://blog.butlanys.de/posts/6159/
-https://blog.butlanys.de/posts/e491bdf7/
 https://blog.butlanys.de/
 https://blog.butlanys.de/tags/nginx/
 https://blog.butlanys.de/tags/site/
@@ -78,11 +77,10 @@ https://blog.butlanys.de/categories/aplayer/
 https://blog.butlanys.de/categories/linux/
 https://blog.butlanys.de/categories/cloudflare/
 https://blog.butlanys.de/categories/docker/
-https://blog.butlanys.de/categories/ssh/
 https://blog.butlanys.de/categories/Termux/
+https://blog.butlanys.de/categories/ssh/
 https://blog.butlanys.de/categories/bing/
 https://blog.butlanys.de/categories/chatgpt/
-https://blog.butlanys.de/categories/domain/
 https://blog.butlanys.de/categories/viqoo/
 https://blog.butlanys.de/categories/Internet/
 https://blog.butlanys.de/categories/cloud/
